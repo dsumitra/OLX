@@ -27,11 +27,41 @@ public class User {
 	
 	void showUserSettings(userModel) {
 		
+
+		select lname, fname, email,phone,add from users where user_id = 100; 
+		 ResultSet rs= query;
+		 SOP - header 
+		 while(rs.hasnext())
+		 {
+			 SOP- PRINT ONE ROW.
+		 }
+  
 			
-			show options 1.Rename username, 2.change pwd, 
+// sop-	 1.Rename username, 2.change pwd, 
 			3.phone;
 			4 email;
 			5 address;
+	do {
+		enter how many values you want to update ;
+	
+			 2
+			 enter the attribute id you want to edit :
+			 3 - phone number ;
+			 enter new  +phonenumber ;
+			 enter new +name ;
+			 / confirm the phone number - y/n - set phonenumber usermodel
+			 
+			 enter new email;
+			 
+			 enter the attribute id you want to edit :
+				 email 		--- set email in usermodel
+				 
+				 update(userModel)
+				 
+	} while ()		 
+				
+			
+			
 	}
 	
 	void delUsers(userModel) {

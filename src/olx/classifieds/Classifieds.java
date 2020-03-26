@@ -3,11 +3,11 @@ package olx.classifieds;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Date;
-import java.util.HashMap;
+
+import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
 import olx.User.UserModel;
-import olx.User.give;
 import olx.category.CategoryHelper;
 import olx.category.CategoryModel;
 import olx.classifieds.ClassifiedsConstants.ClassifiedColumnNames;
@@ -20,6 +20,7 @@ public class Classifieds {
 	Classifieds() {
 		categoryHelper = new CategoryHelper();
 		classifiedDAOImpl = new ClassifiedDAOImpl();
+
 	}
 
 	// TODO MAKE 2 DISPLAY FUNCTIONS( ONE FOR SELLER/BUYER BY TWEEKING THE QUERY)
@@ -29,17 +30,18 @@ public class Classifieds {
 	// TODO don't delete the classified, but mark them as deleted.
 	// TODO implement function to approve or disapprove the newly added classifieds
 	void buy(UserModel userModel) {
-	Scanner sc = new Scanner(System.in);	
-	
-	
-	 displayAllClassifieds(0);//TODO should pay User Model
-	 
-	 System.out.println("Enter the number of classifieds you want to buy: ");
-	 int buyClassifiedsCount = Integer.parseInt(sc.nextLine());
-	 
-	 for( int i=0; i<buyClassifiedsCount ; i++) {
-	 System.out.println("Enter the classified ID you to select: ");
-	 int selectedClassified = Integer.parseInt(sc.nextLine());
+
+		Scanner sc = new Scanner(System.in);
+
+		displayAllClassifieds(0);// TODO should pay User Model
+
+		System.out.println("Enter the number of classifieds you want to buy: ");
+		int buyClassifiedsCount = Integer.parseInt(sc.nextLine());
+
+		for (int i = 0; i < buyClassifiedsCount; i++) {
+			System.out.println("Enter the classified ID you to select: ");
+//	 int selectedClassified = Integer.parseInt(sc.nextLine());
+		}
 	}
 
 	void manageClassifieds() {

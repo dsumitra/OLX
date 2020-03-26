@@ -12,24 +12,18 @@ public class Payments1 {
 	class Visa implements Payment {
 		public void verifyCard() {
 			try {
-//				LuhnCheck lc = new LuhnCheck();
-				Scanner sc = new Scanner(System.in);
-				System.out.println("Enter the card details");
+
+				System.out.println("Enter the card details: ");
 				String cardNumber = sc.nextLine();
-//				if (cardNumber.length() <= 19)) {
-					// card is valid for 4 and has a length between 13 to 19
-//					System.out.println("correct start value and length");
-					// Needs to validate for luhn's algorithm
-//					if (lc.checkLuhn(cardNumber)) {
-						System.out.println("Valid visa card entered");
+				if (cardNumber.length() <= 19)) {
+						System.out.println("Valid  card entered");
 						CardDetails cd = new CardDetails();
 						cd.card();
 					} else {
-						System.out.println("Invalid visa card");
-					}
-				} else {
-					System.out.println("card not accepted");
-					verifyCard();
+						System.out.println("Invalid card");
+						System.out.println("Kindly enter the card number again: ");
+						verifyCard();
+
 				}
 			} catch (StringIndexOutOfBoundsException e) {
 				System.out.println("String index out of bounds exception");
@@ -129,7 +123,6 @@ public class Payments1 {
 			// int cvv=sc.nextInt();
 		}
 	}
-
 
 	class CreditCard {
 		Scanner sc = new Scanner(System.in);

@@ -8,6 +8,9 @@ import java.util.Scanner;
 public class PaymentsMain {
 //	Payments payments = new Payments();
 
+	
+	PaymentModel paymentmodel = new PaymentModel();
+
 	Scanner sc = new Scanner(System.in);
 
 	void PaymentView() {
@@ -61,6 +64,7 @@ public class PaymentsMain {
 			if (cardNumber.length() <= 19) {
 				System.out.println("Valid  card entered");
 
+				paymentmodel.set
 				System.out.println("Confirm to add the above entered card (Y/N): " + cardNumber);
 				String confirmation = sc.nextLine();
 				boolean invalidMonth = false;
