@@ -260,7 +260,7 @@ public class Classifieds {
 		}
 		do {
 			System.out.println("Enter the number of classifieds you want to buy: ");
-			buyCount = Integer.parseInt(sc.nextLine());
+			buyCount = Integer.parseInt(sc.nextLine()); //TODO Handle space exception.
 		} while (buyCount > classifiedMap.size());
 
 		for (int i = 0; i < buyCount; i++) {
@@ -337,8 +337,16 @@ public class Classifieds {
 		classifiedDAOImpl.updateStatusById(classifiedIDs);
 		
 	}
-
-	void showOrderHistory() {
-
+	
+	public void OrderHistory(UserModel UserModel) {
+		ResultSet rs = classifiedDAOImpl.OrderHistory(UserModel);
+//		while(rs.next())
+//		{
+//			
+//		}
+		
 	}
+		
+	
+	
 }

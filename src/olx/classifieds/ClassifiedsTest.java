@@ -15,7 +15,7 @@ public class ClassifiedsTest {
 		UserModel uModel = user;
 
 		Classifieds classified = new Classifieds();
-//		classified.buy(uModel);
+//	classified.buy(uModel);
 //		classified.manageClassifieds(uModel);
 //		classified.displayPostedClassifieds();
 //		classified.addClassifieds(uModel);
@@ -24,9 +24,11 @@ public class ClassifiedsTest {
 //		classified.displayClassifiedsByUser(1);
 // 		classified.deleteClassifieds(1);
 		// TODO: remove dummyIds and pass classifiedIds
-		List<Integer> dummyIds = new ArrayList<>();
-		dummyIds.add(121);
-		dummyIds.add(122);
-		classified.markClassifiedsAsSold(dummyIds);
+//		List<Integer> dummyIds = new ArrayList<>();
+//		dummyIds.add(121);
+//		dummyIds.add(122);
+//		classified.markClassifiedsAsSold(103);
+//		classified.buy(uModel);
+		
 	}
 }

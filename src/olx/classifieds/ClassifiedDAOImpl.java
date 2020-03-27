@@ -6,6 +6,7 @@ import java.text.SimpleDateFormat;
 import java.util.List;
 
 import dbConnection.DBConnection;
+import olx.User.UserModel;
 import olx.category.CategoryConstants.CategoryColumnNames;
 import olx.classifieds.ClassifiedsConstants.ClassifiedColumnNames;
 import olx.classifieds.ClassifiedsConstants.ClassifiedStatus;
@@ -66,7 +67,7 @@ public class ClassifiedDAOImpl implements IClassifiedDAO {
 		if(classifiedIDs.size() == 0) return;
 		
 		String query = "Update " + OlxConstants.TableNames.CLASSIFIEDS + " set " + ClassifiedColumnNames.STATE + " = '"
-				+ ClassifiedsConstants.ClassifiedStatus.SOLD + "' where";
+				+ ClassifiedsConstants.ClassifiedStatus.SOLD + "' where" + ClassifiedColumnNames.ID + " = 103"  ;
 		String idConditions = "";
 		String prefix = " ";
 		for (int i = 0; i < classifiedIDs.size(); i++) {
@@ -84,8 +85,7 @@ public class ClassifiedDAOImpl implements IClassifiedDAO {
 	@Override
 	public void deleteClassified(ClassifiedModel classifiedModel) {
 
-		String query = "delete from " + OlxConstants.TableNames.CLASSIFIEDS + " where " + ClassifiedColumnNames.ID + "="
-				+ classifiedModel.getID();
+		String query = "delete from " + OlxConstants.TableNames.CLASSIFIEDS + " where " + ClassifiedColumnNames.ID + " = " + classifiedModel.getID();
 		try {
 			DBConnection.executeQuery(query);
 			System.out.println("Successfully created classified: " + classifiedModel.getTitle());
@@ -129,6 +129,19 @@ public class ClassifiedDAOImpl implements IClassifiedDAO {
 	public static ResultSet filterClassifiedsByState(ClassifiedStatus approved) {
 		String query = "Select * from " + TableNames.CLASSIFIEDS + " where " + ClassifiedColumnNames.STATE + "='"
 				+ approved + "'";
+		ResultSet rs = null;
+
+		try {
+			rs = DBConnection.executeQuery(query);
+		} catch (ClassNotFoundException | SQLException e) {
+			e.printStackTrace();
+		}
+		return rs;
+	}
+	
+	public  ResultSet OrderHistory(UserModel userModel) {
+		String query = "Select "+ClassifiedColumnNames.ID+","+ClassifiedColumnNames.TITLE+","+ClassifiedColumnNames.PRICE+","
+				+ClassifiedColumnNames.DATE_UPDATED+ " from "+ TableNames.CLASSIFIEDS + " where "+ ClassifiedColumnNames.USER_ID+"="+userModel.getId(); 
 		ResultSet rs = null;
 
 		try {

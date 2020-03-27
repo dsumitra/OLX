@@ -2,6 +2,8 @@ package olx.classifieds;
 
 import java.sql.ResultSet;
 
+import olx.User.UserModel;
+
 //import java.util.Map;
 
 public interface IClassifiedDAO {
@@ -13,5 +15,7 @@ public interface IClassifiedDAO {
 	public ResultSet getClassifiedsByUserId(int userID);
 
 	public void updateClassified(ClassifiedModel classifiedModel);
+	
+	public  ResultSet OrderHistory(UserModel userModel);
 
 }
