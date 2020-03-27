@@ -1,30 +1,27 @@
 package olx.cart;
 
 
-import cart.ICartConstants;
-
 public class CartModel implements ICartConstants{
 	Long cartId;
 	Long classifiedId;
 	Double bidPrice;
 	String status;
-	Long bidderId;
-	
+	Long bidderID;
 	public CartModel() {
 		status = "BID";
 	}
-	public CartModel(Long cartId, Long classifiedId, Double bidPrice, String status, Long bidderId) {
+	public CartModel(Long cartId, Long classifiedId, Double bidPrice, String status, Long bidderID) {
 		super();
 		this.cartId = cartId;
 		this.classifiedId = classifiedId;
 		this.bidPrice = bidPrice;
 		this.status = status;
-		this.bidderId = bidderId;
+		this.bidderID = bidderID;
 	}
 	@Override
 	public String toString() {
 		return "CartModel [cartId=" + cartId + ", classifiedId=" + classifiedId + ", bidPrice=" + bidPrice + ", status="
-				+ status + ", bidderId=" + bidderId + "]";
+				+ status + ", bidderID=" + bidderID + "]";
 	}
 	public Long getCartId() {
 		return cartId;
@@ -50,10 +47,10 @@ public class CartModel implements ICartConstants{
 	public void setStatus(String status) {
 		this.status = status;
 	}
-	public Long getbidderId() {
-		return bidderId;
+	public Long getBidderID() {
+		return bidderID;
 	}
-	public void setbidderId(Long bidderId) {
-		this.bidderId = bidderId;
+	public void setBidderID(Long bidderID) {
+		this.bidderID = bidderID;
 	}
 }
