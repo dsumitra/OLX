@@ -1,4 +1,4 @@
-package olx.User;
+package olx.user;
 
 public class UserModel {
 	int id;
@@ -7,6 +7,7 @@ public class UserModel {
 	String phone;
 	String email;
 	String address;
+	String password;
 	boolean admin = false;
 
 	public UserModel(int id, String firstName, String lastName, String phone, String email, String address, boolean admin) {
@@ -17,6 +18,14 @@ public class UserModel {
 		this.email = email;
 		this.address = address;
 		this.admin = admin;
+	}
+
+	public String getPassword() {
+		return password;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
 	}
 
 	public int getId() {

@@ -1,4 +1,4 @@
-package olx.User;
+package olx.user;
 
 	import java.util.*;
 	import java.sql.*;
