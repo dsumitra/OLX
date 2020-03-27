@@ -1,11 +1,11 @@
-package olx.cart;
+package cart;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.*;
 
 public class Cart {
-	static CartDAOImpl cdb = new CartDAOImpl();
+	static CartDAO cdb = new CartDAO();
 	CartModel c = new CartModel();
 	Scanner s = new Scanner(System.in);	
 
