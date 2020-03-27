@@ -5,7 +5,7 @@ public class CategoryModel {
 	private String primaryCategory;
 	private String subCategory;
 
-	CategoryModel(int id, String primaryCategory, String subCategory) {
+	public CategoryModel(int id, String primaryCategory, String subCategory) {
 		super();
 		this.id = id;
 		this.primaryCategory = primaryCategory;

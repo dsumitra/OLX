@@ -82,7 +82,7 @@ public class Category {
 
 	void deleteCategory() {
 		ResultSet primaryCategoryRs = CategoryDAOImpl.getPrimaryCategories();
-		Map<Integer, String> categories = displayPrimaryCategories(primaryCategoryRs);
+		Map<Integer, String> categories = helper.displayPrimaryCategories(primaryCategoryRs);
 		System.out.println("Enter number of categories you want to delete :");
 		int delSubCategoryNum = Integer.parseInt(sc.nextLine().trim());
 		int delCategoryID;
@@ -137,7 +137,7 @@ public class Category {
 
 	void updateCategory() {
 		ResultSet primaryCategoryRs = CategoryDAOImpl.getPrimaryCategories();
-		Map<Integer, String> categories = displayPrimaryCategories(primaryCategoryRs);
+		Map<Integer, String> categories = helper.displayPrimaryCategories(primaryCategoryRs);
 		int updateCategoryAction = 0;
 		String selectedCategory = null;
 		try {
@@ -197,26 +197,7 @@ public class Category {
 		}
 	}
 
-	Map<Integer, String> displayPrimaryCategories(ResultSet rs) {
-		Map<Integer, String> categories = new HashMap<Integer, String>();
-		System.out.println("ID\t\t CATEGORY");
-		int i = 1;
-		// displaying distinct Categories.
-		try {
-			while (rs.next()) {
-				int id = i++;
-				String primaryCategory;
-				primaryCategory = rs.getString("PRIMARY_CATEGORY");
-				categories.put(id, primaryCategory);
-				System.out.println(id + "\t\t" + primaryCategory);
-			}
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-
-		return categories;
-	}
+	
 
 	Map<Integer, String> displaySubCategories(ResultSet rs) {
 		Map<Integer, String> subCategoryMap = new HashMap<Integer, String>();

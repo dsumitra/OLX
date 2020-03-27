@@ -2,60 +2,39 @@ package olx.classifieds;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Date;
-
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
 import olx.User.UserModel;
+import olx.category.CategoryConstants.CategoryColumnNames;
+import olx.category.CategoryDAOImpl;
 import olx.category.CategoryHelper;
 import olx.category.CategoryModel;
+import olx.classifieds.ClassifiedDAOImpl;
+import olx.classifieds.ClassifiedModel;
+import olx.classifieds.ClassifiedsConstants;
 import olx.classifieds.ClassifiedsConstants.ClassifiedColumnNames;
 import olx.classifieds.ClassifiedsConstants.ClassifiedStatus;
+import olx.constants.OlxConstants;
 
 public class Classifieds {
 	CategoryHelper categoryHelper;
 	ClassifiedDAOImpl classifiedDAOImpl;
+	CategoryDAOImpl categoryDAOImpl;
+	Scanner sc = new Scanner(System.in);
 
-	Classifieds() {
+	public Classifieds() {
 		categoryHelper = new CategoryHelper();
 		classifiedDAOImpl = new ClassifiedDAOImpl();
-
-	}
-
-	// TODO MAKE 2 DISPLAY FUNCTIONS( ONE FOR SELLER/BUYER BY TWEEKING THE QUERY)
-	// STATUS == APPROVED STATUS == POSTED
-	// TODO EXCEPTION HANDLING (numberFormatException handling and add do while's
-	// for every input)
-	// TODO don't delete the classified, but mark them as deleted.
-	// TODO implement function to approve or disapprove the newly added classifieds
-	void buy(UserModel userModel) {
-
-		Scanner sc = new Scanner(System.in);
-
-		displayAllClassifieds(0);// TODO should pay User Model
-
-		System.out.println("Enter the number of classifieds you want to buy: ");
-		int buyClassifiedsCount = Integer.parseInt(sc.nextLine());
-
-		for (int i = 0; i < buyClassifiedsCount; i++) {
-			System.out.println("Enter the classified ID you to select: ");
-//	 int selectedClassified = Integer.parseInt(sc.nextLine());
-		}
-	}
-
-	void manageClassifieds() {
-//			give options 1.update & 2.delete
-	}
-
-	void markSoldClassifieds(List<String> classifiedIDs) {
-
+		categoryDAOImpl = new CategoryDAOImpl();
 	}
 
 //TODO : Exceptional Handling for every scanner.
-	void addClassifieds() {
+	public void addClassifieds(UserModel userModel) {
 		try {
-			Scanner sc = new Scanner(System.in);
 			System.out.println("Enter the number of Classifieds you want to add: ");
 			int totalClassfieds = Integer.parseInt(sc.nextLine().trim());
 			for (int i = 0; i < totalClassfieds; i++) {
@@ -92,17 +71,12 @@ public class Classifieds {
 					double price = Double.parseDouble(sc.nextLine());
 					classifiedModel.setPrice(price);
 
-					/*
-					 * TODO get the userModel and do userModel.getId(), userModel.getPhone(),
-					 * userModel.getEmail(); and set them to the classified model userID; phone;
-					 * email;
-					 */
-					classifiedModel.setUserID(0);
-					classifiedModel.setPhone("1234567890");
-					classifiedModel.setEmail("dummy@gmail.com");
-					System.out
-							.println("The entered classified is: " + previewClassified(classifiedModel, categoryModel));
+					classifiedModel.setUserID(userModel.getId());
+					classifiedModel.setPhone(userModel.getPhone());
+					classifiedModel.setEmail(userModel.getEmail());
 
+					System.out.println("The entered classified is: ");
+					previewClassified(classifiedModel, categoryModel);
 					System.out.println("Do you wish to post the above classified ?(Y/N): ");
 					confirmClassified = sc.nextLine();
 
@@ -111,33 +85,29 @@ public class Classifieds {
 				classifiedDAOImpl.addClassified(classifiedModel);
 
 			}
-			sc.close();
 		} catch (NumberFormatException e) {
 			e.printStackTrace();
 			System.out.println("Kindly enter a valid input: ");
-			addClassifieds();
+			addClassifieds(userModel);
 		}
 	}
 
-	String previewClassified(ClassifiedModel classified, CategoryModel categoryModel) {
-		return "\n Category:" + categoryModel.getPrimaryCategory() + "\n Sub-category: "
+	void previewClassified(ClassifiedModel classified, CategoryModel categoryModel) {
+		System.out.println("\n Category:" + categoryModel.getPrimaryCategory() + "\n Sub-category: "
 				+ categoryModel.getSubCategory() + "\n Title:" + classified.getTitle() + "\n Description:"
-				+ classified.getDescription() + "\n Price:" + classified.getPrice();
+				+ classified.getDescription() + "\n Price:" + classified.getPrice());
 	}
 
-	Map<Integer, ClassifiedModel> displayAllClassifieds(int userID) {
+	Map<Integer, ClassifiedModel> displayAllClassifieds(ResultSet rs, boolean showStatusColumn) {
+		String header = "";
 		Map<Integer, ClassifiedModel> classifiedMap = new HashMap<>();
-		ResultSet rs = classifiedDAOImpl.getAllClassifieds(userID);
-		System.out.println("List of classifieds:\n");
-		String header = "ID\t\t Title \t\t Description \t\t Price \t\t\t Phone \t\t Email \t\t Date Created";
-		boolean userFilter = false;
-
-		if (userID != 0) {
-			userFilter = true;
-			header += "\t\t State";
-		}
-		System.out.println(header);
 		try {
+			System.out.println("List of classifieds:\n");
+			header = "ID\t\t Title \t\t Description \t\t Price \t\t\t Phone \t\t Email \t\t Date Created";
+			if (showStatusColumn == true) {
+				header += "\t\t State";
+			}
+			System.out.println(header);
 			while (rs.next()) {
 				int ID = rs.getInt(ClassifiedColumnNames.ID);
 				ClassifiedModel classifiedModel = createClassifiedModel(rs);
@@ -145,7 +115,7 @@ public class Classifieds {
 				String row = ID + "\t\t" + classifiedModel.getTitle() + "\t\t" + classifiedModel.getDescription()
 						+ "\t\t" + classifiedModel.getPrice() + "\t\t" + classifiedModel.getPhone() + "\t\t" + "\t\t"
 						+ classifiedModel.getEmail() + "\t\t" + classifiedModel.getDateCreated();
-				if (userFilter == true) {
+				if (showStatusColumn == true) {
 					row += "\t\t" + classifiedModel.getState();
 				}
 				System.out.println(row);
@@ -174,18 +144,11 @@ public class Classifieds {
 		return classifiedModel;
 	}
 
-	Map<Integer, ClassifiedModel> displayClassifiedsByUser(int userID) {
-		// TODO: pass userID
-
-		return displayAllClassifieds(1);
-
-	}
-
-	void updateClassified(int userID) {
-		int dummyUserID = 1;// TODO to use the argument userID here.
+	void updateClassified(UserModel userModel) {
 		int updateCount;
 		ClassifiedModel classifiedModel;
-		Map<Integer, ClassifiedModel> classifieds = displayAllClassifieds(dummyUserID);
+		ResultSet rs = classifiedDAOImpl.getClassifiedsByUserId(userModel.getId());
+		Map<Integer, ClassifiedModel> classifieds = displayAllClassifieds(rs, false);
 		Scanner sc = new Scanner(System.in);
 		do {
 			System.out.println("Select the number of classifieds you want to update: ");
@@ -252,28 +215,130 @@ public class Classifieds {
 		}
 	}
 
-	void deleteClassifieds(int userID) {
-		int dummyUserID = 1; // TODO to use the argument userID here.
+	void deleteClassifieds(UserModel userModel) {
 		int totalDelNumber = 0;
-		Scanner del = new Scanner(System.in);
 		ClassifiedModel classifiedModel;
-		Map<Integer, ClassifiedModel> classifieds = displayClassifiedsByUser(dummyUserID);
+		ResultSet rs = classifiedDAOImpl.getClassifiedsByUserId(userModel.getId());
+
+		Map<Integer, ClassifiedModel> classifieds = displayAllClassifieds(rs, true);
 
 		do {
 			System.out.println("Select the number of classifieds you want to delete: ");
-			totalDelNumber = Integer.parseInt(del.nextLine());
+			totalDelNumber = Integer.parseInt(sc.nextLine());
 		} while (classifieds.size() < totalDelNumber || totalDelNumber <= 0);
 
 		for (int i = 0; i < totalDelNumber; i++) {
 			do {
 				System.out.println("Enter the classified you want to delete: ");
-				int classifiedID = Integer.parseInt(del.nextLine());
+				int classifiedID = Integer.parseInt(sc.nextLine());
 				classifiedModel = classifieds.get(classifiedID);
-				classifiedDAOImpl.deleteClassified(classifiedModel);
+				classifiedModel.setState(ClassifiedStatus.REMOVED);
+//				classifiedDAOImpl.deleteClassified(classifiedModel);
+				classifiedDAOImpl.updateClassified(classifiedModel);
 				classifieds.size();
 			} while (classifiedModel == null);
 		}
 
-		del.close();
+	}
+
+	// TODO MAKE 2 DISPLAY FUNCTIONS( ONE FOR SELLER/BUYER BY TWEEKING THE QUERY)
+	// --- done
+	// STATUS == APPROVED STATUS == POSTED ----- done
+	// TODO EXCEPTION HANDLING (numberFormatException handling and add do while's
+	// for every input)
+	// TODO don't delete the classified, but mark them as deleted.-- done
+	// TODO implement function to approve or disapprove the newly added classifieds
+	// -- done (but error)
+
+	public void buy(UserModel userModel) {
+		int buyCount, classifiedId = 0;
+		List<Integer> selectedCategoryIds = new ArrayList<Integer>();
+		Map<Integer, ClassifiedModel> classifiedMap = displayApprovedClassifieds();
+		if (classifiedMap.size() == 0) {
+			System.out.println("No classifieds available");
+			return;
+		}
+		do {
+			System.out.println("Enter the number of classifieds you want to buy: ");
+			buyCount = Integer.parseInt(sc.nextLine());
+		} while (buyCount > classifiedMap.size());
+
+		for (int i = 0; i < buyCount; i++) {
+			do {
+				System.out.println("Enter a valid classified ID: ");
+				classifiedId = Integer.parseInt(sc.nextLine());
+			} while (classifiedMap.get(classifiedId) == null);
+			selectedCategoryIds.add(classifiedId);
+			System.out.println("Added to cart: " + classifiedMap.get(classifiedId).getTitle());
+		}
+//		TODO: call cartView
+//		cartView.addToCart(selectedCategoryIds, userModel);
+	}
+
+	Map<Integer, ClassifiedModel> displayApprovedClassifieds() {
+		ResultSet rs = ClassifiedDAOImpl.filterClassifiedsByState(ClassifiedStatus.APPROVED);
+		Map<Integer, ClassifiedModel> classifiedMap = displayAllClassifieds(rs, false);
+		return classifiedMap;
+	}
+
+	// TODO multiple loop not running
+	public void displayPostedClassifieds() {
+		String confirm;
+		Map<Integer, CategoryModel> categoryMap = categoryHelper.getAllCategories();
+		ResultSet rs = ClassifiedDAOImpl.filterClassifiedsByState(ClassifiedStatus.POSTED);
+
+		try {
+			while (rs.next()) {
+				ClassifiedModel classifiedModel = createClassifiedModel(rs);
+				CategoryModel categoryModel = categoryMap.get(classifiedModel.getCategoryID());
+//				ResultSet categoryRs = categoryDAOImpl.getCategoryById(classifiedModel.getCategoryID());
+//				CategoryModel categoryModel = null;
+//				while (categoryRs.next()) {
+//					int id = categoryRs.getInt(CategoryColumnNames.ID);
+//					String primaryCategory = categoryRs.getString(CategoryColumnNames.PRIMARY_CATEGORY);
+//					String subCategory = categoryRs.getString(CategoryColumnNames.SUB_CATEGORY);
+//					categoryModel = new CategoryModel(id, primaryCategory, subCategory);
+//				}
+				System.out.println("New Classified details:");
+				previewClassified(classifiedModel, categoryModel);
+				do {
+					System.out.println("Do you approve this classified? (Y/N): ");
+					confirm = sc.nextLine().trim();
+				} while (!(confirm.equalsIgnoreCase("Y") || confirm.equalsIgnoreCase("N")));
+
+				if (confirm.equalsIgnoreCase("Y")) {
+					classifiedModel.setState(ClassifiedStatus.APPROVED);
+				} else {
+					classifiedModel.setState(ClassifiedStatus.REJECTED);
+				}
+				classifiedDAOImpl.updateClassified(classifiedModel);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+
+	public void manageClassifieds(UserModel userModel) {
+		int option = 0;
+		System.out.println("Classified Options:\n 1.Update Classified \n 2.Delete Classified");
+		do {
+			System.out.println("Enter a valid option number: ");
+			option = Integer.parseInt(sc.nextLine());
+		} while (!(option == 1 || option == 2));
+		if (option == 1) {
+			updateClassified(userModel);
+		} else {
+			deleteClassifieds(userModel);
+		}
+
+	}
+
+	public void markClassifiedsAsSold(List<Integer> classifiedIDs) {
+		classifiedDAOImpl.updateStatusById(classifiedIDs);
+		
+	}
+
+	void showOrderHistory() {
+
 	}
 }

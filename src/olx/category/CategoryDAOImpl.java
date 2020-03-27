@@ -111,8 +111,21 @@ public class CategoryDAOImpl implements ICategoryDAO {
 
 		ResultSet rs = null;
 		try {
-			String query1 = "Select * from " + OlxConstants.TableNames.CATEGORY;
-			rs = DBConnection.executeQuery(query1);
+			String query = "Select * from " + OlxConstants.TableNames.CATEGORY;
+			rs = DBConnection.executeQuery(query);
+		} catch (ClassNotFoundException | SQLException e) {
+			e.printStackTrace();
+		}
+
+		return rs;
+	}
+
+	public ResultSet getCategoryById(int categoryId) {
+		ResultSet rs = null;
+		try {
+			String query = "Select * from " + OlxConstants.TableNames.CATEGORY + " where " + CategoryColumnNames.ID
+					+ " = " + categoryId;
+			rs = DBConnection.executeQuery(query);
 		} catch (ClassNotFoundException | SQLException e) {
 			e.printStackTrace();
 		}
