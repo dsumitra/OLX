@@ -9,6 +9,9 @@ public class CartUI {
 	Cart c = new Cart();
 	Scanner s = new Scanner(System.in);	
 
+	
+	
+	
 
 	public void addToCart() throws ClassNotFoundException, SQLException {
 		bidForClassified();
