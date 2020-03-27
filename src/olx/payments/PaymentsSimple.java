@@ -2,7 +2,7 @@ package olx.payments;
 
 import java.util.Scanner;
 
-public class Payments {
+public class PaymentsSimple {
 	Scanner sc = new Scanner(System.in);
 
 	void showPaymentOptions() {

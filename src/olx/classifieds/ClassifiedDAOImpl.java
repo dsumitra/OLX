@@ -23,7 +23,7 @@ public class ClassifiedDAOImpl implements IClassifiedDAO {
 		String sqlCreateDate = formatter.format(classified.getDateCreated());
 		String sqlUpdateDate = formatter.format(classified.getDateUpdated());
 
-		String query = "insert into classifieds(" + ClassifiedColumnNames.CATEGORY_ID + ","
+		String query = "insert into " + TableNames.CLASSIFIEDS + "(" + ClassifiedColumnNames.CATEGORY_ID + ","
 				+ ClassifiedColumnNames.PRICE + "," + ClassifiedColumnNames.TITLE + ","
 				+ ClassifiedColumnNames.DESCRIPTION + "," + ClassifiedColumnNames.EMAIL + ","
 				+ ClassifiedColumnNames.PHONE + "," + ClassifiedColumnNames.DATE_CREATED + ","
@@ -126,11 +126,11 @@ public class ClassifiedDAOImpl implements IClassifiedDAO {
 		return rs;
 	}
 
-	public static ResultSet filterClassifiedsByState(ClassifiedStatus approved) {
+	public static ResultSet filterClassifiedsByState(ClassifiedStatus status) {
 		String query = "Select * from " + TableNames.CLASSIFIEDS + " where " + ClassifiedColumnNames.STATE + "='"
-				+ approved + "'";
+				+ status + "'";
 		ResultSet rs = null;
-
+		System.out.println(query);
 		try {
 			rs = DBConnection.executeQuery(query);
 		} catch (ClassNotFoundException | SQLException e) {
@@ -140,8 +140,8 @@ public class ClassifiedDAOImpl implements IClassifiedDAO {
 	}
 	
 	public  ResultSet OrderHistory(UserModel userModel) {
-		String query = "Select "+ClassifiedColumnNames.ID+","+ClassifiedColumnNames.TITLE+","+ClassifiedColumnNames.PRICE+","
-				+ClassifiedColumnNames.DATE_UPDATED+ " from "+ TableNames.CLASSIFIEDS + " where "+ ClassifiedColumnNames.USER_ID+"="+userModel.getId(); 
+		String query = "Select "+ClassifiedColumnNames.ID+", " +ClassifiedColumnNames.TITLE+", "+ClassifiedColumnNames.PRICE+","
+				+ClassifiedColumnNames.DATE_UPDATED+ " from "+ TableNames.CLASSIFIEDS + " where "+ ClassifiedColumnNames.USER_ID+ "= "+userModel.getId(); 
 		ResultSet rs = null;
 
 		try {

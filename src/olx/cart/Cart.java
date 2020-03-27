@@ -1,44 +1,34 @@
-
-package olx.cart;
+package cart;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.Scanner;
+import java.util.*;
 
 public class Cart {
-	Long CartId;
-	Long ClassifiedId;
-	Double BidPrice;
-	String Status;
-	Long BidderID;
-
-	private static Scanner s = new Scanner(System.in);
-
-	public Cart() {
-		Status = "BID";
-//		BidderID = User.getLoggedinUserID();
-	}
+	static CartDAOImpl cdb = new CartDAOImpl();
+	CartModel c = new CartModel();
+	Scanner s = new Scanner(System.in);	
 
 	void readCartId() {
-		System.out.println("Enter Cart Id:");
-		CartId =  Long.valueOf(s.nextLine().trim());
+		System.out.println("Enter CartModel Id:");
+		c.cartId =  Long.valueOf(s.nextLine().trim());
 	}
 	
 	void readClassifiedId() {
 		System.out.println("Enter Classified Id");
-		ClassifiedId = Long.valueOf(s.nextLine().trim());
+		c.classifiedId = Long.valueOf(s.nextLine().trim());
 	}
 
 	void readBidPrice() {
 		System.out.println("Enter Bid Price");
-		BidPrice = Double.valueOf(s.nextLine().trim());
+		c.bidPrice = Double.valueOf(s.nextLine().trim());
 	}
 
 	void readBidderID() {
-		if (BidderID == null) {
+		if (c.bidderID == null) {
 			// may not be required if session is maintained
 			System.out.println("Enter Bidder ID");
-			BidderID = Long.valueOf(s.nextLine().trim());
+			c.bidderID = Long.valueOf(s.nextLine().trim());
 		}
 	}
 
@@ -49,22 +39,22 @@ public class Cart {
 	}
 	
 	void writeCartHead() {
-		System.out.printf("%10s %13s %10s %10s %10s%n", "Cart_ID", "CLASSIFIED_ID", "BIDPRICE", "STATUS",
+		System.out.printf("%10s %13s %10s %10s %10s%n", "Cart_ID", "CLASSIFIED_ID", "bidPrice", "status",
 				"BIDDER_ID");
 	}
 	
 	
 	void readRecord(ResultSet r) throws SQLException {
-		CartId = r.getLong(1);
-		ClassifiedId = r.getLong(2);
-		BidPrice = r.getDouble(3);
-		Status = r.getString(4);
-		BidderID = r.getLong(5);
+		c.cartId = r.getLong(1);
+		c.classifiedId = r.getLong(2);
+		c.bidPrice = r.getDouble(3);
+		c.status = r.getString(4);
+		c.bidderID = r.getLong(5);
 	}
 
 	void writeCartRow() {
-		System.out.printf("%10d %13d %10.2f %10s %10d %n", CartId, ClassifiedId, BidPrice, Status,
-				BidderID);
+		System.out.printf("%10d %13d %10.2f %10s %10d %n", c.cartId, c.classifiedId, c.bidPrice, c.status,
+				c.bidderID);
 	}
 
 	void writeResultSet(ResultSet r) throws SQLException {
@@ -74,5 +64,43 @@ public class Cart {
 			writeCartRow();
 		}
 	}
-	
+
+	public void addToCart() throws ClassNotFoundException, SQLException {
+		bidForClassified();
+	}
+
+	private void bidForClassified() throws ClassNotFoundException, SQLException {
+		readCart();
+		int count = cdb.addToCart(c.classifiedId, c.bidPrice, c.bidderID);
+		System.out.println(count + " records added");
+	}
+
+	public void approveBidForClassified() throws ClassNotFoundException, SQLException {
+		readClassifiedId();
+		
+		ResultSet r = cdb.getBidsForClassified(c.classifiedId);
+		writeResultSet(r);
+		
+		readCartId();
+		int apCnt = cdb.approveBid(c.cartId);
+		System.out.println(apCnt + " bids approved in Cart.");
+	}
+
+	public void approveBidForSeller() throws ClassNotFoundException, SQLException {
+
+//		Seller = User.getLoggedinUserID();
+
+		System.out.println("Enter Seller Id");
+		String Seller = s.nextLine().trim();
+		
+		ResultSet r = cdb.getBidsForSeller( Seller);
+		System.out.println("Bids for your classifieds");
+		writeResultSet(r);
+		
+		readCartId();
+		int apCnt = cdb.approveBid(c.cartId);
+		System.out.println(apCnt + " bids approved in CartModel.");
+		
+	}
+
 }

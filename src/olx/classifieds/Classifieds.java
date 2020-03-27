@@ -8,17 +8,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
+
 import olx.User.UserModel;
-import olx.category.CategoryConstants.CategoryColumnNames;
 import olx.category.CategoryDAOImpl;
 import olx.category.CategoryHelper;
 import olx.category.CategoryModel;
-import olx.classifieds.ClassifiedDAOImpl;
-import olx.classifieds.ClassifiedModel;
-import olx.classifieds.ClassifiedsConstants;
 import olx.classifieds.ClassifiedsConstants.ClassifiedColumnNames;
 import olx.classifieds.ClassifiedsConstants.ClassifiedStatus;
-import olx.constants.OlxConstants;
 
 public class Classifieds {
 	CategoryHelper categoryHelper;
@@ -153,7 +149,7 @@ public class Classifieds {
 		do {
 			System.out.println("Select the number of classifieds you want to update: ");
 			updateCount = Integer.parseInt(sc.nextLine());
-		} while (classifieds.size() < updateCount || updateCount <= 0);
+		} while (classifieds.size() < updateCount || updateCount <= 0); // Validated
 
 		for (int i = 0; i < updateCount; i++) {
 			do {
@@ -260,7 +256,7 @@ public class Classifieds {
 		}
 		do {
 			System.out.println("Enter the number of classifieds you want to buy: ");
-			buyCount = Integer.parseInt(sc.nextLine()); //TODO Handle space exception.
+			buyCount = Integer.parseInt(sc.nextLine()); // TODO Handle space exception.
 		} while (buyCount > classifiedMap.size());
 
 		for (int i = 0; i < buyCount; i++) {
@@ -269,6 +265,7 @@ public class Classifieds {
 				classifiedId = Integer.parseInt(sc.nextLine());
 			} while (classifiedMap.get(classifiedId) == null);
 			selectedCategoryIds.add(classifiedId);
+
 			System.out.println("Added to cart: " + classifiedMap.get(classifiedId).getTitle());
 		}
 //		TODO: call cartView
@@ -281,24 +278,15 @@ public class Classifieds {
 		return classifiedMap;
 	}
 
-	// TODO multiple loop not running
 	public void displayPostedClassifieds() {
 		String confirm;
 		Map<Integer, CategoryModel> categoryMap = categoryHelper.getAllCategories();
 		ResultSet rs = ClassifiedDAOImpl.filterClassifiedsByState(ClassifiedStatus.POSTED);
-
+		List<ClassifiedModel> toUpdate = new ArrayList<ClassifiedModel>();
 		try {
 			while (rs.next()) {
 				ClassifiedModel classifiedModel = createClassifiedModel(rs);
 				CategoryModel categoryModel = categoryMap.get(classifiedModel.getCategoryID());
-//				ResultSet categoryRs = categoryDAOImpl.getCategoryById(classifiedModel.getCategoryID());
-//				CategoryModel categoryModel = null;
-//				while (categoryRs.next()) {
-//					int id = categoryRs.getInt(CategoryColumnNames.ID);
-//					String primaryCategory = categoryRs.getString(CategoryColumnNames.PRIMARY_CATEGORY);
-//					String subCategory = categoryRs.getString(CategoryColumnNames.SUB_CATEGORY);
-//					categoryModel = new CategoryModel(id, primaryCategory, subCategory);
-//				}
 				System.out.println("New Classified details:");
 				previewClassified(classifiedModel, categoryModel);
 				do {
@@ -311,6 +299,9 @@ public class Classifieds {
 				} else {
 					classifiedModel.setState(ClassifiedStatus.REJECTED);
 				}
+				toUpdate.add(classifiedModel);
+			}
+			for (ClassifiedModel classifiedModel : toUpdate) {
 				classifiedDAOImpl.updateClassified(classifiedModel);
 			}
 		} catch (SQLException e) {
@@ -335,18 +326,26 @@ public class Classifieds {
 
 	public void markClassifiedsAsSold(List<Integer> classifiedIDs) {
 		classifiedDAOImpl.updateStatusById(classifiedIDs);
-		
+
 	}
-	
-	public void OrderHistory(UserModel UserModel) {
+
+	public void viewOrderHistory(UserModel UserModel) {
 		ResultSet rs = classifiedDAOImpl.OrderHistory(UserModel);
-//		while(rs.next())
-//		{
-//			
-//		}
-		
+		try {
+			System.out.println("Classified ID \t\t  Title \t\t Price \t\t Purchase Date\t\t");
+			while (rs.next()) {
+				// int ID = rs.getInt();
+
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
 	}
-		
-	
-	
+
+	public void sellClassifieds(UserModel userModel) {
+		System.out.println("Sell Classifieds");
+		addClassifieds(userModel);
+	}
+
 }

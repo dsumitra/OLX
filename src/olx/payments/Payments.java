@@ -5,15 +5,12 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
 
-public class PaymentsMain {
+public class Payments {
 //	Payments payments = new Payments();
-
-	
-	PaymentModel paymentmodel = new PaymentModel();
 
 	Scanner sc = new Scanner(System.in);
 
-	void PaymentView() {
+	void paymentView() {
 		String paymentOption = null;
 
 		Map<Integer, String> paymentsMap = new HashMap<Integer, String>();
@@ -49,8 +46,6 @@ public class PaymentsMain {
 
 	void addCreditCard() {
 		verifyCard();
-		// void addCard();
-
 	}
 
 	void addDebitCard() {
@@ -63,8 +58,6 @@ public class PaymentsMain {
 			String cardNumber = sc.nextLine();
 			if (cardNumber.length() <= 19) {
 				System.out.println("Valid  card entered");
-
-				paymentmodel.set
 				System.out.println("Confirm to add the above entered card (Y/N): " + cardNumber);
 				String confirmation = sc.nextLine();
 				boolean invalidMonth = false;
@@ -87,23 +80,30 @@ public class PaymentsMain {
 					year = sc.nextInt();
 
 					Date date = new Date(year);
-
-					if (year < date.getYear()) {
+					
+					if (year < date.getYear() && month < date.getMonth()) {
 						System.out.println("The card has been expired");
 					}
-				} catch (Exception e) {
-					System.out.println("Please enter valid numbers: ");
-					verifyCard();
-				}
-			} else {
-				System.out.println("Invalid card");
-//				System.out.println("Kindly enter the card number again: ");
+					else {
+						System.out.println("confirm payment(Y/N) :");
+						String confirmPayment = sc.nextLine();
+						if(confirmPayment.equalsIgnoreCase("Y")){
+						System.out.println("The Payment has been Successful");
+						} else {
+							verifyCard();
+								}					
+						} 
+			} catch (Exception e) {
+				System.out.println("Please enter valid numbers: ");
 				verifyCard();
 			}
-		} catch (
-
-		StringIndexOutOfBoundsException e) {
-			System.out.println("String index out of bounds exception");
+		}  else {
+			System.out.println("Invalid card");
+			verifyCard();
+		}
+			
+	} catch (StringIndexOutOfBoundsException e) {
+		System.out.println("String index out of bounds exception");	
 		}
 	}
 }
