@@ -1,11 +1,11 @@
-package olx.cart;
+package cart;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.*;
 
 public class Cart {
-	static CartDAOImpl cdb = new CartDAOImpl();
+	static CartDAO cdb = new CartDAO();
 	CartModel c = new CartModel();
 	Scanner s = new Scanner(System.in);	
 
@@ -39,6 +39,7 @@ public class Cart {
 	}
 	
 	void writeCartHead() {
+		//get classified title
 		System.out.printf("%10s %13s %10s %10s %10s%n", "Cart_ID", "CLASSIFIED_ID", "bidPrice", "status",
 				"BIDDER_ID");
 	}
@@ -100,6 +101,20 @@ public class Cart {
 		readCartId();
 		int apCnt = cdb.approveBid(c.cartId);
 		System.out.println(apCnt + " bids approved in CartModel.");
+		
+	}
+	
+	public void viewBuyerCart(Long BuyerID) {
+		//get bids for BuyerCart
+		//show all
+	}
+	
+	public void viewSellerCart(Long BuyerID) {
+		//get bids for sellectCart
+		//show all
+
+	}	
+	public static void main(String [] a) {
 		
 	}
 

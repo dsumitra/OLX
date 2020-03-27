@@ -1,4 +1,4 @@
-package olx.User;
+package olx.user;
 
 public class NewUser {
 

@@ -9,5 +9,6 @@ public class OlxConstants {
 	public final static class TableNames {
 		public static final String CLASSIFIEDS = "classifieds";
 		public static final String CATEGORY = "category";
+		public static final String USER = "users";
 	}
 }

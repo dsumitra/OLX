@@ -1,5 +1,4 @@
-package olx.cart;
-
+package cart;
 
 public class CartModel implements ICartConstants{
 	Long cartId;
