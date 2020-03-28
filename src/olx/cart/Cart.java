@@ -58,10 +58,14 @@ public class Cart {
 	}
 
 	void writeResultSet(ResultSet r) throws SQLException {
+		//add columns
+		//and proper  name for columns 
 		writeCartHead();
 		while (r.next()) {
 			readRecord(r);
 			writeCartRow();
+			
+			
 		}
 	}
 
@@ -75,7 +79,7 @@ public class Cart {
 		System.out.println(count + " records added");
 	}
 
-	public void approveBidForClassified() throws ClassNotFoundException, SQLException {
+	public void approveBidForClassified(Long classifiedId) throws ClassNotFoundException, SQLException {
 		readClassifiedId();
 		
 		ResultSet r = cdb.getBidsForClassified(c.classifiedId);
@@ -86,14 +90,10 @@ public class Cart {
 		System.out.println(apCnt + " bids approved in Cart.");
 	}
 
-	public void approveBidForSeller() throws ClassNotFoundException, SQLException {
+	public void approveBidForSeller(Long seller ) throws ClassNotFoundException, SQLException {
 
-//		Seller = User.getLoggedinUserID();
-
-		System.out.println("Enter Seller Id");
-		String Seller = s.nextLine().trim();
 		
-		ResultSet r = cdb.getBidsForSeller( Seller);
+		ResultSet r = cdb.getBidsForSeller( seller);
 		System.out.println("Bids for your classifieds");
 		writeResultSet(r);
 		
@@ -102,5 +102,26 @@ public class Cart {
 		System.out.println(apCnt + " bids approved in CartModel.");
 		
 	}
+	public void viewSellerCart(Long seller ) throws ClassNotFoundException, SQLException{
+		approveBidForSeller( seller );
+	}
 
+	public void viewBuyerBids(Long buyerId ) throws ClassNotFoundException, SQLException {
+		
+		ResultSet r = cdb.getBidsForBidder(buyerId);
+		System.out.println("Your Bids ");
+		writeResultSet(r);		
+		
+	}
+	
+//	public static void main(String []a) throws ClassNotFoundException, SQLException {
+//		Cart c = new Cart();
+//		c.viewBuyerBids( 2L );
+//		//sop do you want to proceed to payment 
+////		make payment for approved bid
+////		pass bid as parameter
+//		
+//		//c.approveBidForSeller( 1L);
+//		
+//	}
 }
