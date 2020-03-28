@@ -47,11 +47,11 @@ public class User {
 	void signUp() {
 		UserModel user=new UserModel();
 		UserLogin u = new UserLogin();
-		u.addProfileName();
-		u.addEmail();
-		u.addAddress();
-		u.addPhoneNo();
-		u.addPassword();
+		u.addProfileName(user);
+		u.addEmail(user);
+		u.addAddress(user);
+		u.addPhoneNo(user);
+		u.addPassword(user);
 		userDaoImpl.addUser(user);
 		displayUserOptions(user);
 	}
@@ -63,11 +63,11 @@ public class User {
 			System.out.println(" 1.Delete Users \n 2.Manage categories \n 3. Settings");
 			int option = sc.nextInt();
 			if (option == 1) {
-				deleteUser();
+				deleteUser(user);
 			} else if (option == 2) {
-//				categories.manageCategories();
+//				categories.manageCategories(user);
 			} else if (option == 3) {
-				showUserSettings();
+				showUserSettings(user);
 			} else {
 				System.out.println("Incorrect options provided");
 				displayUserOptions(user);
@@ -91,13 +91,13 @@ public class User {
 			} else if (option == 4) {
 
 				classifieds.manageClassifieds(user);
-//			
+			
 			} else if (option == 5) {
 				// TODO: View cart
 
 			} else if (option == 6) {
 
-				showUserSettings();
+				showUserSettings(user);
 
 			} else {
 
@@ -107,18 +107,15 @@ public class User {
 		}
 	}
 
-	void showUserSettings() {
-		UserModel user=new UserModel();
+	void showUserSettings(UserModel user) {
 		try {
-			String query = "Select email, first_name, last_name, address, phone, user_id from " + TableNames.USER
-					+ " where " + UserColumnNames.EMAIL + "=" + user.getEmail();
+			String email=user.getEmail();
+			String query = " Select email, first_name, last_name, address, phone, user_id from " + TableNames.USER
+					+ " where " + UserColumnNames.EMAIL + "='" + email + "'";
 			ResultSet rs = DBConnection.executeQuery(query);
 			int count = 0;
 			System.out.println("Email \t\t First Name \t Last Name \t  Address \t Phone");
-			System.out.println(user.getFirstName());
 			while (rs.next()) {
-				System.out.println(" 1");
-				System.out.println(user.getFirstName());
 				System.out.print(rs.getString("email") + " \t " + rs.getString("first_name") + " \t\t "
 						+ rs.getString("last_name") + " \t\t " + rs.getString("address") + " \t "
 						+ rs.getString("phone") + " \n ");
@@ -214,11 +211,8 @@ public class User {
 		}
 	}
 
-	public void deleteUser() {
-		UserModel user=new UserModel();
-		System.out.println(user.isAdmin());
+	public void deleteUser(UserModel user) {
 		if (user.isAdmin()==true) {
-			System.out.println("1");
 			ResultSet rs = userDaoImpl.selectAllUser(0);
 			System.out.println("How many users you want to del?");
 			int number = sc.nextInt();
@@ -227,7 +221,7 @@ public class User {
 				int input = sc.nextInt();
 				user.setId(input);
 				userDaoImpl.deleteUser(user);
-				System.out.println("The user that has been deleted is" + user.getId());
+				System.out.println("The user that has been deleted is " + user.getId());
 			}
 		}
 	}
