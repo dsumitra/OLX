@@ -162,6 +162,7 @@ public class Cart {
 			Long cartId =  Long.valueOf(s.nextLine().trim());
 			Payments p = new Payments();
 			p.makePaymentforCart(cartId );
+			cdb.deleteCart(cartId);
 		}
 	}
 	
