@@ -15,15 +15,15 @@ public class Cart {
 
 	public void viewCart(UserModel user)  {
 
-		System.out.println("Enter the option you want to choose: \n 1.Posted Bids Cart view \n 2. Recieved Bids Cart View ");
+		System.out.println("Enter the option you want to choose: \n 1.My Cart view \n 2. Recieved Bids Cart View ");
 		
 		Long o =  Long.valueOf(s.nextLine().trim());
 
 		try {
 			if (o == 1) {
-				viewSellerCart(user.getId());
-			} else if (o == 2) {
 				viewBuyerCart(user.getId());
+			} else if (o == 2) {
+				viewSellerCart(user.getId());				
 			}
 
 		} catch (ClassNotFoundException e) {
