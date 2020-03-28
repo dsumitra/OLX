@@ -13,14 +13,6 @@ public class UserModel {
 	boolean admin = false;
 	UserStatus status;
 
-	public UserStatus getStatus() {
-		return status;
-	}
-
-	public void setStatus(UserStatus status) {
-		this.status = status;
-	}
-
 	public UserModel(int id, String firstName, String lastName, String phone, String email, String address,
 			boolean admin, UserStatus status) {
 		super();
@@ -100,6 +92,14 @@ public class UserModel {
 
 	public void setAdmin(boolean admin) {
 		this.admin = admin;
+	}
+	
+	public UserStatus getStatus() {
+		return status;
+	}
+
+	public void setStatus(UserStatus status) {
+		this.status = status;
 	}
 
 	@Override

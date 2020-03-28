@@ -3,6 +3,7 @@ package olx.user;
 import java.sql.ResultSet;
 import java.util.Scanner;
 
+import olx.cart.Cart;
 import olx.category.Category;
 import olx.classifieds.Classifieds;
 import olx.constants.OlxConstants.TableNames;
@@ -14,6 +15,7 @@ public class User {
 	UserDAOImpl userDaoImpl = new UserDAOImpl();
 	Classifieds classifieds = new Classifieds();
 	Category categories = new Category();
+	Cart c = new Cart();
 	Scanner sc = new Scanner(System.in);
 
 	void login() {
@@ -21,7 +23,7 @@ public class User {
 		do {
 			System.out.println("1. Sign In");
 			System.out.println("2. Sign Up");
-			System.out.println("Enter the option you would like to proceed with: ");
+			System.out.println("\nEnter the option you would like to proceed with: ");
 			value = Integer.parseInt(sc.nextLine());
 			if (value == 1) {
 				signIn();
@@ -83,7 +85,7 @@ public class User {
 
 		} else {
 			System.out.println("\nUser Menu");
-			System.out.println(" 1.Buy \n 2.Sell \n 3.Manage classifieds \n 4.View cart \n 5.Settings \n 6.Sign out");
+			System.out.println(" 1.Buy \n 2.Sell \n 3.Manage classifieds \n 4.View cart \n 5.Settings \n 6.Sign out \n");
 			System.out.println("Please select from the given options: ");
 			int option = Integer.parseInt(sc.nextLine());
 			if (option == 1) {
@@ -93,7 +95,8 @@ public class User {
 			} else if (option == 3) {
 				classifieds.manageClassifieds(user);
 			} else if (option == 4) {
-				// TODO: View cart
+//				Long uid=user.getId();
+//				c.viewBuyerBids();
 			} else if (option == 5) {
 				showUserSettings(user);
 			} else if (option == 6) {
@@ -127,7 +130,7 @@ public class User {
 				user.setId(rs.getInt("id"));
 			}
 			System.out.println(
-					"1.Rename username \n 2.Change password \n 3.Update PhoneNumber \n 4.Update Email \n 5.Update Address \n 6. Return to Menu");
+					"1.Rename username \n 2.Change password \n 3.Update PhoneNumber \n 4.Update Email \n 5.Update Address \n 6.Return to Menu");
 			System.out.println("Enter How many values you want to update");
 			int value = Integer.parseInt(sc.nextLine());
 			int temp = value;
@@ -137,7 +140,7 @@ public class User {
 					int attributeId = Integer.parseInt(sc.nextLine());
 					if (attributeId == 1) {
 						try {
-							System.out.println("Enter the updated name");
+							System.out.println("Enter the updated name: ");
 							String newName = sc.nextLine();
 							System.out.println("Confirm if you would like to proceed with changes? (Y/N):");
 							String option = sc.nextLine();
