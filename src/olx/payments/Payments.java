@@ -16,18 +16,21 @@ public class Payments {
 	PaymentMethods pm = new PaymentMethods();
 	
 
-	public void makePaymentforCart(Long cartId) throws ClassNotFoundException, SQLException {
+	public void makePaymentforCart(Long cartId,Long buyerId ) throws ClassNotFoundException, SQLException {
 		
 		CartModel cm = c.getCart(cartId);
-		pm.viewPaymentMethods(cm.getBidderID());
+		
+		System.out.println(cm);
+		
+		pm.viewPaymentMethods(buyerId);
 		
 		System.out.println("Enter option:");
 		System.out.println("1) Make Payment");
 		System.out.println("2) Add new Payment Method");
 		
 		
-		String op =s.nextLine().trim();
-		if(op == "1")
+		Integer op =Integer.valueOf(s.nextLine().trim());
+		if(op == 1)
 		{		 
 				System.out.println("Enter Payment method id");
 				p.paymentMethodID = Long.valueOf( s.nextLine().trim());
@@ -37,9 +40,9 @@ public class Payments {
 				p.amount = cm.getBidPrice();
 				pdb.addPayment(p);
 		}
-		else if (op == "2"){
+		else if (op == 2){
 			pm.addPaymentMethod(cm.getBidderID());
-			makePaymentforCart(cartId);
+			makePaymentforCart(cartId, buyerId);
 		}
 		//show methods for user
 		//do you want to add payment method

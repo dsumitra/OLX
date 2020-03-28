@@ -8,5 +8,9 @@ public class CartTest {
 		Cart c = new Cart();
 		c.viewBuyerBids(2L);
 		System.out.println("Thank you");
+		
+//		CartModel m = c.getCart(2l);
+//		System.out.println(m);
+		
 	}
 }

@@ -74,11 +74,16 @@ public class Cart {
 	
 	public CartModel getCart(Long cartID) throws ClassNotFoundException, SQLException {
 		ResultSet r =  cdb.getCart(cartID);
+		CartModel m = new CartModel();
 		while(r.next()) {
-			readRecord(r);
+			m.cartId = r.getLong(1);
+			m.classifiedId = r.getLong(2);
+			m.bidPrice = r.getDouble(3);
+			m.status = r.getString(4);
+			m.bidderId = r.getLong(5);
 			break;
 		}
-		return c;
+		return m;
 	}
 	
 	void readRecord(ResultSet r) throws SQLException {
@@ -125,7 +130,7 @@ public class Cart {
 			System.out.println("Enter Cart Id you want to pay for:");
 			Long cartId =  Long.valueOf(s.nextLine().trim());
 			Payments p = new Payments();
-			p.makePaymentforCart(cartId);
+			p.makePaymentforCart(cartId, buyerId );
 		}
 	}
 	
