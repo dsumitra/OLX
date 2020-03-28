@@ -97,7 +97,7 @@ public class User {
 			} else if (option == 5) {
 				showUserSettings(user);
 			} else if (option == 6) {
-				// TODO impelment signout
+				// TODO implement signout
 			} else {
 
 				System.out.println("Incorrect options provided");
@@ -109,7 +109,7 @@ public class User {
 	void showUserSettings(UserModel user) {
 		try {
 			String email = user.getEmail();
-			String query = " Select email, first_name, last_name, address, phone, user_id from " + TableNames.USER
+			String query = " Select email, first_name, last_name, address, phone, id from " + TableNames.USER
 					+ " where " + UserColumnNames.EMAIL + "='" + email + "'";
 			ResultSet rs = DBConnection.executeQuery(query);
 			int count = 0;
@@ -124,10 +124,10 @@ public class User {
 				user.setFirstName(rs.getString("first_name"));
 				user.setPhone(rs.getString("phone"));
 				user.setLastName(rs.getString("last_name"));
-				user.setId(rs.getInt("user_id"));
+				user.setId(rs.getInt("id"));
 			}
 			System.out.println(
-					"1.Rename username \n 2.Change password \n 3.Update PhoneNumber \n 4.Update Email \n 5.Update Address");
+					"1.Rename username \n 2.Change password \n 3.Update PhoneNumber \n 4.Update Email \n 5.Update Address \n 6. Return to Menu");
 			System.out.println("Enter How many values you want to update");
 			int value = Integer.parseInt(sc.nextLine());
 			int temp = value;
@@ -135,79 +135,103 @@ public class User {
 				for (int i = 0; i < value; i++) {
 					System.out.println("Enter the Attribute number you want to edit :");
 					int attributeId = Integer.parseInt(sc.nextLine());
-					if (attributeId == 4) {
-						System.out.println("Enter the new emailId");
-						sc.nextLine();
-						String newEmail = sc.nextLine();
-						System.out.println("Confirm if you would like to proceed with changes? (Y/N):");
-						String option = sc.nextLine();
-						if (option.trim().equalsIgnoreCase("y")) {
-							user.setEmail(newEmail);
-							System.out.println("Update Successful!");
-							count++;
-						} else {
-							System.out.println("No updates made");
-						}
-					} else if (attributeId == 3) {
-						System.out.println("Enter the new PhoneNumber");
-						sc.nextLine();
-						String newPhoneNo = sc.nextLine();
-						System.out.println("Confirm if you would like to proceed with changes? (Y/N):");
-						String option = sc.nextLine();
-						if (option.trim().equalsIgnoreCase("y")) {
-							user.setPhone(newPhoneNo);
-							System.out.println("Update Successful!");
-							count++;
-						} else {
-							System.out.println("No updates made");
-						}
-					} else if (attributeId == 1) {
-						System.out.println("Enter the updated name");
-						sc.nextLine();
-						String newName = sc.nextLine();
-						System.out.println("Confirm if you would like to proceed with changes? (Y/N):");
-						String option = sc.nextLine();
-						if (option.trim().equalsIgnoreCase("y")) {
-							user.setFirstName(newName);
-							System.out.println("Update Successful!");
-							count++;
-						} else {
-							System.out.println("No updates made");
-						}
-					} else if (attributeId == 5) {
-						System.out.println("Enter the address");
-						sc.nextLine();
-						String newAddress = sc.nextLine();
-						System.out.println("Confirm if you would like to proceed with changes? (Y/N):");
-						String option = sc.nextLine();
-						if (option.trim().equalsIgnoreCase("y")) {
-							user.setFirstName(newAddress);
-							System.out.println("Update Successful!");
-							count++;
-						} else {
-							System.out.println("No updates made");
+					if (attributeId == 1) {
+						try {
+							System.out.println("Enter the updated name");
+							String newName = sc.nextLine();
+							System.out.println("Confirm if you would like to proceed with changes? (Y/N):");
+							String option = sc.nextLine();
+							if (option.trim().equalsIgnoreCase("y")) {
+								user.setFirstName(newName);
+								System.out.println("Update Successful!");
+								count++;
+							} else {
+								System.out.println("No updates made");
+							}
+						} catch (Exception e) {
+							System.out.println("Invalid name provided");
+							showUserSettings(user);
 						}
 					} else if (attributeId == 2) {
-						System.out.println("Enter the password");
-						sc.nextLine();
-						String newPassword = sc.nextLine();
-						System.out.println("Confirm if you would like to proceed with changes? (Y/N):");
-						String option = sc.nextLine();
-						if (option.trim().equalsIgnoreCase("y")) {
-							user.setFirstName(newPassword);
-							System.out.println("Update Successful!");
-							count++;
-						} else {
-							System.out.println("No updates made");
+						try {
+							System.out.println("Enter the password");
+							String newPassword = sc.nextLine();
+							System.out.println("Confirm if you would like to proceed with changes? (Y/N):");
+							String option = sc.nextLine();
+							if (option.trim().equalsIgnoreCase("y")) {
+								user.setFirstName(newPassword);
+								System.out.println("Update Successful!");
+								count++;
+							} else {
+								System.out.println("No updates made");
+							}
+						} catch (Exception e) {
+							System.out.println("Invalid password provided");
+							showUserSettings(user);
 						}
+					} else if (attributeId == 3) {
+						try {
+							System.out.println("Enter the new PhoneNumber");
+							sc.nextLine();
+							String newPhoneNo = sc.nextLine();
+							System.out.println("Confirm if you would like to proceed with changes? (Y/N):");
+							String option = sc.nextLine();
+							if (option.trim().equalsIgnoreCase("y")) {
+								user.setPhone(newPhoneNo);
+								System.out.println("Update Successful!");
+								count++;
+							} else {
+								System.out.println("No updates made");
+							}
+						} catch (Exception e) {
+							System.out.println("Invalid PhoneNumber provided");
+							showUserSettings(user);
+						}
+					} else if (attributeId == 4) {
+						try {
+							System.out.println("Enter the new emailId");
+							String newEmail = sc.nextLine();
+							System.out.println("Confirm if you would like to proceed with changes? (Y/N):");
+							String option = sc.nextLine();
+							if (option.trim().equalsIgnoreCase("y")) {
+								user.setEmail(newEmail);
+								System.out.println("Update Successful!");
+								count++;
+							} else {
+								System.out.println("No updates made");
+							}
+						} catch (Exception e) {
+							System.out.println("Invalid emailId provided");
+							showUserSettings(user);
+						}
+					} else if (attributeId == 5) {
+						try {
+							System.out.println("Enter the address");
+							String newAddress = sc.nextLine();
+							System.out.println("Confirm if you would like to proceed with changes? (Y/N):");
+							String option = sc.nextLine();
+							if (option.trim().equalsIgnoreCase("y")) {
+								user.setFirstName(newAddress);
+								System.out.println("Update Successful!");
+								count++;
+							} else {
+								System.out.println("No updates made");
+							}
+						} catch (Exception e) {
+							System.out.println("Invalid address provided");
+							showUserSettings(user);
+						}
+					} else if (attributeId==6) {
+						displayUserOptions(user);
 					}
 					userDaoImpl.updateUser(user);
 				}
 			}
 		} catch (Exception e) {
-			System.out.println("Exception caught");
-			e.printStackTrace();
+			System.out.println("Invalid input provided");
+			showUserSettings(user);
 		}
+		showUserSettings(user);
 	}
 
 	public void deleteUser(UserModel user) {
@@ -220,9 +244,14 @@ public class User {
 				int input = Integer.parseInt(sc.nextLine());
 				user.setId(input);
 				userDaoImpl.deleteUser(user);
-				System.out.println("The user that has been deleted is " + user.getId());
+				System.out.println("\nThe user that has been deleted is " + user.getId());
 			}
 		}
+	}
+
+	void signOut() {
+		System.exit(0);
+		login();
 	}
 
 }

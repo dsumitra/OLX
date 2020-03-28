@@ -50,7 +50,7 @@ public class UserLogin {
 		try {
 			String z = null;
 			System.out.println("Enter the password: ");
-			String password = s.nextLine();
+			String password = s.nextLine().trim();
 			int count = 0;
 			String query = "Select password from users where " + UserColumnNames.EMAIL + " = '" + email + "'";
 			ResultSet rs = DBConnection.executeQuery(query);
@@ -102,10 +102,10 @@ public class UserLogin {
 		String first_name, last_name;
 		try {
 			System.out.println("Enter the first name: ");
-			first_name = s.nextLine();
+			first_name = s.nextLine().trim();
 			user.setFirstName(first_name);
 			System.out.println("Enter the last name: ");
-			last_name = s.nextLine();
+			last_name = s.nextLine().trim();
 			user.setLastName(last_name);
 
 		} catch (Exception e) {
@@ -118,7 +118,7 @@ public class UserLogin {
 	void addPassword(UserModel user) {
 		try {
 			System.out.println("Enter the Password: ");
-			String password = s.nextLine();
+			String password = s.nextLine().trim();
 			user.setPassword(password);
 		} catch (Exception e) {
 			System.out.println("Exception caught");
@@ -129,25 +129,20 @@ public class UserLogin {
 		String phone_number;
 		try {
 			System.out.println("Enter the phone number: ");
-			phone_number = s.nextLine();
+			phone_number = s.nextLine().trim();
 			if (phone_number.matches("\\d{10}")) {
-				System.out.println("Is valid");
 				user.setPhone(phone_number);
 			}
 			// validating phone number with -, . or spaces
 			else if (phone_number.matches("\\d{3}[-\\.\\s]\\d{3}[-\\.\\s]\\d{4}")) {
-				//TODO remove all is valid sysouts
-				System.out.println("Is valid");
 				user.setPhone(phone_number);
 			}
 			// validating phone number with extension length from 3 to 5
 			else if (phone_number.matches("\\d{3}-\\d{3}-\\d{4}\\s(x|(ext))\\d{3,5}")) {
-				System.out.println("Is valid");
 				user.setPhone(phone_number);
 			}
 			// validating phone number where area code is in braces ()
 			else if (phone_number.matches("\\(\\d{3}\\)-\\d{3}-\\d{4}")) {
-				System.out.println("Is valid");
 				user.setPhone(phone_number);
 				// return false if nothing matches the input
 			} else {
