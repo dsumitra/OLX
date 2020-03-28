@@ -4,8 +4,10 @@ import java.sql.ResultSet;
 
 import olx.user.UserModel;
 
-//import java.util.Map;
-
+/**
+ * @author dsumitra
+ *
+ */
 public interface IClassifiedDAO {
 
 	public void addClassified(ClassifiedModel classified);

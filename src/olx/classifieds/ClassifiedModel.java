@@ -3,6 +3,10 @@ package olx.classifieds;
 import java.util.Date;
 import olx.classifieds.ClassifiedsConstants.ClassifiedStatus;
 
+/**
+ * @author dsumitra
+ *
+ */
 public class ClassifiedModel {
 	private int ID;
 	private String title;

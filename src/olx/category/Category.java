@@ -6,6 +6,10 @@ import java.util.*;
 import olx.user.User;
 import olx.user.UserModel;
 
+/**
+ * @author dsumitra
+ *
+ */
 public class Category {
 	CategoryHelper helper;
 	CategoryDAOImpl CategoryDAOImpl;
@@ -56,7 +60,7 @@ public class Category {
 			if (hasSubCategory.equalsIgnoreCase("Y")) {
 				System.out.println(
 						"Enter the number of sub-categories you want to add to " + newCategory + " categories\n");
-				int subCategoryNo = Integer.parseInt(sc.nextLine().trim()); // TODO handle NumberFormatException
+				int subCategoryNo = Integer.parseInt(sc.nextLine().trim());
 				for (int k = 0; k < subCategoryNo; k++) {
 					System.out.println("Enter a sub-category name\n");
 					String newSubCategory = sc.nextLine();
@@ -123,8 +127,7 @@ public class Category {
 			// deleting sub categories
 			for (int j = 0; j < delSubCategoryNum; j++) {
 				System.out.println("Select a sub-category number you want to delete");
-				delSubCategoryID = Integer.parseInt(sc.nextLine().trim()); // TODO: check count is less than the no. of
-																			// sub-categories available
+				delSubCategoryID = Integer.parseInt(sc.nextLine().trim());
 				subCategory = subCategoryMap.get(delSubCategoryID);
 				CategoryDAOImpl.deleteSubCategory(selectedCategory, subCategory);
 			}
@@ -152,9 +155,7 @@ public class Category {
 					System.out.println("Update options:\n" + "1. Update Primary Category only \n"
 							+ "2. Update Sub Category only \n" + "3. Update Primary Category and Sub-Category \n"
 							+ "Select the action do you want to perform: ");
-					updateCategoryAction = Integer.parseInt(sc.nextLine()); // TODO check if there are any
-																			// sub-categories
-																			// for the selectedCategory
+					updateCategoryAction = Integer.parseInt(sc.nextLine());
 					if (updateCategoryAction == 2) {
 						updateSubCategory(selectedCategory);
 					} else if (updateCategoryAction == 1) {
@@ -217,7 +218,7 @@ public class Category {
 			System.out.println(
 					"\nCategory Options:\n 1.Add Category \n 2.Delete Category \n 3.Update Category \n 4.View All Catgeories \n 5.Exit Menu");
 			System.out.println("Enter the action you want to perform: ");
-			option = Integer.parseInt(sc.nextLine().trim());//TODO Handle 1'.' Exception
+			option = Integer.parseInt(sc.nextLine().trim());
 			if (option == 1) {
 				addCustomCategories();
 			} else if (option == 2) {

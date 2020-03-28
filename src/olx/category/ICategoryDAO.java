@@ -3,6 +3,10 @@ package olx.category;
 import java.sql.ResultSet;
 import java.util.Map;
 
+/**
+ * @author dsumitra
+ *
+ */
 public interface ICategoryDAO {
 
 	public void addCategory(String category, String subCategory);

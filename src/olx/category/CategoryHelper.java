@@ -9,6 +9,10 @@ import java.util.Map;
 
 import olx.category.CategoryConstants.CategoryColumnNames;
 
+/**
+ * @author dsumitra
+ *
+ */
 public class CategoryHelper {
 	Connection con;
 	Statement stmt;
@@ -61,7 +65,6 @@ public class CategoryHelper {
 				System.out.println(id + "\t\t" + primaryCategory);
 			}
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 

@@ -19,6 +19,10 @@ import olx.classifieds.ClassifiedsConstants.ClassifiedStatus;
 import olx.user.User;
 import olx.user.UserModel;
 
+/**
+ * @author dsumitra
+ *
+ */
 public class Classifieds {
 	CategoryHelper categoryHelper;
 	ClassifiedDAOImpl classifiedDAOImpl;
@@ -31,7 +35,6 @@ public class Classifieds {
 		categoryDAOImpl = new CategoryDAOImpl();
 	}
 
-//TODO : Exceptional Handling for every scanner.
 	public void addClassifieds(UserModel userModel) {
 		try {
 			System.out.println("\nEnter the number of Classifieds you want to add: ");
@@ -82,7 +85,7 @@ public class Classifieds {
 				} while (!"Y".equalsIgnoreCase(confirmClassified));
 
 				classifiedDAOImpl.addClassified(classifiedModel);
-				System.out.println("Admin will approve "+ classifiedModel.getTitle() + " shortly.");
+				System.out.println("Admin will approve " + classifiedModel.getTitle() + " shortly.");
 
 			}
 		} catch (NumberFormatException e) {
@@ -121,7 +124,6 @@ public class Classifieds {
 				System.out.println(row);
 			}
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return classifiedMap;
@@ -248,6 +250,7 @@ public class Classifieds {
 		Map<Integer, ClassifiedModel> classifiedMap = displayApprovedClassifieds(userModel);
 		if (classifiedMap.size() == 0) {
 			System.out.println("No classifieds available");
+			goBackToUserMenu(userModel);
 			return;
 		}
 		do {
@@ -262,7 +265,7 @@ public class Classifieds {
 				System.out.println("Enter a bid price: ");
 				bidPrice = Double.parseDouble(sc.nextLine().trim());
 			} while (classifiedMap.get(classifiedId) == null);
-			
+
 			classifiedIdBidPriceMap.put(classifiedId, bidPrice);
 
 			System.out.println("Added to cart: " + classifiedMap.get(classifiedId).getTitle());
@@ -277,7 +280,6 @@ public class Classifieds {
 		}
 		goBackToUserMenu(userModel);
 	}
-	
 
 	Map<Integer, ClassifiedModel> displayApprovedClassifieds(UserModel userModel) {
 		ResultSet rs = classifiedDAOImpl.getApprovedClassifiedsOfOthers(userModel.getId());

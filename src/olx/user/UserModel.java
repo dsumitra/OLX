@@ -14,7 +14,7 @@ public class UserModel {
 	UserStatus status;
 
 	public UserModel(long id, String firstName, String lastName, String phone, String email, String address,
-			boolean admin, UserStatus status) {
+			boolean admin, UserStatus status, String password) {
 		super();
 		this.id = id;
 		this.firstName = firstName;
@@ -24,6 +24,7 @@ public class UserModel {
 		this.address = address;
 		this.admin = admin;
 		this.status = status;
+		this.password = password;
 	}
 
 	public UserModel() {

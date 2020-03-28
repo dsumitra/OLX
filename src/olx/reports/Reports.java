@@ -11,6 +11,10 @@ import olx.classifieds.ClassifiedsConstants.ClassifiedColumnNames;
 import olx.user.User;
 import olx.user.UserModel;
 
+/**
+ * @author dsumitra
+ *
+ */
 public class Reports {
 	Scanner sc = new Scanner(System.in);
 	ClassifiedDAOImpl classifiedDao;

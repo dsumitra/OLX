@@ -1,5 +1,9 @@
 package olx.category;
 
+/**
+ * @author dsumitra
+ *
+ */
 public class CategoryModel {
 	private int id;
 	private String primaryCategory;

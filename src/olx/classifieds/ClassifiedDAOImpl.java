@@ -14,8 +14,11 @@ import olx.constants.OlxConstants.DateFormats;
 import olx.constants.OlxConstants.TableNames;
 import olx.user.UserModel;
 
+/**
+ * @author dsumitra
+ *
+ */
 public class ClassifiedDAOImpl implements IClassifiedDAO {
-	// TODO CHECK FOR INSERTION AFTER UPDATING THE TABLE
 	@Override
 	public void addClassified(ClassifiedModel classified) {
 		SimpleDateFormat formatter = new SimpleDateFormat(DateFormats.DEFAULT);
@@ -161,10 +164,6 @@ public class ClassifiedDAOImpl implements IClassifiedDAO {
 				OlxConstants.TableNames.CLASSIFIEDS +" ON ("+ OlxConstants.TableNames.CATEGORY+"."+CategoryColumnNames.ID+
 				" = "+ OlxConstants.TableNames.CLASSIFIEDS+"."+ClassifiedColumnNames.CATEGORY_ID+") GROUP BY "
 				+ OlxConstants.TableNames.CATEGORY+"."+CategoryColumnNames.PRIMARY_CATEGORY ;
-//				
-//		String query = "SELECT Count (" + ClassifiedColumnNames.CATEGORY_ID + ") as count,"
-//				+ ClassifiedColumnNames.CATEGORY_ID + " FROM " + OlxConstants.TableNames.CLASSIFIEDS + " GROUP BY "
-//				+ ClassifiedColumnNames.CATEGORY_ID;
 		ResultSet rs = null;
 
 		try {

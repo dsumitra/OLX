@@ -24,21 +24,26 @@ public class User {
 
 	void login() {
 		int value;
-		do {
-			System.out.println("1. Sign In");
-			System.out.println("2. Sign Up");
-			System.out.println("\nEnter the option you would like to proceed with: ");
-			value = Integer.parseInt(sc.nextLine());
-			if (value == 1) {
-				signIn();
-				break;
-			} else if (value == 2) {
-				signUp();
-				break;
-			} else {
-				System.out.println("Please select the correct option: ");
-			}
-		} while (value <= 0 || value > 2);
+		try {
+			do {
+				System.out.println("1. Sign In");
+				System.out.println("2. Sign Up");
+				System.out.println("\nEnter the option you would like to proceed with: ");
+				value = Integer.parseInt(sc.nextLine());
+				if (value == 1) {
+					signIn();
+					break;
+				} else if (value == 2) {
+					signUp();
+					break;
+				} else {
+					System.out.println("Please select the correct option: ");
+				}
+			} while (value <= 0 || value > 2);
+		} catch (NumberFormatException e) {
+			System.out.println("Invalid Input.");
+			login();
+		}
 	}
 
 	void signIn() {
@@ -92,7 +97,8 @@ public class User {
 
 		} else {
 			System.out.println("\nUser Menu");
-			System.out.println(" 1.Buy \n 2.Sell \n 3.Manage classifieds \n 4.View cart \n 5.Settings \n 6.Sign out \n");
+			System.out
+					.println(" 1.Buy \n 2.Sell \n 3.Manage classifieds \n 4.View cart \n 5.Settings \n 6.Sign out \n");
 			System.out.println("Please select from the given options: ");
 			int option = Integer.parseInt(sc.nextLine());
 			if (option == 1) {
@@ -137,7 +143,8 @@ public class User {
 				user.setLastName(rs.getString("last_name"));
 				user.setId(rs.getInt("id"));
 			}
-			System.out.println("\nUser Settings Menu:\n 1.Rename username \n 2.Change password \n 3.Update PhoneNumber \n 4.Update Email \n 5.Update Address \n 6.Return to Menu");
+			System.out.println(
+					"\nUser Settings Menu:\n 1.Rename username \n 2.Change password \n 3.Update PhoneNumber \n 4.Update Email \n 5.Update Address \n 6.Return to Menu");
 			System.out.println("Enter how many values you want to update: ");
 			int value = Integer.parseInt(sc.nextLine());
 			int temp = value;
@@ -169,7 +176,7 @@ public class User {
 							System.out.println("Confirm if you would like to proceed with changes? (Y/N):");
 							String option = sc.nextLine();
 							if (option.trim().equalsIgnoreCase("y")) {
-								user.setFirstName(newPassword);
+								user.setPassword(newPassword);
 								System.out.println("Update Successful!");
 								count++;
 							} else {
@@ -182,7 +189,6 @@ public class User {
 					} else if (attributeId == 3) {
 						try {
 							System.out.println("Enter the new Phone Number");
-							sc.nextLine();
 							String newPhoneNo = sc.nextLine();
 							System.out.println("Confirm if you would like to proceed with changes? (Y/N):");
 							String option = sc.nextLine();
@@ -234,7 +240,6 @@ public class User {
 					} else if (attributeId == 6) {
 						displayUserOptions(user);
 					}
-					System.out.println("before updateuser");
 					userDaoImpl.updateUser(user);
 				}
 			}

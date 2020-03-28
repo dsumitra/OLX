@@ -28,23 +28,19 @@ public class UserDAOImpl implements IUserDAO {
 	@Override
 	public void updateUser(UserModel userModel) {
 	
-		String query = "Update " + TableNames.USER + " set " + UserColumnNames.EMAIL + " ='" + userModel.getEmail()
-				+ "' , " + UserColumnNames.PHONE + " ='" + userModel.getPhone() + "', " + UserColumnNames.FIRSTNAME
+		String query = "Update " + TableNames.USER + " set " + UserColumnNames.EMAIL + " ='" + userModel.getEmail() +"' ,"+ UserColumnNames.PASSWORD
+				+" = '"+ userModel.password +"' , " + UserColumnNames.PHONE + " ='" + userModel.getPhone() + "', " + UserColumnNames.FIRSTNAME
 				+ " = '" + userModel.getFirstName() + "' where " + UserColumnNames.USER_ID + " = " + userModel.getId()
 				+ "";
-System.out.println(query);
 		// password needs to be added
 		try {
 			DBConnection.executeQuery(query);
 			System.out.println("Successfully updated the user details: " + userModel.getFirstName());
 		} catch (ClassNotFoundException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		// TODO Auto-generated method stub
 	}
 
 	@Override
@@ -94,7 +90,8 @@ System.out.println(query);
 				boolean admin = rs.getString(UserColumnNames.IS_ADMIN).equalsIgnoreCase("y") ? true : false;
 				String address = rs.getString(UserColumnNames.ADDRESS);
 				UserStatus status = UserStatus.valueOf(rs.getString(UserColumnNames.STATUS));
-				user = new UserModel(userID, firstName, lastName, phone, emailID, address, admin, status);
+				String password =  rs.getString(UserColumnNames.PASSWORD);
+				user = new UserModel(userID, firstName, lastName, phone, emailID, address, admin, status, password);
 			}
 
 		} catch (ClassNotFoundException e) {
