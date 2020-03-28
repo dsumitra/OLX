@@ -10,6 +10,6 @@ public class CategoryTest {
 //		oc.displayCatergoriesTable();
 //		oc.deleteCategory();
 //		oc.updateCategory();
-		oc.manageCategories();
+//		oc.manageCategories();
 	}
 }

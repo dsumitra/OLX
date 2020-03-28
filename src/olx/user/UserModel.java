@@ -1,5 +1,7 @@
 package olx.user;
 
+import olx.user.UserConstants.UserStatus;
+
 public class UserModel {
 	int id;
 	String firstName;
@@ -9,8 +11,18 @@ public class UserModel {
 	String address;
 	String password;
 	boolean admin = false;
+	UserStatus status;
 
-	public UserModel(int id, String firstName, String lastName, String phone, String email, String address, boolean admin) {
+	public UserStatus getStatus() {
+		return status;
+	}
+
+	public void setStatus(UserStatus status) {
+		this.status = status;
+	}
+
+	public UserModel(int id, String firstName, String lastName, String phone, String email, String address,
+			boolean admin, UserStatus status) {
 		super();
 		this.id = id;
 		this.firstName = firstName;
@@ -19,6 +31,7 @@ public class UserModel {
 		this.email = email;
 		this.address = address;
 		this.admin = admin;
+		this.status = status;
 	}
 
 	public UserModel() {
@@ -92,9 +105,7 @@ public class UserModel {
 	@Override
 	public String toString() {
 		return "UserModel [id=" + id + ", firstName=" + firstName + ", lastName=" + lastName + ", phone=" + phone
-				+ ", email=" + email + ", address=" + address + ", admin=" + admin + "]";
+				+ ", email=" + email + ", address=" + address + ", admin=" + admin + ", status=" + status + "]";
 	}
-
-	
 
 }

@@ -2,5 +2,7 @@
 .classpath
 .project
 *.class
-/*/*.gitignore
+/**/*.gitignore
 .settings/
+*.classpath
+*.project

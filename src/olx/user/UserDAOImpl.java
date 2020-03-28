@@ -4,8 +4,10 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import olx.classifieds.ClassifiedsConstants.ClassifiedColumnNames;
+import olx.classifieds.ClassifiedsConstants.ClassifiedStatus;
 import olx.constants.OlxConstants.TableNames;
 import olx.user.UserConstants.UserColumnNames;
+import olx.user.UserConstants.UserStatus;
 import dbConnection.DBConnection;
 
 public class UserDAOImpl implements IUserDAO {
@@ -33,7 +35,7 @@ public class UserDAOImpl implements IUserDAO {
 				+ "' , " + UserColumnNames.PHONE + " ='" + userModel.getPhone() + "', " + UserColumnNames.FIRSTNAME
 				+ " = '" + userModel.getFirstName() + "' where " + UserColumnNames.USER_ID + " = " + userModel.getId()
 				+ "";
-	
+
 		// password needs to be added
 		try {
 			DBConnection.executeQuery(query);
@@ -50,12 +52,12 @@ public class UserDAOImpl implements IUserDAO {
 
 	@Override
 	public void addUser(UserModel user) {
-		// TODO Auto-generated method stub
 		String query = "insert into users(" + UserColumnNames.EMAIL + "," + UserColumnNames.PASSWORD + ","
 				+ UserColumnNames.IS_ADMIN + "," + UserColumnNames.FIRSTNAME + "," + UserColumnNames.LASTNAME + ","
-				+ UserColumnNames.ADDRESS + "," + UserColumnNames.PHONE + ") values ('" + user.getEmail() + "','"
-				+ user.getPassword() + "','" + "n" + "','" + user.getFirstName() + "','" + user.getLastName() + "','"
-				+ user.getAddress() + "','" + user.getPhone() + "')";
+				+ UserColumnNames.ADDRESS + "," + UserColumnNames.PHONE + "," + UserColumnNames.STATUS + ") values ('"
+				+ user.getEmail() + "','" + user.getPassword() + "','" + "N" + "','" + user.getFirstName() + "','"
+				+ user.getLastName() + "','" + user.getAddress() + "','" + user.getPhone() + "','" + user.getStatus()
+				+ "')";
 		try {
 			DBConnection.executeQuery(query);
 			System.out.println("Successfully added user: " + user.getFirstName());
@@ -108,7 +110,8 @@ public class UserDAOImpl implements IUserDAO {
 				String emailID = rs.getString(UserColumnNames.EMAIL);
 				boolean admin = rs.getString(UserColumnNames.IS_ADMIN).equalsIgnoreCase("y") ? true : false;
 				String address = rs.getString(UserColumnNames.ADDRESS);
-				user = new UserModel(userID, firstName, lastName, phone, emailID, address, admin);
+				UserStatus status = UserStatus.valueOf(rs.getString(UserColumnNames.STATUS));
+				user = new UserModel(userID, firstName, lastName, phone, emailID, address, admin, status);
 			}
 
 		} catch (ClassNotFoundException e) {

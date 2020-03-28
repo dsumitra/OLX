@@ -49,7 +49,7 @@ public class UserLogin {
 	void verifyPassword(String email) {
 		try {
 			String z = null;
-			System.out.println("Enter the Password");
+			System.out.println("Enter the password: ");
 			String password = s.nextLine();
 			int count = 0;
 			String query = "Select password from users where " + UserColumnNames.EMAIL + " = '" + email + "'";
@@ -76,10 +76,10 @@ public class UserLogin {
 	void addEmail(UserModel user) {
 		try {
 			int count = 0;
-			System.out.println("Enter the email");
+			System.out.println("Enter the email: ");
+			//TODO add if entered email is valid
 			emailId = s.nextLine();
 			if (emailId.matches("^[\\w-_\\.+]*[\\w-_\\.]\\@([\\w]+\\.)+[\\w]+[\\w]$")) {
-				System.out.println("Email address provided is valid format");
 				user.setEmail(emailId);
 
 			} else {
@@ -101,21 +101,23 @@ public class UserLogin {
 	void addProfileName(UserModel user) {
 		String first_name, last_name;
 		try {
-			System.out.println("Enter the first name");
+			System.out.println("Enter the first name: ");
 			first_name = s.nextLine();
 			user.setFirstName(first_name);
-			System.out.println("Enter the last name");
+			System.out.println("Enter the last name: ");
 			last_name = s.nextLine();
 			user.setLastName(last_name);
 
 		} catch (Exception e) {
-			System.out.println("Exception has been caught");
+			//TODO: similar implementation for all user inputs.
+			System.out.println("Invalid inputs.");
+			addProfileName(user);
 		}
 	}
 
 	void addPassword(UserModel user) {
 		try {
-			System.out.println("Enter the Password");
+			System.out.println("Enter the Password: ");
 			String password = s.nextLine();
 			user.setPassword(password);
 		} catch (Exception e) {
@@ -126,7 +128,7 @@ public class UserLogin {
 	void addPhoneNo(UserModel user) {
 		String phone_number;
 		try {
-			System.out.println("Enter the phoneno");
+			System.out.println("Enter the phone number: ");
 			phone_number = s.nextLine();
 			if (phone_number.matches("\\d{10}")) {
 				System.out.println("Is valid");
@@ -134,6 +136,7 @@ public class UserLogin {
 			}
 			// validating phone number with -, . or spaces
 			else if (phone_number.matches("\\d{3}[-\\.\\s]\\d{3}[-\\.\\s]\\d{4}")) {
+				//TODO remove all is valid sysouts
 				System.out.println("Is valid");
 				user.setPhone(phone_number);
 			}
@@ -151,18 +154,18 @@ public class UserLogin {
 				System.out.println("Is valid");
 				user.setPhone(phone_number);
 			}
-			System.out.println("Exception has been caught in phoneno class");
 			
 		} catch (Exception e) {
-			System.out.println("Exception caught");
-			e.printStackTrace();
+			System.out.println("Invalid Phone number.");
+			addPhoneNo(user);
 		}
 	}
 
 	void addAddress(UserModel user) {
 		String address;
-		System.out.println("Enter the Address");
-		address = s.nextLine();
+		System.out.println("Enter the address: ");
+		//TODO: add trim to every scanner input.
+		address = s.nextLine().trim();
 		user.setAddress(address);
 	}
 }
