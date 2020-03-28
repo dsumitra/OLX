@@ -1,17 +1,15 @@
 package olx.classifieds;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import olx.User.UserModel;
+import olx.user.UserConstants;
+import olx.user.UserModel;
 
 public class ClassifiedsTest {
 	public static void main(String[] args) {
 
 		UserModel user = new UserModel(1, "user", "usrLastName", "7895321890", "user@gmail.com", "address given",
-				false);
+				false, UserConstants.UserStatus.ACTIVE);
 		UserModel admin = new UserModel(3, "admin", "adminLastName", "1235664532", "admin@gmail.com", "address given",
-				true);
+				true, UserConstants.UserStatus.ACTIVE);
 		UserModel uModel = user;
 
 		Classifieds classified = new Classifieds();

@@ -1,28 +1,28 @@
 package olx.user;
 
 import java.sql.ResultSet;
-import java.util.ArrayList;
 import java.util.Scanner;
-//import olx.classifieds.*;
 
+import olx.category.Category;
 import olx.classifieds.Classifieds;
 import olx.constants.OlxConstants.TableNames;
+import olx.reports.Reports;
 import olx.user.UserConstants.UserColumnNames;
 import dbConnection.DBConnection;
 
 public class User {
 	UserDAOImpl userDaoImpl = new UserDAOImpl();
 	Classifieds classifieds = new Classifieds();
-//	Category categories=new Categories();
+	Category categories = new Category();
 	Scanner sc = new Scanner(System.in);
 
 	void login() {
 		int value;
 		do {
-			System.out.println("Enter the option you would like to proceed with");
 			System.out.println("1. Sign In");
 			System.out.println("2. Sign Up");
-			value = sc.nextInt();
+			System.out.println("Enter the option you would like to proceed with: ");
+			value = Integer.parseInt(sc.nextLine());
 			if (value == 1) {
 				signIn();
 				break;
@@ -30,7 +30,7 @@ public class User {
 				signUp();
 				break;
 			} else {
-				System.out.println("Please select the correct option");
+				System.out.println("Please select the correct option: ");
 			}
 		} while (value <= 0 || value > 2);
 	}
@@ -45,60 +45,59 @@ public class User {
 	}
 
 	void signUp() {
-		UserModel user=new UserModel();
+		UserModel user = new UserModel();
 		UserLogin u = new UserLogin();
 		u.addProfileName(user);
 		u.addEmail(user);
 		u.addAddress(user);
 		u.addPhoneNo(user);
 		u.addPassword(user);
+		user.setStatus(UserConstants.UserStatus.ACTIVE);
 		userDaoImpl.addUser(user);
 		displayUserOptions(user);
 	}
 
-	void displayUserOptions(UserModel user) {
-		System.out.println("Menu");
-		System.out.println("Please select from the given options");
-		if (user.isAdmin()==true) {
-			System.out.println(" 1.Delete Users \n 2.Manage categories \n 3. Settings");
-			int option = sc.nextInt();
+	public void displayUserOptions(UserModel user) {
+
+		if (user.isAdmin() == true) {
+			System.out.println("\nAdmin Menu");
+			System.out.println(" 1.Delete Users \n 2.Manage categories \n 3.View Reports \n 4.Settings \n 5.Sign out");
+			System.out.println("Please select from the given options: ");
+			int option = Integer.parseInt(sc.nextLine());
 			if (option == 1) {
 				deleteUser(user);
 			} else if (option == 2) {
-//				categories.manageCategories(user);
+				categories.manageCategories(user);
 			} else if (option == 3) {
+				Reports report = new Reports();
+				report.showReportOptions(user);
+			} else if (option == 4) {
 				showUserSettings(user);
+			} else if (option == 5) {
+				// TODO implement sign out
+//				signOut();
 			} else {
 				System.out.println("Incorrect options provided");
 				displayUserOptions(user);
 			}
 
 		} else {
-			System.out.println(
-					" 1.Buy \n 2.Sell \n 3.Order History \n 4.Manage classifieds \n 5.View cart \n 6. Settings");
-			int option = sc.nextInt();
+			System.out.println("\nUser Menu");
+			System.out.println(" 1.Buy \n 2.Sell \n 3.Manage classifieds \n 4.View cart \n 5.Settings \n 6.Sign out");
+			System.out.println("Please select from the given options: ");
+			int option = Integer.parseInt(sc.nextLine());
 			if (option == 1) {
 				classifieds.buy(user);
-
 			} else if (option == 2) {
-
-//				classifieds.sellClassifieds(user);
-
+				classifieds.sellClassifieds(user);
 			} else if (option == 3) {
-
-//				classifieds.OrderHistory(user);
-
-			} else if (option == 4) {
-
 				classifieds.manageClassifieds(user);
-			
-			} else if (option == 5) {
+			} else if (option == 4) {
 				// TODO: View cart
-
-			} else if (option == 6) {
-
+			} else if (option == 5) {
 				showUserSettings(user);
-
+			} else if (option == 6) {
+				// TODO impelment signout
 			} else {
 
 				System.out.println("Incorrect options provided");
@@ -109,7 +108,7 @@ public class User {
 
 	void showUserSettings(UserModel user) {
 		try {
-			String email=user.getEmail();
+			String email = user.getEmail();
 			String query = " Select email, first_name, last_name, address, phone, user_id from " + TableNames.USER
 					+ " where " + UserColumnNames.EMAIL + "='" + email + "'";
 			ResultSet rs = DBConnection.executeQuery(query);
@@ -119,7 +118,7 @@ public class User {
 				System.out.print(rs.getString("email") + " \t " + rs.getString("first_name") + " \t\t "
 						+ rs.getString("last_name") + " \t\t " + rs.getString("address") + " \t "
 						+ rs.getString("phone") + " \n ");
-				
+
 				user.setEmail(rs.getString("email"));
 				user.setAddress(rs.getString("address"));
 				user.setFirstName(rs.getString("first_name"));
@@ -130,12 +129,12 @@ public class User {
 			System.out.println(
 					"1.Rename username \n 2.Change password \n 3.Update PhoneNumber \n 4.Update Email \n 5.Update Address");
 			System.out.println("Enter How many values you want to update");
-			int value = sc.nextInt();
+			int value = Integer.parseInt(sc.nextLine());
 			int temp = value;
 			while (temp > count) {
 				for (int i = 0; i < value; i++) {
 					System.out.println("Enter the Attribute number you want to edit :");
-					int attributeId = sc.nextInt();
+					int attributeId = Integer.parseInt(sc.nextLine());
 					if (attributeId == 4) {
 						System.out.println("Enter the new emailId");
 						sc.nextLine();
@@ -212,13 +211,13 @@ public class User {
 	}
 
 	public void deleteUser(UserModel user) {
-		if (user.isAdmin()==true) {
+		if (user.isAdmin() == true) {
 			ResultSet rs = userDaoImpl.selectAllUser(0);
 			System.out.println("How many users you want to del?");
-			int number = sc.nextInt();
+			int number = Integer.parseInt(sc.nextLine());
 			for (int i = 0; i < number; i++) {
 				System.out.println("Enter the userId");
-				int input = sc.nextInt();
+				int input = Integer.parseInt(sc.nextLine());
 				user.setId(input);
 				userDaoImpl.deleteUser(user);
 				System.out.println("The user that has been deleted is " + user.getId());

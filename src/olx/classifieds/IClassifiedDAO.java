@@ -2,7 +2,7 @@ package olx.classifieds;
 
 import java.sql.ResultSet;
 
-import olx.User.UserModel;
+import olx.user.UserModel;
 
 //import java.util.Map;
 

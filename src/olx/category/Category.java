@@ -3,12 +3,15 @@ package olx.category;
 import java.sql.*;
 import java.util.*;
 
+import olx.user.User;
+import olx.user.UserModel;
+
 public class Category {
 	CategoryHelper helper;
 	CategoryDAOImpl CategoryDAOImpl;
 	Scanner sc = new Scanner(System.in);
 
-	Category() {
+	public Category() {
 		helper = new CategoryHelper();
 		CategoryDAOImpl = new CategoryDAOImpl();
 	}
@@ -207,19 +210,25 @@ public class Category {
 		return subCategoryMap;
 	}
 
-	void manageCategories() {
-		System.out.println(
-				"Category Options:\n 1.Add Category \n 2.Delete Category \n 3.Update Category \n 4.View All Catgeories");
-		System.out.println("Enter the action you want to perform: ");
-		int option = Integer.parseInt(sc.nextLine());//TODO Handle 1'.' Exception
-		if (option == 1) {
-			addCustomCategories();
-		} else if (option == 2) {
-			deleteCategory();
-		} else if (option == 3) {
-			updateCategory();
-		} else if (option == 4) {
-			displayCatergoriesTable();
+	public void manageCategories(UserModel userModel) {
+		int option = 0;
+		while(option != 5) {
+			System.out.println(
+					"\nCategory Options:\n 1.Add Category \n 2.Delete Category \n 3.Update Category \n 4.View All Catgeories \n 5.Exit Menu");
+			System.out.println("Enter the action you want to perform: ");
+			option = Integer.parseInt(sc.nextLine().trim());//TODO Handle 1'.' Exception
+			if (option == 1) {
+				addCustomCategories();
+			} else if (option == 2) {
+				deleteCategory();
+			} else if (option == 3) {
+				updateCategory();
+			} else if (option == 4) {
+				displayCatergoriesTable();
+			} else if(option == 5) {
+				User user = new User();
+				user.displayUserOptions(userModel);
+			}			
 		}
 	}
 
