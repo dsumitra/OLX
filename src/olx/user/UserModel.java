@@ -2,6 +2,11 @@ package olx.user;
 
 import olx.user.UserConstants.UserStatus;
 
+
+/**
+ * @author albuquea
+ *
+ */
 public class UserModel {
 	long id;
 	String firstName;

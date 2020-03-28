@@ -2,6 +2,11 @@ package olx.user;
 
 	import java.util.*;
 	import java.sql.*;
+	
+	/**
+	 * @author albuquea
+	 *
+	 */
 	public class Authentication {
 
 		public class email {

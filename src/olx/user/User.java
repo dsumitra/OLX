@@ -14,6 +14,10 @@ import olx.reports.Reports;
 import olx.user.UserConstants.UserColumnNames;
 import dbConnection.DBConnection;
 
+/**
+ * @author albuquea
+ *
+ */
 public class User {
 	UserDAOImpl userDaoImpl = new UserDAOImpl();
 	Classifieds classifieds = new Classifieds();

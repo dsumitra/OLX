@@ -10,6 +10,10 @@ import olx.user.UserConstants.UserColumnNames;
 import olx.user.UserConstants.UserStatus;
 import dbConnection.DBConnection;
 
+/**
+ * @author albuquea
+ *
+ */
 public class UserDAOImpl implements IUserDAO {
 
 	@Override
