@@ -15,7 +15,6 @@ public class Category {
 
 	void addDefaultCategories() {
 		Map<String, List<String>> categoryMap = new HashMap<>();
-
 		ArrayList<String> electronicsSubCategory = new ArrayList<String>();
 		electronicsSubCategory.add("Mobiles");
 		electronicsSubCategory.add("Laptop");
@@ -54,7 +53,7 @@ public class Category {
 			if (hasSubCategory.equalsIgnoreCase("Y")) {
 				System.out.println(
 						"Enter the number of sub-categories you want to add to " + newCategory + " categories\n");
-				int subCategoryNo = Integer.parseInt(sc.nextLine().trim()); //TODO handle NumberFormatException
+				int subCategoryNo = Integer.parseInt(sc.nextLine().trim()); // TODO handle NumberFormatException
 				for (int k = 0; k < subCategoryNo; k++) {
 					System.out.println("Enter a sub-category name\n");
 					String newSubCategory = sc.nextLine();
@@ -101,8 +100,8 @@ public class Category {
 		String delCategory, subCategory;
 		ResultSet subCategoryRs = CategoryDAOImpl.getSubCategories(selectedCategory);
 		Map<Integer, String> subCategoryMap = displaySubCategories(subCategoryRs);
-		if(subCategoryMap.size() == 1) {
-			//Only 1 entry of category is present. Hence, deleting the category directly.
+		if (subCategoryMap.size() == 1) {
+			// Only 1 entry of category is present. Hence, deleting the category directly.
 			CategoryDAOImpl.deleteCategoryByName(selectedCategory);
 			return;
 		}
@@ -132,9 +131,6 @@ public class Category {
 		helper.displayCatergoriesTable();
 	}
 
-	void searchCategory() {
-	}
-
 	void updateCategory() {
 		ResultSet primaryCategoryRs = CategoryDAOImpl.getPrimaryCategories();
 		Map<Integer, String> categories = helper.displayPrimaryCategories(primaryCategoryRs);
@@ -149,11 +145,8 @@ public class Category {
 					int updateCategoryID = Integer.parseInt(sc.nextLine());
 					selectedCategory = categories.get(updateCategoryID);
 					// subCategoryMap = CategoryDAOImpl.getSubCategories(selectedCategory);
-					System.out.println(
-							"Update options:\n"
-							+ "1. Update Primary Category only \n"
-							+ "2. Update Sub Category only \n"
-							+ "3. Update Primary Category and Sub-Category \n"
+					System.out.println("Update options:\n" + "1. Update Primary Category only \n"
+							+ "2. Update Sub Category only \n" + "3. Update Primary Category and Sub-Category \n"
 							+ "Select the action do you want to perform: ");
 					updateCategoryAction = Integer.parseInt(sc.nextLine()); // TODO check if there are any
 																			// sub-categories
@@ -197,8 +190,6 @@ public class Category {
 		}
 	}
 
-	
-
 	Map<Integer, String> displaySubCategories(ResultSet rs) {
 		Map<Integer, String> subCategoryMap = new HashMap<Integer, String>();
 		System.out.println("ID \t\t Sub-Category");
@@ -214,6 +205,22 @@ public class Category {
 			e.printStackTrace();
 		}
 		return subCategoryMap;
+	}
+
+	void manageCategories() {
+		System.out.println(
+				"Category Options:\n 1.Add Category \n 2.Delete Category \n 3.Update Category \n 4.View All Catgeories");
+		System.out.println("Enter the action you want to perform: ");
+		int option = Integer.parseInt(sc.nextLine());//TODO Handle 1'.' Exception
+		if (option == 1) {
+			addCustomCategories();
+		} else if (option == 2) {
+			deleteCategory();
+		} else if (option == 3) {
+			updateCategory();
+		} else if (option == 4) {
+			displayCatergoriesTable();
+		}
 	}
 
 }

@@ -2,7 +2,7 @@ package olx.payments;
 
 
 import java.sql.SQLException;
-import dbConnect.DBConnection;
+import dbConnection.*;
 
 public class PaymentsDAO implements IPaymentsDAO {
 	

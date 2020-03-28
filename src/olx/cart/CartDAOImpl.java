@@ -10,7 +10,7 @@ import dbConnection.*;
 public class CartDAOImpl implements ICartDAO, ICartConstants {
 
 	public int addToCart(CartModel c) throws ClassNotFoundException, SQLException {
-		return addToCart(c.classifiedId, c.bidPrice, c.bidderID);
+		return addToCart(c.classifiedId, c.bidPrice, c.bidderId);
 	}
 
 	int addToCart(Object ClassifiedId, Object BidPrice, Object BidderID) throws ClassNotFoundException, SQLException {
@@ -85,7 +85,7 @@ public class CartDAOImpl implements ICartDAO, ICartConstants {
 	public int updateCart(CartModel c) throws ClassNotFoundException, SQLException {
 		return DBConnection.executeUpdateFormat(
 				"UPDATE CART SET CLASSIFIED_ID = %d BIDPRICE = f% STATUS=%s WHERE CART_ID = %d", c.classifiedId,
-				c.bidPrice, c.status, c.bidderID, c.cartId);
+				c.bidPrice, c.status, c.bidderId, c.cartId);
 	}
 
 }

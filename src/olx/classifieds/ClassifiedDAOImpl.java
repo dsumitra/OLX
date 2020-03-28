@@ -23,7 +23,7 @@ public class ClassifiedDAOImpl implements IClassifiedDAO {
 		String sqlCreateDate = formatter.format(classified.getDateCreated());
 		String sqlUpdateDate = formatter.format(classified.getDateUpdated());
 
-		String query = "insert into classifieds(" + ClassifiedColumnNames.CATEGORY_ID + ","
+		String query = "insert into " + TableNames.CLASSIFIEDS + "(" + ClassifiedColumnNames.CATEGORY_ID + ","
 				+ ClassifiedColumnNames.PRICE + "," + ClassifiedColumnNames.TITLE + ","
 				+ ClassifiedColumnNames.DESCRIPTION + "," + ClassifiedColumnNames.EMAIL + ","
 				+ ClassifiedColumnNames.PHONE + "," + ClassifiedColumnNames.DATE_CREATED + ","
@@ -64,15 +64,17 @@ public class ClassifiedDAOImpl implements IClassifiedDAO {
 	}
 
 	public void updateStatusById(List<Integer> classifiedIDs) {
-		if(classifiedIDs.size() == 0) return;
-		
+		if (classifiedIDs.size() == 0)
+			return;
+
 		String query = "Update " + OlxConstants.TableNames.CLASSIFIEDS + " set " + ClassifiedColumnNames.STATE + " = '"
-				+ ClassifiedsConstants.ClassifiedStatus.SOLD + "' where" + ClassifiedColumnNames.ID + " = 103"  ;
+				+ ClassifiedsConstants.ClassifiedStatus.SOLD + "' where" + ClassifiedColumnNames.ID + " = 103";
 		String idConditions = "";
 		String prefix = " ";
 		for (int i = 0; i < classifiedIDs.size(); i++) {
-			if(i != 0) prefix = " or " ;
-			idConditions += prefix + ClassifiedColumnNames.ID + " = " + classifiedIDs.get(i) ;
+			if (i != 0)
+				prefix = " or ";
+			idConditions += prefix + ClassifiedColumnNames.ID + " = " + classifiedIDs.get(i);
 		}
 		String updateQuery = query + idConditions;
 		try {
@@ -85,7 +87,8 @@ public class ClassifiedDAOImpl implements IClassifiedDAO {
 	@Override
 	public void deleteClassified(ClassifiedModel classifiedModel) {
 
-		String query = "delete from " + OlxConstants.TableNames.CLASSIFIEDS + " where " + ClassifiedColumnNames.ID + " = " + classifiedModel.getID();
+		String query = "delete from " + OlxConstants.TableNames.CLASSIFIEDS + " where " + ClassifiedColumnNames.ID
+				+ " = " + classifiedModel.getID();
 		try {
 			DBConnection.executeQuery(query);
 			System.out.println("Successfully created classified: " + classifiedModel.getTitle());
@@ -110,8 +113,8 @@ public class ClassifiedDAOImpl implements IClassifiedDAO {
 
 	@Override
 	public ResultSet getClassifiedsByUserId(int userID) {
-		String query = "Select * from " + TableNames.CLASSIFIEDS + " where " + ClassifiedColumnNames.USER_ID + "=" + userID
-				+ " and " + ClassifiedColumnNames.STATE + "='" + ClassifiedsConstants.ClassifiedStatus.APPROVED
+		String query = "Select * from " + TableNames.CLASSIFIEDS + " where " + ClassifiedColumnNames.USER_ID + "="
+				+ userID + " and " + ClassifiedColumnNames.STATE + "='" + ClassifiedsConstants.ClassifiedStatus.APPROVED
 				+ "' or " + ClassifiedColumnNames.STATE + "='" + ClassifiedsConstants.ClassifiedStatus.POSTED + "'";
 
 		ResultSet rs = null;
@@ -126,9 +129,23 @@ public class ClassifiedDAOImpl implements IClassifiedDAO {
 		return rs;
 	}
 
-	public static ResultSet filterClassifiedsByState(ClassifiedStatus approved) {
+	public static ResultSet filterClassifiedsByState(ClassifiedStatus status) {
 		String query = "Select * from " + TableNames.CLASSIFIEDS + " where " + ClassifiedColumnNames.STATE + "='"
-				+ approved + "'";
+				+ status + "'";
+		ResultSet rs = null;
+		System.out.println(query);
+		try {
+			rs = DBConnection.executeQuery(query);
+		} catch (ClassNotFoundException | SQLException e) {
+			e.printStackTrace();
+		}
+		return rs;
+	}
+
+	public ResultSet OrderHistory(UserModel userModel) {
+		String query = "Select " + ClassifiedColumnNames.ID + ", " + ClassifiedColumnNames.TITLE + ", "
+				+ ClassifiedColumnNames.PRICE + "," + ClassifiedColumnNames.DATE_UPDATED + " from "
+				+ TableNames.CLASSIFIEDS + " where " + ClassifiedColumnNames.USER_ID + "= " + userModel.getId();
 		ResultSet rs = null;
 
 		try {
@@ -138,10 +155,38 @@ public class ClassifiedDAOImpl implements IClassifiedDAO {
 		}
 		return rs;
 	}
-	
-	public  ResultSet OrderHistory(UserModel userModel) {
-		String query = "Select "+ClassifiedColumnNames.ID+","+ClassifiedColumnNames.TITLE+","+ClassifiedColumnNames.PRICE+","
-				+ClassifiedColumnNames.DATE_UPDATED+ " from "+ TableNames.CLASSIFIEDS + " where "+ ClassifiedColumnNames.USER_ID+"="+userModel.getId(); 
+
+	// used for Reports
+	public ResultSet getClassifiedsPerCategory() {
+		String query = "SELECT Count (" + ClassifiedColumnNames.CATEGORY_ID + ") as count,"
+				+ ClassifiedColumnNames.CATEGORY_ID + " FROM " + OlxConstants.TableNames.CLASSIFIEDS + " GROUP BY "
+				+ ClassifiedColumnNames.CATEGORY_ID;
+		ResultSet rs = null;
+
+		try {
+			rs = DBConnection.executeQuery(query);
+		} catch (ClassNotFoundException | SQLException e) {
+			e.printStackTrace();
+		}
+		return rs;
+	}
+
+	public ResultSet getClassifiedsPerUser() {
+		String query = "SELECT Count (" + ClassifiedColumnNames.USER_ID + ") as count," + ClassifiedColumnNames.USER_ID
+				+ " FROM " + OlxConstants.TableNames.CLASSIFIEDS + " GROUP BY " + ClassifiedColumnNames.USER_ID;
+		ResultSet rs = null;
+
+		try {
+			rs = DBConnection.executeQuery(query);
+		} catch (ClassNotFoundException | SQLException e) {
+			e.printStackTrace();
+		}
+		return rs;
+	}
+
+	public ResultSet getClassifiedStatus() {
+		String query = "SELECT Count (" + ClassifiedColumnNames.STATE + ") as count," + ClassifiedColumnNames.STATE
+				+ " FROM " + OlxConstants.TableNames.CLASSIFIEDS + " GROUP BY " + ClassifiedColumnNames.STATE;
 		ResultSet rs = null;
 
 		try {

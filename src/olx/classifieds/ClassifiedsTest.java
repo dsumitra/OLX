@@ -15,9 +15,11 @@ public class ClassifiedsTest {
 		UserModel uModel = user;
 
 		Classifieds classified = new Classifieds();
-//	classified.buy(uModel);
+//   classified.buy(uModel);
+    classified.sellClassifieds(uModel);
+    
 //		classified.manageClassifieds(uModel);
-//		classified.displayPostedClassifieds();
+		classified.displayPostedClassifieds();
 //		classified.addClassifieds(uModel);
 //		classified.updateClassified(1);
 //		classified.displayAllClassifieds(0);//passing this by Default.
