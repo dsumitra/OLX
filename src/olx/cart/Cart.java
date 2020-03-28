@@ -146,8 +146,8 @@ public class Cart {
 		System.out.println(apCnt + " bids approved in CartModel.");
 		
 	}
-	public void viewSellerCart(Long seller ) throws ClassNotFoundException, SQLException{
-		approveBidForSeller( seller );
+	public void viewSellerCart(Long sellerID ) throws ClassNotFoundException, SQLException{
+		approveBidForSeller( sellerID );
 	}
 
 	public void viewBuyerCart(Long buyerId ) throws ClassNotFoundException, SQLException {
