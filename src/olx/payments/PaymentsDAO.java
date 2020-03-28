@@ -17,9 +17,6 @@ public class PaymentsDAO implements IPaymentsDAO {
 	}
 	
 	public int addPayment(PaymentsModel p) throws ClassNotFoundException, SQLException {
-		
-		System.out.println(p);
-		
 		return addPayment(p.classifiedID, p.userID, p.paymentMethodID, p.cartID, p.amount);
 	}
 }

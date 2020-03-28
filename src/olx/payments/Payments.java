@@ -38,9 +38,7 @@ public class Payments {
 				p.userID = cm.getBidderID();
 				p.cartID = cm.getCartId();
 				p.amount = cm.getBidPrice();
-				
-				System.out.println(p);	
-				
+
 				pdb.addPayment(p);
 				
 
