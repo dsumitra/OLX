@@ -111,7 +111,7 @@ public class Classifieds {
 				ClassifiedModel classifiedModel = createClassifiedModel(rs);
 				classifiedMap.put(ID, classifiedModel);
 				String row = ID + "\t\t" + classifiedModel.getTitle() + "\t\t" + classifiedModel.getDescription()
-						+ "\t\t" + classifiedModel.getPrice() + "\t\t" + classifiedModel.getPhone() + "\t\t" + "\t\t"
+						+ "\t\t" + classifiedModel.getPrice() + "\t\t" + classifiedModel.getPhone() + "\t\t"
 						+ classifiedModel.getEmail() + "\t\t" + classifiedModel.getDateCreated();
 				if (showStatusColumn == true) {
 					row += "\t\t" + classifiedModel.getState();

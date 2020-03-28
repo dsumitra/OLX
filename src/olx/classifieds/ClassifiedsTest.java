@@ -15,7 +15,7 @@ public class ClassifiedsTest {
 
 		Classifieds classified = new Classifieds();
 		classified.buy(user);
-		classified.sellClassifieds(user);
+//		classified.sellClassifieds(user);
 
 		classified.manageClassifieds(user);
 		classified.displayPostedClassifieds();

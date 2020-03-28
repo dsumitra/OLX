@@ -111,7 +111,7 @@ public class ClassifiedDAOImpl implements IClassifiedDAO {
 	}
 
 	@Override
-	public ResultSet getClassifiedsByUserId(int userID) {
+	public ResultSet getClassifiedsByUserId(long userID) {
 		String query = "Select * from " + TableNames.CLASSIFIEDS + " where " + ClassifiedColumnNames.USER_ID + "="
 				+ userID + " and " + ClassifiedColumnNames.STATE + "='" + ClassifiedsConstants.ClassifiedStatus.APPROVED
 				+ "' or " + ClassifiedColumnNames.STATE + "='" + ClassifiedsConstants.ClassifiedStatus.POSTED + "'";
