@@ -15,6 +15,10 @@ public class UserLogin {
 	String emailId;
 	String z;
 
+	void UserLogin() {			
+			this.user=user;
+		}
+
 	String verifyEmail() {
 		try {
 			System.out.println("Enter the email");
@@ -29,7 +33,6 @@ public class UserLogin {
 			}
 			for (String element : list) {
 				if (element.contains(emailId)) {
-					user.setEmail(element);
 					count++;
 				}
 			}
@@ -43,13 +46,13 @@ public class UserLogin {
 		return emailId;
 	}
 
-	void verifyPassword() {
+	void verifyPassword(String email) {
 		try {
 			String z = null;
 			System.out.println("Enter the Password");
 			String password = s.nextLine();
 			int count = 0;
-			String query = "Select password from users where " + UserColumnNames.EMAIL + " = '" + user.getEmail() + "'";
+			String query = "Select password from users where " + UserColumnNames.EMAIL + " = '" + email + "'";
 			ResultSet rs = DBConnection.executeQuery(query);
 			ArrayList<String> list = new ArrayList<String>();
 			while (rs.next()) {
@@ -58,13 +61,12 @@ public class UserLogin {
 			}
 			for (String element : list) {
 				if (element.contains(password)) {
-					user.setEmail(element);
 					count++;
 				}
 			}
 			if (count == 0) {
 				System.out.println("Password provided is incorrect");
-				verifyPassword();
+				verifyPassword(email);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
