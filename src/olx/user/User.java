@@ -78,7 +78,7 @@ public class User {
 					" 1.Buy \n 2.Sell \n 3.Order History \n 4.Manage classifieds \n 5.View cart \n 6. Settings");
 			int option = sc.nextInt();
 			if (option == 1) {
-				classifieds.buy(user);
+//				classifieds.buy(user);
 
 			} else if (option == 2) {
 
@@ -90,7 +90,7 @@ public class User {
 
 			} else if (option == 4) {
 
-				classifieds.manageClassifieds(user);
+//				classifieds.manageClassifieds(user);
 			
 			} else if (option == 5) {
 				// TODO: View cart

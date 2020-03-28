@@ -3,7 +3,7 @@ package olx.classifieds;
 import java.util.ArrayList;
 import java.util.List;
 
-import olx.User.UserModel;
+import olx.user.UserModel;
 
 public class ClassifiedsTest {
 	public static void main(String[] args) {

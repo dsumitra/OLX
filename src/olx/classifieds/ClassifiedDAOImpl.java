@@ -6,7 +6,7 @@ import java.text.SimpleDateFormat;
 import java.util.List;
 
 import dbConnection.DBConnection;
-import olx.User.UserModel;
+import olx.user.UserModel;
 import olx.category.CategoryConstants.CategoryColumnNames;
 import olx.classifieds.ClassifiedsConstants.ClassifiedColumnNames;
 import olx.classifieds.ClassifiedsConstants.ClassifiedStatus;
