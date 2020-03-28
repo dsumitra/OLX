@@ -11,6 +11,7 @@ public class UserModel {
 	boolean admin = false;
 
 	public UserModel(int id, String firstName, String lastName, String phone, String email, String address, boolean admin) {
+		super();
 		this.id = id;
 		this.firstName = firstName;
 		this.lastName = lastName;
@@ -18,6 +19,10 @@ public class UserModel {
 		this.email = email;
 		this.address = address;
 		this.admin = admin;
+	}
+
+	public UserModel() {
+		super();
 	}
 
 	public String getPassword() {

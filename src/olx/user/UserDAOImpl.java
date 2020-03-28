@@ -33,9 +33,7 @@ public class UserDAOImpl implements IUserDAO {
 				+ "' , " + UserColumnNames.PHONE + " ='" + userModel.getPhone() + "', " + UserColumnNames.FIRSTNAME
 				+ " = '" + userModel.getFirstName() + "' where " + UserColumnNames.USER_ID + " = " + userModel.getId()
 				+ "";
-		System.out.println(query);
-		System.out.println(userModel.toString());
-
+	
 		// password needs to be added
 		try {
 			DBConnection.executeQuery(query);

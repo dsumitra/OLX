@@ -15,6 +15,10 @@ public class UserLogin {
 	String emailId;
 	String z;
 
+	void UserLogin() {			
+			this.user=user;
+		}
+
 	String verifyEmail() {
 		try {
 			System.out.println("Enter the email");
@@ -29,7 +33,6 @@ public class UserLogin {
 			}
 			for (String element : list) {
 				if (element.contains(emailId)) {
-					user.setEmail(element);
 					count++;
 				}
 			}
@@ -43,13 +46,13 @@ public class UserLogin {
 		return emailId;
 	}
 
-	void verifyPassword() {
+	void verifyPassword(String email) {
 		try {
 			String z = null;
 			System.out.println("Enter the Password");
 			String password = s.nextLine();
 			int count = 0;
-			String query = "Select password from users where " + UserColumnNames.EMAIL + " = '" + user.getEmail() + "'";
+			String query = "Select password from users where " + UserColumnNames.EMAIL + " = '" + email + "'";
 			ResultSet rs = DBConnection.executeQuery(query);
 			ArrayList<String> list = new ArrayList<String>();
 			while (rs.next()) {
@@ -58,25 +61,23 @@ public class UserLogin {
 			}
 			for (String element : list) {
 				if (element.contains(password)) {
-					user.setEmail(element);
 					count++;
 				}
 			}
 			if (count == 0) {
 				System.out.println("Password provided is incorrect");
-				verifyPassword();
+				verifyPassword(email);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
 
-	void addEmail() {
+	void addEmail(UserModel user) {
 		try {
 			int count = 0;
 			System.out.println("Enter the email");
 			emailId = s.nextLine();
-			System.out.println(count);
 			if (emailId.matches("^[\\w-_\\.+]*[\\w-_\\.]\\@([\\w]+\\.)+[\\w]+[\\w]$")) {
 				System.out.println("Email address provided is valid format");
 				user.setEmail(emailId);
@@ -86,7 +87,7 @@ public class UserLogin {
 				if (count < 3) {
 					System.out.println("Please re-enter the email");
 					count++;
-					addEmail();
+					addEmail(user);
 				} else {
 					System.out.println("More than 3 failed attempts. Your account has been locked");
 					System.exit(0);
@@ -97,7 +98,7 @@ public class UserLogin {
 		}
 	}
 
-	void addProfileName() {
+	void addProfileName(UserModel user) {
 		String first_name, last_name;
 		try {
 			System.out.println("Enter the first name");
@@ -112,18 +113,17 @@ public class UserLogin {
 		}
 	}
 
-	void addPassword() {
+	void addPassword(UserModel user) {
 		try {
 			System.out.println("Enter the Password");
 			String password = s.nextLine();
 			user.setPassword(password);
-			userDaoImpl.addUser(user);
 		} catch (Exception e) {
 			System.out.println("Exception caught");
 		}
 	}
 
-	void addPhoneNo() {
+	void addPhoneNo(UserModel user) {
 		String phone_number;
 		try {
 			System.out.println("Enter the phoneno");
@@ -152,12 +152,14 @@ public class UserLogin {
 				user.setPhone(phone_number);
 			}
 			System.out.println("Exception has been caught in phoneno class");
+			
 		} catch (Exception e) {
 			System.out.println("Exception caught");
+			e.printStackTrace();
 		}
 	}
 
-	void addAddress() {
+	void addAddress(UserModel user) {
 		String address;
 		System.out.println("Enter the Address");
 		address = s.nextLine();
