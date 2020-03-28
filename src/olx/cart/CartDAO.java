@@ -3,7 +3,7 @@ package olx.cart;
 
 
 import java.sql.*;
-import dbConnect.*;
+import dbConnection.*;
 
 public class CartDAO implements ICartDAO, ICartConstants {
 

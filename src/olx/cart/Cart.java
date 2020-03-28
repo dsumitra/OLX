@@ -25,10 +25,10 @@ public class Cart {
 	}
 
 	void readBidderID() {
-		if (c.bidderID == null) {
+		if (c.bidderId == null) {
 			// may not be required if session is maintained
 			System.out.println("Enter Bidder ID");
-			c.bidderID = Long.valueOf(s.nextLine().trim());
+			c.bidderId = Long.valueOf(s.nextLine().trim());
 		}
 	}
 
@@ -49,12 +49,12 @@ public class Cart {
 		c.classifiedId = r.getLong(2);
 		c.bidPrice = r.getDouble(3);
 		c.status = r.getString(4);
-		c.bidderID = r.getLong(5);
+		c.bidderId = r.getLong(5);
 	}
 
 	void writeCartRow() {
 		System.out.printf("%10d %13d %10.2f %10s %10d %n", c.cartId, c.classifiedId, c.bidPrice, c.status,
-				c.bidderID);
+				c.bidderId);
 	}
 
 	void writeResultSet(ResultSet r) throws SQLException {
@@ -71,7 +71,7 @@ public class Cart {
 
 	private void bidForClassified() throws ClassNotFoundException, SQLException {
 		readCart();
-		int count = cdb.addToCart(c.classifiedId, c.bidPrice, c.bidderID);
+		int count = cdb.addToCart(c.classifiedId, c.bidPrice, c.bidderId);
 		System.out.println(count + " records added");
 	}
 
