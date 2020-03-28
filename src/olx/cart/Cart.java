@@ -130,7 +130,7 @@ public class Cart {
 			System.out.println("Enter Cart Id you want to pay for:");
 			Long cartId =  Long.valueOf(s.nextLine().trim());
 			Payments p = new Payments();
-			p.makePaymentforCart(cartId, buyerId );
+			p.makePaymentforCart(cartId );
 		}
 	}
 	

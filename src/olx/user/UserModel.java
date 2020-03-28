@@ -3,7 +3,7 @@ package olx.user;
 import olx.user.UserConstants.UserStatus;
 
 public class UserModel {
-	int id;
+	long id;
 	String firstName;
 	String lastName;
 	String phone;
@@ -13,7 +13,7 @@ public class UserModel {
 	boolean admin = false;
 	UserStatus status;
 
-	public UserModel(int id, String firstName, String lastName, String phone, String email, String address,
+	public UserModel(long id, String firstName, String lastName, String phone, String email, String address,
 			boolean admin, UserStatus status) {
 		super();
 		this.id = id;
@@ -38,11 +38,11 @@ public class UserModel {
 		this.password = password;
 	}
 
-	public int getId() {
+	public long getId() {
 		return id;
 	}
 
-	public void setId(int id) {
+	public void setId(long id) {
 		this.id = id;
 	}
 
