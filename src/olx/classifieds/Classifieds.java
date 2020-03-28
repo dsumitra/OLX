@@ -9,13 +9,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
 
+import olx.user.UserModel;
 import olx.category.CategoryDAOImpl;
 import olx.category.CategoryHelper;
 import olx.category.CategoryModel;
 import olx.classifieds.ClassifiedsConstants.ClassifiedColumnNames;
 import olx.classifieds.ClassifiedsConstants.ClassifiedStatus;
-import olx.user.User;
-import olx.user.UserModel;
 
 public class Classifieds {
 	CategoryHelper categoryHelper;
@@ -32,7 +31,7 @@ public class Classifieds {
 //TODO : Exceptional Handling for every scanner.
 	public void addClassifieds(UserModel userModel) {
 		try {
-			System.out.println("\nEnter the number of Classifieds you want to add: ");
+			System.out.println("Enter the number of Classifieds you want to add: ");
 			int totalClassfieds = Integer.parseInt(sc.nextLine().trim());
 			for (int i = 0; i < totalClassfieds; i++) {
 				ClassifiedModel classifiedModel = new ClassifiedModel();
@@ -80,7 +79,6 @@ public class Classifieds {
 				} while (!"Y".equalsIgnoreCase(confirmClassified));
 
 				classifiedDAOImpl.addClassified(classifiedModel);
-				System.out.println("Admin will approve "+ classifiedModel.getTitle() + " shortly.");
 
 			}
 		} catch (NumberFormatException e) {
@@ -100,7 +98,7 @@ public class Classifieds {
 		String header = "";
 		Map<Integer, ClassifiedModel> classifiedMap = new HashMap<>();
 		try {
-			System.out.println("\nList of classifieds:\n");
+			System.out.println("List of classifieds:\n");
 			header = "ID\t\t Title \t\t Description \t\t Price \t\t\t Phone \t\t Email \t\t Date Created";
 			if (showStatusColumn == true) {
 				header += "\t\t State";
@@ -149,7 +147,7 @@ public class Classifieds {
 		Map<Integer, ClassifiedModel> classifieds = displayAllClassifieds(rs, false);
 		Scanner sc = new Scanner(System.in);
 		do {
-			System.out.println("\nSelect the number of classifieds you want to update: ");
+			System.out.println("Select the number of classifieds you want to update: ");
 			updateCount = Integer.parseInt(sc.nextLine());
 		} while (classifieds.size() < updateCount || updateCount <= 0); // Validated
 
@@ -158,14 +156,14 @@ public class Classifieds {
 				System.out.println("Enter the classified ID you want to update: ");
 				int classifiedID = Integer.parseInt(sc.nextLine());
 				classifiedModel = classifieds.get(classifiedID);//
-				updateClassifiedAttribute(classifiedModel);
+				updateClassifiedAttribute(classifiedModel, sc);
 				classifiedDAOImpl.updateClassified(classifiedModel);
 
 			} while (classifiedModel == null);
 		}
 	}
 
-	void updateClassifiedAttribute(ClassifiedModel classifiedModel) {
+	void updateClassifiedAttribute(ClassifiedModel classifiedModel, Scanner sc) {
 		Map<Integer, String> attrOpts = new HashMap<>();
 		attrOpts.put(1, "Title");
 		attrOpts.put(2, "Description");
@@ -239,6 +237,15 @@ public class Classifieds {
 
 	}
 
+	// TODO MAKE 2 DISPLAY FUNCTIONS( ONE FOR SELLER/BUYER BY TWEEKING THE QUERY)
+	// --- done
+	// STATUS == APPROVED STATUS == POSTED ----- done
+	// TODO EXCEPTION HANDLING (numberFormatException handling and add do while's
+	// for every input)
+	// TODO don't delete the classified, but mark them as deleted.-- done
+	// TODO implement function to approve or disapprove the newly added classifieds
+	// -- done (but error)
+
 	public void buy(UserModel userModel) {
 		int buyCount, classifiedId = 0;
 		List<Integer> selectedCategoryIds = new ArrayList<Integer>();
@@ -263,7 +270,6 @@ public class Classifieds {
 		}
 //		TODO: call cartView
 //		cartView.addToCart(selectedCategoryIds, userModel);
-		goBackToUserMenu(userModel);
 	}
 
 	Map<Integer, ClassifiedModel> displayApprovedClassifieds() {
@@ -305,19 +311,15 @@ public class Classifieds {
 
 	public void manageClassifieds(UserModel userModel) {
 		int option = 0;
-		while (option != 3) {
-			System.out.println("\nClassified Options:\n 1.Update Classified \n 2.Delete Classified \n 3.Exit Menu");
-			do {
-				System.out.println("Enter a valid option number: ");
-				option = Integer.parseInt(sc.nextLine().trim());
-			} while (option <= 0 || option > 3);
-			if (option == 1) {
-				updateClassified(userModel);
-			} else if (option == 2) {
-				deleteClassifieds(userModel);
-			} else {
-				goBackToUserMenu(userModel);
-			}
+		System.out.println("Classified Options:\n 1.Update Classified \n 2.Delete Classified");
+		do {
+			System.out.println("Enter a valid option number: ");
+			option = Integer.parseInt(sc.nextLine());
+		} while (!(option == 1 || option == 2));
+		if (option == 1) {
+			updateClassified(userModel);
+		} else {
+			deleteClassifieds(userModel);
 		}
 
 	}
@@ -344,13 +346,6 @@ public class Classifieds {
 	public void sellClassifieds(UserModel userModel) {
 		System.out.println("Sell Classifieds");
 		addClassifieds(userModel);
-		goBackToUserMenu(userModel);
-	}
-
-	private void goBackToUserMenu(UserModel userModel) {
-		User user = new User();
-		user.displayUserOptions(userModel);
-
 	}
 
 }

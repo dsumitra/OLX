@@ -24,6 +24,14 @@ public class CartDAOImpl implements ICartDAO, ICartConstants {
 				"UPDATE " + CART + " SET " + STATUS + " = 'APPROVE' WHERE " + ID + " = %s", CartID.toString());
 	}
 
+	public ResultSet getCart(Long cartID) throws ClassNotFoundException, SQLException {
+		String sql ="select id, classified_id, bidprice, status, bidder_id, title , expected_price, seller_id from vcart" +
+		" where CLASSIFIED_ID = %d ";
+		return DBConnection.executeQueryFormat(sql, cartID);
+	}
+
+	
+	
 	public ResultSet getBidsForClassified(Long ClassifiedId) throws ClassNotFoundException, SQLException {
 //		return DBConnection.executeQueryFormat("SELECT " + ID + ", " + CLASSIFIED_ID + ", " + BIDPRICE + ", " + STATUS
 //				+ ", " + BIDDER_ID + " FROM " + CART + " WHERE " + CLASSIFIED_ID + " = %s ", ClassifiedId.toString());

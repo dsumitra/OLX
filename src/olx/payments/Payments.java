@@ -1,6 +1,10 @@
 package olx.payments;
 
 import java.util.*;
+
+import olx.cart.*;
+import olx.paymentMethods.*;
+
 import java.sql.*;
 
 public class Payments {
@@ -8,6 +12,39 @@ public class Payments {
 	PaymentsModel p = new PaymentsModel();
 	PaymentsDAO pdb = new PaymentsDAO();
 	Scanner s = new Scanner(System.in);	
+	Cart c = new Cart();
+	PaymentMethods pm = new PaymentMethods();
+	
+
+	public void makePaymentforCart(Long cartId) throws ClassNotFoundException, SQLException {
+		
+		CartModel cm = c.getCart(cartId);
+		pm.viewPaymentMethods(cm.getBidderID());
+		
+		System.out.println("Enter option:");
+		System.out.println("1) Make Payment");
+		System.out.println("2) Add new Payment Method");
+		
+		
+		String op =s.nextLine().trim();
+		if(op == "1")
+		{		 
+				System.out.println("Enter Payment method id");
+				p.paymentMethodID = Long.valueOf( s.nextLine().trim());
+				p.classifiedID = cm.getClassifiedId();
+				p.userID = cm.getBidderID();
+				p.cartID = cm.getCartId();
+				p.amount = cm.getBidPrice();
+				pdb.addPayment(p);
+		}
+		else if (op == "2"){
+			pm.addPaymentMethod(cm.getBidderID());
+			makePaymentforCart(cartId);
+		}
+		//show methods for user
+		//do you want to add payment method
+		//select a payment method
+	}
 	
 	public void addPayment() throws ClassNotFoundException, SQLException {
 		readPayment();
