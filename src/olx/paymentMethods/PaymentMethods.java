@@ -4,17 +4,21 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Scanner;
 
+import olx.cart.CartDAOImpl;
+import olx.cart.CartModel;
+import olx.classifieds.Classifieds;
+
 public class PaymentMethods {
 	PaymentMethodsModel m = new PaymentMethodsModel();
 	PaymentMethodsDAO d = new PaymentMethodsDAO();
 	Scanner s = new Scanner(System.in);
 
-	public void addPaymentMethod(Long userId) throws ClassNotFoundException, SQLException {
+	public void addPaymentMethod(CartModel cm) throws ClassNotFoundException, SQLException {
 
-		m.userID = userId;
+		m.userID = cm.getBidderID();
+		System.out.println("\nAvailable payment options:");
+		System.out.println("\n1. CASH ON DELIVERY\r\n" + "2. CREDIT CARD\r\n" + "3. DEBIT CARD\r\n" + "4. NET BANKING");
 		System.out.println("Enter an option:");
-		System.out.println("1) CASH ON DELIVERY\r\n" + "2) CREDIT CARD\r\n" + "3) DEBIT CARD\r\n" + "4) NET BANKING");
-
 		Integer op = Integer.valueOf(s.nextLine().trim());
 		switch (op) {
 		case 1:
@@ -34,7 +38,7 @@ public class PaymentMethods {
 			break;
 		}
 
-		if (op == 1 || op == 2) {
+		if (op == 3 || op == 2) {
 
 			System.out.println("Enter Card Number:");
 			m.cardNumber = s.nextLine().trim();
@@ -44,9 +48,13 @@ public class PaymentMethods {
 			m.expYear = Long.valueOf(s.nextLine().trim());
 			System.out.println("Enter Name on Card:");
 			m.nameOnCard = s.nextLine().trim();
-		}
-
-		d.addPaymentMethods(m);
+		} 
+		System.out.println("Payment successfull!!");
+		Classifieds classified = new Classifieds();
+		classified.markClassifiedsAsSold(cm);
+		CartDAOImpl cdb = new CartDAOImpl();
+		cdb.deleteCart(cm.getCartId());
+//		d.addPaymentMethods(m);
 	}
 
 	public void deletePaymentMethod(Long userId) throws ClassNotFoundException, SQLException {

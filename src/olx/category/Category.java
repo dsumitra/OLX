@@ -37,7 +37,7 @@ public class Category {
 		categoryMap.put("Vehicles", vehiclesSubCategory);
 		categoryMap.put("Books", booksSubCategory);
 		categoryMap.put("Musical Instruments", musicalSubCategory);
-		categoryMap.put("Lost and Unclaimed", lostUnclaimedSubCategory); // System.out.println(categoryMap);
+		categoryMap.put("Lost and Unclaimed", lostUnclaimedSubCategory);
 		addCategoryMap(categoryMap);
 
 	}
@@ -64,6 +64,7 @@ public class Category {
 				}
 			}
 			categoryMap.put(newCategory, newSubCategoryList);
+			System.out.println("");
 		}
 		addCategoryMap(categoryMap);
 	}

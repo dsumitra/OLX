@@ -77,8 +77,7 @@ public class UserLogin {
 		try {
 			int count = 0;
 			System.out.println("Enter the email: ");
-			//TODO add if entered email is valid
-			emailId = s.nextLine();
+			emailId = s.nextLine().trim();
 			if (emailId.matches("^[\\w-_\\.+]*[\\w-_\\.]\\@([\\w]+\\.)+[\\w]+[\\w]$")) {
 				user.setEmail(emailId);
 
@@ -109,7 +108,6 @@ public class UserLogin {
 			user.setLastName(last_name);
 
 		} catch (Exception e) {
-			//TODO: similar implementation for all user inputs.
 			System.out.println("Invalid inputs.");
 			addProfileName(user);
 		}
@@ -159,7 +157,6 @@ public class UserLogin {
 	void addAddress(UserModel user) {
 		String address;
 		System.out.println("Enter the address: ");
-		//TODO: add trim to every scanner input.
 		address = s.nextLine().trim();
 		user.setAddress(address);
 	}

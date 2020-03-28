@@ -1,6 +1,9 @@
 package olx.user;
 
 import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 import olx.cart.Cart;
@@ -63,26 +66,24 @@ public class User {
 
 		if (user.isAdmin() == true) {
 			System.out.println("\nAdmin Menu");
-			System.out.println(" 1.Delete Users \n 2.Manage categories \n 3.Approve Classifieds \n 4.View Reports \n 5.Settings \n 6.Sign out");
-			
+			System.out.println(
+					" 1.Delete Users \n 2.Manage categories \n 3.Approve Classifieds \n 4.View Reports \n 5.Settings \n 6.Sign out");
+
 			System.out.println("Please select from the given options: ");
 			int option = Integer.parseInt(sc.nextLine());
 			if (option == 1) {
 				deleteUser(user);
 			} else if (option == 2) {
 				categories.manageCategories(user);
-			}
-			else if (option == 3) {
+			} else if (option == 3) {
 				classifieds.displayPostedClassifieds();
-			}
-			else if (option == 4) {
+			} else if (option == 4) {
 				Reports report = new Reports();
 				report.showReportOptions(user);
 			} else if (option == 5) {
 				showUserSettings(user);
 			} else if (option == 6) {
-				// TODO implement sign out
-//				signOut();
+				signOut();
 			} else {
 				System.out.println("Incorrect options provided");
 				displayUserOptions(user);
@@ -100,20 +101,18 @@ public class User {
 			} else if (option == 3) {
 				classifieds.manageClassifieds(user);
 			} else if (option == 4) {
-				
 				cart.viewCart(user);
-				
 			} else if (option == 5) {
 				showUserSettings(user);
 			} else if (option == 6) {
-				// TODO implement signout
+				signOut();
 			} else {
 
 				System.out.println("Incorrect options provided");
 				displayUserOptions(user);
 			}
 		}
-		displayUserOptions( user);
+		displayUserOptions(user);
 	}
 
 	void showUserSettings(UserModel user) {
@@ -123,7 +122,7 @@ public class User {
 					+ " where " + UserColumnNames.EMAIL + "='" + email + "'";
 			ResultSet rs = DBConnection.executeQuery(query);
 			int count = 0;
-			System.out.println("Email \t\t First Name \t Last Name \t  Address \t Phone");
+			System.out.println("\nEmail \t\t\t First Name \t Last Name \t  Address \t Phone");
 			while (rs.next()) {
 				System.out.print(rs.getString("email") + " \t " + rs.getString("first_name") + " \t\t "
 						+ rs.getString("last_name") + " \t\t " + rs.getString("address") + " \t "
@@ -137,8 +136,8 @@ public class User {
 				user.setId(rs.getInt("id"));
 			}
 			System.out.println(
-					"1.Rename username \n 2.Change password \n 3.Update PhoneNumber \n 4.Update Email \n 5.Update Address \n 6. Return to Menu");
-			System.out.println("Enter How many values you want to update");
+					"\nUser Settings Menu:\n 1.Rename username \n 2.Change password \n 3.Update PhoneNumber \n 4.Update Email \n 5.Update Address \n 6.Return to Menu");
+			System.out.println("Enter how many values you want to update: ");
 			int value = Integer.parseInt(sc.nextLine());
 			int temp = value;
 			while (temp > count) {
@@ -181,7 +180,7 @@ public class User {
 						}
 					} else if (attributeId == 3) {
 						try {
-							System.out.println("Enter the new PhoneNumber");
+							System.out.println("Enter the new Phone Number");
 							sc.nextLine();
 							String newPhoneNo = sc.nextLine();
 							System.out.println("Confirm if you would like to proceed with changes? (Y/N):");
@@ -194,7 +193,7 @@ public class User {
 								System.out.println("No updates made");
 							}
 						} catch (Exception e) {
-							System.out.println("Invalid PhoneNumber provided");
+							System.out.println("Invalid Phone Number provided");
 							showUserSettings(user);
 						}
 					} else if (attributeId == 4) {
@@ -231,9 +230,10 @@ public class User {
 							System.out.println("Invalid address provided");
 							showUserSettings(user);
 						}
-					} else if (attributeId==6) {
+					} else if (attributeId == 6) {
 						displayUserOptions(user);
 					}
+					System.out.println("before updateuser");
 					userDaoImpl.updateUser(user);
 				}
 			}
@@ -241,27 +241,64 @@ public class User {
 			System.out.println("Invalid input provided");
 			showUserSettings(user);
 		}
-		showUserSettings(user);
+//		showUserSettings(user);
 	}
 
 	public void deleteUser(UserModel user) {
 		if (user.isAdmin() == true) {
-			ResultSet rs = userDaoImpl.selectAllUser(0);
-			System.out.println("How many users you want to del?");
-			int number = Integer.parseInt(sc.nextLine());
+			int number = 0;
+			boolean invalidNumber = false;
+			ResultSet rs = userDaoImpl.getAllUsers();
+			List<Long> userIds = new ArrayList<>();
+			userIds.contains(1);
+			System.out.println("\nID \t\t EMAIL \t\t FIRST NAME \t\t LAST NAME \t\t PHONE \t\t STATUS");
+			try {
+				while (rs.next()) {
+					long userId = rs.getLong(UserColumnNames.USER_ID);
+					String email = rs.getString(UserColumnNames.EMAIL);
+					String fname = rs.getString(UserColumnNames.FIRSTNAME);
+					String lname = rs.getString(UserColumnNames.LASTNAME);
+					String phone = rs.getString(UserColumnNames.PHONE);
+					String status = rs.getString(UserColumnNames.STATUS);
+					System.out.println(userId + "\t\t" + email + "\t\t" + fname + "\t\t" + lname + "\t\t" + phone
+							+ "\t\t" + status);
+					userIds.add(userId);
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+			do {
+				System.out.println("How many users you want to del?");
+				number = Integer.parseInt(sc.nextLine());
+				if (number > userIds.size()) {
+					invalidNumber = true;
+					System.out.println("Invalid number");
+				} else {
+					invalidNumber = false;
+				}
+			} while (invalidNumber == true);
+
 			for (int i = 0; i < number; i++) {
 				System.out.println("Enter the userId");
-				int input = Integer.parseInt(sc.nextLine());
+				int input = Integer.parseInt(sc.nextLine().trim());
 				user.setId(input);
 				userDaoImpl.deleteUser(user);
-				System.out.println("\nThe user that has been deleted is " + user.getId());
 			}
 		}
 	}
 
 	void signOut() {
-		System.exit(0);
+		exit(0);
 		login();
+	}
+
+	public void exit(int i) {
+		return;
+	}
+
+	public static void main(String[] args) {
+		User u = new User();
+		u.login();
 	}
 
 }

@@ -14,28 +14,25 @@ public class UserDAOImpl implements IUserDAO {
 
 	@Override
 	public void deleteUser(UserModel userModel) {
-		// TODO Auto-generated method stub
-		String query = "delete from users where user_id  =" + userModel.getId();
+		String query = "delete from users where " + UserColumnNames.USER_ID + "=" + userModel.getId();
 		try {
 			DBConnection.executeQuery(query);
 			System.out.println("Successfully deleted the user : " + userModel.getId());
 		} catch (ClassNotFoundException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
 
 	@Override
 	public void updateUser(UserModel userModel) {
-		// TODO Auto-generated method stub
+	
 		String query = "Update " + TableNames.USER + " set " + UserColumnNames.EMAIL + " ='" + userModel.getEmail()
 				+ "' , " + UserColumnNames.PHONE + " ='" + userModel.getPhone() + "', " + UserColumnNames.FIRSTNAME
 				+ " = '" + userModel.getFirstName() + "' where " + UserColumnNames.USER_ID + " = " + userModel.getId()
 				+ "";
-
+System.out.println(query);
 		// password needs to be added
 		try {
 			DBConnection.executeQuery(query);
@@ -59,32 +56,18 @@ public class UserDAOImpl implements IUserDAO {
 			DBConnection.executeQuery(query);
 			System.out.println("Successfully added user: " + user.getFirstName());
 		} catch (ClassNotFoundException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
 
 	@Override
-	public ResultSet selectAllUser(int userID) {
-		// TODO Auto-generated method stub
-//		userID=0;
-		String query;
-		if (userID != 0) {
-			// TODO: to use UserID in the query
-			query = "Select * from " + TableNames.USER + " where " + UserColumnNames.USER_ID + "=" + 0;
-		} else {
-			query = "select * from " + TableNames.USER;
-		}
+	public ResultSet getAllUsers() {
+		String query = "select * from " + TableNames.USER + " where " + UserColumnNames.IS_ADMIN + " = 'N'";
 		ResultSet rs = null;
-
 		try {
 			rs = DBConnection.executeQuery(query);
-			while (rs.next()) {
-				System.out.println(rs.getString(UserColumnNames.USER_ID));
-			}
 
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
