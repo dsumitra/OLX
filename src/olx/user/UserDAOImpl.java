@@ -100,7 +100,7 @@ public class UserDAOImpl implements IUserDAO {
 		try {
 			ResultSet rs = DBConnection.executeQuery(query);
 			while (rs.next()) {
-				int userID = rs.getInt(UserColumnNames.USER_ID);
+				long userID = rs.getInt(UserColumnNames.USER_ID);
 				String firstName = rs.getString(UserColumnNames.FIRSTNAME);
 				String lastName = rs.getString(UserColumnNames.LASTNAME);
 				String phone = rs.getString(UserColumnNames.PHONE);
