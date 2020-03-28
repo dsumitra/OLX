@@ -20,12 +20,30 @@ public class Payments {
 		
 		CartModel cm = c.getCart(cartId);
 		pm.viewPaymentMethods(cm.getBidderID());
-		System.out.println("Enter Payment method id");
+		
+		System.out.println("Enter option:");
+		System.out.println("1) Make Payment");
+		System.out.println("2) Add new Payment Method");
+		
+		
+		String op =s.nextLine().trim();
+		if(op == "1")
+		{		 
+				System.out.println("Enter Payment method id");
+				p.paymentMethodID = Long.valueOf( s.nextLine().trim());
+				p.classifiedID = cm.getClassifiedId();
+				p.userID = cm.getBidderID();
+				p.cartID = cm.getCartId();
+				p.amount = cm.getBidPrice();
+				pdb.addPayment(p);
+		}
+		else {
+			pm.addPaymentMethod(cm.getBidderID());
+			makePaymentforCart(cartId);
+		}
 		//show methods for user
 		//do you want to add payment method
 		//select a payment method
-		
-		
 	}
 	
 	public void addPayment() throws ClassNotFoundException, SQLException {
