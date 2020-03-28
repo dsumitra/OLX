@@ -1,16 +1,16 @@
 package olx.category;
-
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.SQLIntegrityConstraintViolationException;
-import java.util.ArrayList;
-import java.util.List;
 
 import dbConnection.DBConnection;
 import olx.category.CategoryConstants.CategoryColumnNames;
 import olx.classifieds.ClassifiedDAOImpl;
 import olx.constants.OlxConstants;
 
+/**
+ * @author dsumitra
+ *
+ */
 public class CategoryDAOImpl implements ICategoryDAO {
 
 	public ResultSet getSubCategories(String categoryName) {
@@ -49,7 +49,6 @@ public class CategoryDAOImpl implements ICategoryDAO {
 			DBConnection.executeUpdate(delQuery);
 			System.out.println("Successfully deleted Category: " + categoryName);
 		} catch (SQLException | ClassNotFoundException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
@@ -73,7 +72,7 @@ public class CategoryDAOImpl implements ICategoryDAO {
 		try {
 			DBConnection.executeUpdate(query);
 			System.out.println("Successfully created Category: " + category);
-		} catch (SQLException | ClassNotFoundException e) { // TODO Auto-generated catch block
+		} catch (SQLException | ClassNotFoundException e) { 
 			e.printStackTrace();
 		}
 
@@ -111,8 +110,21 @@ public class CategoryDAOImpl implements ICategoryDAO {
 
 		ResultSet rs = null;
 		try {
-			String query1 = "Select * from " + OlxConstants.TableNames.CATEGORY;
-			rs = DBConnection.executeQuery(query1);
+			String query = "Select * from " + OlxConstants.TableNames.CATEGORY;
+			rs = DBConnection.executeQuery(query);
+		} catch (ClassNotFoundException | SQLException e) {
+			e.printStackTrace();
+		}
+
+		return rs;
+	}
+
+	public ResultSet getCategoryById(int categoryId) {
+		ResultSet rs = null;
+		try {
+			String query = "Select * from " + OlxConstants.TableNames.CATEGORY + " where " + CategoryColumnNames.ID
+					+ " = " + categoryId;
+			rs = DBConnection.executeQuery(query);
 		} catch (ClassNotFoundException | SQLException e) {
 			e.printStackTrace();
 		}

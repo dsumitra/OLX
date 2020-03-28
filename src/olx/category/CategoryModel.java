@@ -1,11 +1,15 @@
 package olx.category;
 
+/**
+ * @author dsumitra
+ *
+ */
 public class CategoryModel {
 	private int id;
 	private String primaryCategory;
 	private String subCategory;
 
-	CategoryModel(int id, String primaryCategory, String subCategory) {
+	public CategoryModel(int id, String primaryCategory, String subCategory) {
 		super();
 		this.id = id;
 		this.primaryCategory = primaryCategory;

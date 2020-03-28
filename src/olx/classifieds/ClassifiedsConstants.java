@@ -1,5 +1,9 @@
 package olx.classifieds;
 
+/**
+ * @author dsumitra
+ *
+ */
 public class ClassifiedsConstants {
 
 	public enum ClassifiedStatus {

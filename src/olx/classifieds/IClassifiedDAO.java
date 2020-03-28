@@ -2,16 +2,22 @@ package olx.classifieds;
 
 import java.sql.ResultSet;
 
-//import java.util.Map;
+import olx.user.UserModel;
 
+/**
+ * @author dsumitra
+ *
+ */
 public interface IClassifiedDAO {
 
 	public void addClassified(ClassifiedModel classified);
 
 	public void deleteClassified(ClassifiedModel classifiedModel);
 
-	public ResultSet getAllClassifieds(int userID);
+	public ResultSet getClassifiedsByUserId(long userID);
 
 	public void updateClassified(ClassifiedModel classifiedModel);
+	
+	public  ResultSet OrderHistory(UserModel userModel);
 
 }

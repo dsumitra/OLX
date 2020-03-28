@@ -3,11 +3,15 @@ package olx.classifieds;
 import java.util.Date;
 import olx.classifieds.ClassifiedsConstants.ClassifiedStatus;
 
+/**
+ * @author dsumitra
+ *
+ */
 public class ClassifiedModel {
 	private int ID;
 	private String title;
 	private String description;
-	private int userID;
+	private long userID;
 	private Date dateCreated;
 	private Date dateUpdated;
 	private String phone;
@@ -68,11 +72,11 @@ public class ClassifiedModel {
 		this.description = description;
 	}
 
-	public int getUserID() {
+	public long getUserID() {
 		return userID;
 	}
 
-	public void setUserID(int userID) {
+	public void setUserID(long userID) {
 		this.userID = userID;
 	}
 

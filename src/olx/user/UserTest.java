@@ -1,12 +1,10 @@
-//package olx.payments;
+//package olx.user;
 //
 //import java.sql.SQLException;
 //
-//public class PaymentsTest {
-//
+//public class UserTest {
 //	public static void main(String[] args) throws ClassNotFoundException, SQLException {
-//		Payments p = new Payments();
-//		p.makePaymentforCart(1l);
+//		User u = new User();
+//		u.login();
 //	}
-//
 //}

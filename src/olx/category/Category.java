@@ -3,19 +3,25 @@ package olx.category;
 import java.sql.*;
 import java.util.*;
 
+import olx.user.User;
+import olx.user.UserModel;
+
+/**
+ * @author dsumitra
+ *
+ */
 public class Category {
 	CategoryHelper helper;
 	CategoryDAOImpl CategoryDAOImpl;
 	Scanner sc = new Scanner(System.in);
 
-	Category() {
+	public Category() {
 		helper = new CategoryHelper();
 		CategoryDAOImpl = new CategoryDAOImpl();
 	}
 
 	void addDefaultCategories() {
 		Map<String, List<String>> categoryMap = new HashMap<>();
-
 		ArrayList<String> electronicsSubCategory = new ArrayList<String>();
 		electronicsSubCategory.add("Mobiles");
 		electronicsSubCategory.add("Laptop");
@@ -35,7 +41,7 @@ public class Category {
 		categoryMap.put("Vehicles", vehiclesSubCategory);
 		categoryMap.put("Books", booksSubCategory);
 		categoryMap.put("Musical Instruments", musicalSubCategory);
-		categoryMap.put("Lost and Unclaimed", lostUnclaimedSubCategory); // System.out.println(categoryMap);
+		categoryMap.put("Lost and Unclaimed", lostUnclaimedSubCategory);
 		addCategoryMap(categoryMap);
 
 	}
@@ -54,7 +60,7 @@ public class Category {
 			if (hasSubCategory.equalsIgnoreCase("Y")) {
 				System.out.println(
 						"Enter the number of sub-categories you want to add to " + newCategory + " categories\n");
-				int subCategoryNo = Integer.parseInt(sc.nextLine().trim()); //TODO handle NumberFormatException
+				int subCategoryNo = Integer.parseInt(sc.nextLine().trim());
 				for (int k = 0; k < subCategoryNo; k++) {
 					System.out.println("Enter a sub-category name\n");
 					String newSubCategory = sc.nextLine();
@@ -62,6 +68,7 @@ public class Category {
 				}
 			}
 			categoryMap.put(newCategory, newSubCategoryList);
+			System.out.println("");
 		}
 		addCategoryMap(categoryMap);
 	}
@@ -82,7 +89,7 @@ public class Category {
 
 	void deleteCategory() {
 		ResultSet primaryCategoryRs = CategoryDAOImpl.getPrimaryCategories();
-		Map<Integer, String> categories = displayPrimaryCategories(primaryCategoryRs);
+		Map<Integer, String> categories = helper.displayPrimaryCategories(primaryCategoryRs);
 		System.out.println("Enter number of categories you want to delete :");
 		int delSubCategoryNum = Integer.parseInt(sc.nextLine().trim());
 		int delCategoryID;
@@ -101,8 +108,8 @@ public class Category {
 		String delCategory, subCategory;
 		ResultSet subCategoryRs = CategoryDAOImpl.getSubCategories(selectedCategory);
 		Map<Integer, String> subCategoryMap = displaySubCategories(subCategoryRs);
-		if(subCategoryMap.size() == 1) {
-			//Only 1 entry of category is present. Hence, deleting the category directly.
+		if (subCategoryMap.size() == 1) {
+			// Only 1 entry of category is present. Hence, deleting the category directly.
 			CategoryDAOImpl.deleteCategoryByName(selectedCategory);
 			return;
 		}
@@ -120,8 +127,7 @@ public class Category {
 			// deleting sub categories
 			for (int j = 0; j < delSubCategoryNum; j++) {
 				System.out.println("Select a sub-category number you want to delete");
-				delSubCategoryID = Integer.parseInt(sc.nextLine().trim()); // TODO: check count is less than the no. of
-																			// sub-categories available
+				delSubCategoryID = Integer.parseInt(sc.nextLine().trim());
 				subCategory = subCategoryMap.get(delSubCategoryID);
 				CategoryDAOImpl.deleteSubCategory(selectedCategory, subCategory);
 			}
@@ -132,12 +138,9 @@ public class Category {
 		helper.displayCatergoriesTable();
 	}
 
-	void searchCategory() {
-	}
-
 	void updateCategory() {
 		ResultSet primaryCategoryRs = CategoryDAOImpl.getPrimaryCategories();
-		Map<Integer, String> categories = displayPrimaryCategories(primaryCategoryRs);
+		Map<Integer, String> categories = helper.displayPrimaryCategories(primaryCategoryRs);
 		int updateCategoryAction = 0;
 		String selectedCategory = null;
 		try {
@@ -149,15 +152,10 @@ public class Category {
 					int updateCategoryID = Integer.parseInt(sc.nextLine());
 					selectedCategory = categories.get(updateCategoryID);
 					// subCategoryMap = CategoryDAOImpl.getSubCategories(selectedCategory);
-					System.out.println(
-							"Update options:\n"
-							+ "1. Update Primary Category only \n"
-							+ "2. Update Sub Category only \n"
-							+ "3. Update Primary Category and Sub-Category \n"
+					System.out.println("Update options:\n" + "1. Update Primary Category only \n"
+							+ "2. Update Sub Category only \n" + "3. Update Primary Category and Sub-Category \n"
 							+ "Select the action do you want to perform: ");
-					updateCategoryAction = Integer.parseInt(sc.nextLine()); // TODO check if there are any
-																			// sub-categories
-																			// for the selectedCategory
+					updateCategoryAction = Integer.parseInt(sc.nextLine());
 					if (updateCategoryAction == 2) {
 						updateSubCategory(selectedCategory);
 					} else if (updateCategoryAction == 1) {
@@ -197,27 +195,6 @@ public class Category {
 		}
 	}
 
-	Map<Integer, String> displayPrimaryCategories(ResultSet rs) {
-		Map<Integer, String> categories = new HashMap<Integer, String>();
-		System.out.println("ID\t\t CATEGORY");
-		int i = 1;
-		// displaying distinct Categories.
-		try {
-			while (rs.next()) {
-				int id = i++;
-				String primaryCategory;
-				primaryCategory = rs.getString("PRIMARY_CATEGORY");
-				categories.put(id, primaryCategory);
-				System.out.println(id + "\t\t" + primaryCategory);
-			}
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-
-		return categories;
-	}
-
 	Map<Integer, String> displaySubCategories(ResultSet rs) {
 		Map<Integer, String> subCategoryMap = new HashMap<Integer, String>();
 		System.out.println("ID \t\t Sub-Category");
@@ -233,6 +210,28 @@ public class Category {
 			e.printStackTrace();
 		}
 		return subCategoryMap;
+	}
+
+	public void manageCategories(UserModel userModel) {
+		int option = 0;
+		while(option != 5) {
+			System.out.println(
+					"\nCategory Options:\n 1.Add Category \n 2.Delete Category \n 3.Update Category \n 4.View All Catgeories \n 5.Exit Menu");
+			System.out.println("Enter the action you want to perform: ");
+			option = Integer.parseInt(sc.nextLine().trim());
+			if (option == 1) {
+				addCustomCategories();
+			} else if (option == 2) {
+				deleteCategory();
+			} else if (option == 3) {
+				updateCategory();
+			} else if (option == 4) {
+				displayCatergoriesTable();
+			} else if(option == 5) {
+				User user = new User();
+				user.displayUserOptions(userModel);
+			}			
+		}
 	}
 
 }

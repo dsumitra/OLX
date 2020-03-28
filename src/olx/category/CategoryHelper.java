@@ -7,34 +7,68 @@ import java.sql.Statement;
 import java.util.HashMap;
 import java.util.Map;
 
+import olx.category.CategoryConstants.CategoryColumnNames;
+
+/**
+ * @author dsumitra
+ *
+ */
 public class CategoryHelper {
 	Connection con;
 	Statement stmt;
 
-	CategoryDAOImpl CategoryDAOImpl;
+	CategoryDAOImpl categoryDAOImpl;
 
 	public CategoryHelper() {
-		CategoryDAOImpl = new CategoryDAOImpl();
+		categoryDAOImpl = new CategoryDAOImpl();
 	}
 
 	public Map<Integer, CategoryModel> displayCatergoriesTable() {
+		return getCategoriesWithDisplay(true);
+	}
+	
+	public Map<Integer, CategoryModel> getAllCategories() {
+		return getCategoriesWithDisplay(false);
+	}
+	
+	private Map<Integer, CategoryModel> getCategoriesWithDisplay(boolean display) {
 		Map<Integer, CategoryModel> categoryMap = new HashMap<>();
 
-		ResultSet rs = CategoryDAOImpl.getAllCategories();
-
-		System.out.println("ID \t\t\t  Primary \t\t\t Sub_Category");
+		ResultSet rs = categoryDAOImpl.getAllCategories();
+		if(display) System.out.println("ID \t\t\t  Primary \t\t\t Sub_Category");
 		try {
 			while (rs.next()) {
-				int id = rs.getInt(1);
-				String primaryCategory = rs.getString(2);
-				String subCategory = rs.getString(3);
+				int id = rs.getInt(CategoryColumnNames.ID);
+				String primaryCategory = rs.getString(CategoryColumnNames.PRIMARY_CATEGORY);
+				String subCategory = rs.getString(CategoryColumnNames.SUB_CATEGORY);
 				CategoryModel categoryModel = new CategoryModel(id, primaryCategory, subCategory);
 				categoryMap.put(id, categoryModel);
-				System.out.println(id + "\t\t\t" + primaryCategory + "\t\t\t" + subCategory);
+				if(display) System.out.println(id + "\t\t\t" + primaryCategory + "\t\t\t" + subCategory);
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 		return categoryMap;
 	}
+	
+	public Map<Integer, String> displayPrimaryCategories(ResultSet rs) {
+		Map<Integer, String> categories = new HashMap<Integer, String>();
+		System.out.println("ID\t\t CATEGORY");
+		int i = 1;
+		// displaying distinct Categories.
+		try {
+			while (rs.next()) {
+				int id = i++;
+				String primaryCategory;
+				primaryCategory = rs.getString("PRIMARY_CATEGORY");
+				categories.put(id, primaryCategory);
+				System.out.println(id + "\t\t" + primaryCategory);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+		return categories;
+	}
+
 }

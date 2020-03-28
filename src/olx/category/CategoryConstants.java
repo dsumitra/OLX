@@ -1,5 +1,9 @@
 package olx.category;
 
+/**
+ * @author dsumitra
+ *
+ */
 public class CategoryConstants {
 
 	public final static class CategoryColumnNames {

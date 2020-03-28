@@ -1,15 +1,26 @@
-package olx.User;
+package olx.user;
 
+import olx.user.UserConstants.UserStatus;
+
+
+/**
+ * @author albuquea
+ *
+ */
 public class UserModel {
-	int id;
+	long id;
 	String firstName;
 	String lastName;
 	String phone;
 	String email;
 	String address;
+	String password;
 	boolean admin = false;
+	UserStatus status;
 
-	public UserModel(int id, String firstName, String lastName, String phone, String email, String address, boolean admin) {
+	public UserModel(long id, String firstName, String lastName, String phone, String email, String address,
+			boolean admin, UserStatus status, String password) {
+		super();
 		this.id = id;
 		this.firstName = firstName;
 		this.lastName = lastName;
@@ -17,13 +28,27 @@ public class UserModel {
 		this.email = email;
 		this.address = address;
 		this.admin = admin;
+		this.status = status;
+		this.password = password;
 	}
 
-	public int getId() {
+	public UserModel() {
+		super();
+	}
+
+	public String getPassword() {
+		return password;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
+	}
+
+	public long getId() {
 		return id;
 	}
 
-	public void setId(int id) {
+	public void setId(long id) {
 		this.id = id;
 	}
 
@@ -74,13 +99,19 @@ public class UserModel {
 	public void setAdmin(boolean admin) {
 		this.admin = admin;
 	}
+	
+	public UserStatus getStatus() {
+		return status;
+	}
+
+	public void setStatus(UserStatus status) {
+		this.status = status;
+	}
 
 	@Override
 	public String toString() {
 		return "UserModel [id=" + id + ", firstName=" + firstName + ", lastName=" + lastName + ", phone=" + phone
-				+ ", email=" + email + ", address=" + address + ", admin=" + admin + "]";
+				+ ", email=" + email + ", address=" + address + ", admin=" + admin + ", status=" + status + "]";
 	}
-
-	
 
 }
