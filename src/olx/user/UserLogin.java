@@ -1,12 +1,18 @@
 package olx.user;
 
 import java.sql.ResultSet;
+
 import java.util.ArrayList;
 import java.util.Scanner;
 
 import dbConnection.DBConnection;
 import olx.user.UserConstants.UserColumnNames;
 
+
+/**
+ * @author albuquea
+ *
+ */
 public class UserLogin {
 	UserModel user;
 	UserDAOImpl userDaoImpl = new UserDAOImpl();

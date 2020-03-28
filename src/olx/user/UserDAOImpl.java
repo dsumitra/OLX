@@ -10,6 +10,10 @@ import olx.user.UserConstants.UserColumnNames;
 import olx.user.UserConstants.UserStatus;
 import dbConnection.DBConnection;
 
+/**
+ * @author albuquea
+ *
+ */
 public class UserDAOImpl implements IUserDAO {
 
 	@Override
@@ -38,13 +42,11 @@ System.out.println(query);
 			DBConnection.executeQuery(query);
 			System.out.println("Successfully updated the user details: " + userModel.getFirstName());
 		} catch (ClassNotFoundException e) {
-			// TODO Auto-generated catch block
+			
 			e.printStackTrace();
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		// TODO Auto-generated method stub
 	}
 
 	@Override

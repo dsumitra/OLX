@@ -1,5 +1,9 @@
 package olx.user;
 
+/**
+ * @author albuquea
+ *
+ */
 public class UserConstants {
 
 		public final static class UserColumnNames {

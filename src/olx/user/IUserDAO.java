@@ -1,6 +1,10 @@
 package olx.user;
 import java.sql.ResultSet;
 
+/**
+ * @author albuquea
+ *
+ */
 public interface IUserDAO {
 	
 	public void deleteUser(UserModel user);
