@@ -167,14 +167,4 @@ public class Cart {
 		}
 	}
 	
-//	public static void main(String []a) throws ClassNotFoundException, SQLException {
-//		Cart c = new Cart();
-//		c.viewBuyerBids( 2L );
-//		//sop do you want to proceed to payment 
-////		make payment for approved bid
-////		pass bid as parameter
-//		
-//		//c.approveBidForSeller( 1L);
-//		
-//	}
 }
