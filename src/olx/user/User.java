@@ -3,6 +3,7 @@ package olx.user;
 import java.sql.ResultSet;
 import java.util.Scanner;
 
+import olx.cart.Cart;
 import olx.category.Category;
 import olx.classifieds.Classifieds;
 import olx.constants.OlxConstants.TableNames;
@@ -14,6 +15,7 @@ public class User {
 	UserDAOImpl userDaoImpl = new UserDAOImpl();
 	Classifieds classifieds = new Classifieds();
 	Category categories = new Category();
+	Cart cart = new Cart();
 	Scanner sc = new Scanner(System.in);
 
 	void login() {
@@ -98,7 +100,9 @@ public class User {
 			} else if (option == 3) {
 				classifieds.manageClassifieds(user);
 			} else if (option == 4) {
-				// TODO: View cart
+				
+				cart.viewCart(user);
+				
 			} else if (option == 5) {
 				showUserSettings(user);
 			} else if (option == 6) {

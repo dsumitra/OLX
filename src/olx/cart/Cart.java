@@ -13,6 +13,28 @@ public class Cart {
 	CartModel c = new CartModel();
 	Scanner s = new Scanner(System.in);	
 
+	public void viewCart(UserModel user)  {
+
+		System.out.println("Enter the option you want to choose: \n 1.Posted Bids Cart view \n 2. Recieved Bids Cart View ");
+		
+		Long o =  Long.valueOf(s.nextLine().trim());
+
+		try {
+			if (o == 1) {
+				viewSellerCart(user.getId());
+			} else if (o == 2) {
+				viewBuyerCart(user.getId());
+			}
+
+		} catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+	}
 	void readCartId() {
 		System.out.println("Enter Cart Id:");
 		c.cartId =  Long.valueOf(s.nextLine().trim());
@@ -130,7 +152,7 @@ public class Cart {
 		approveBidForSeller( seller );
 	}
 
-	public void viewBuyerBids(Long buyerId ) throws ClassNotFoundException, SQLException {
+	public void viewBuyerCart(Long buyerId ) throws ClassNotFoundException, SQLException {
 		ResultSet r = cdb.getBidsForBidder(buyerId);
 		System.out.println("Your Bids ");
 		writeResultSet(r);	
