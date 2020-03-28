@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
 
+import olx.cart.Cart;
 import olx.category.CategoryDAOImpl;
 import olx.category.CategoryHelper;
 import olx.category.CategoryModel;
@@ -241,7 +242,8 @@ public class Classifieds {
 
 	public void buy(UserModel userModel) {
 		int buyCount, classifiedId = 0;
-		List<Integer> selectedCategoryIds = new ArrayList<Integer>();
+		double bidPrice = 0;
+		Map<Integer, Double> classifiedIdBidPriceMap = new HashMap<>();
 		Map<Integer, ClassifiedModel> classifiedMap = displayApprovedClassifieds();
 		if (classifiedMap.size() == 0) {
 			System.out.println("No classifieds available");
@@ -255,16 +257,28 @@ public class Classifieds {
 		for (int i = 0; i < buyCount; i++) {
 			do {
 				System.out.println("Enter a valid classified ID: ");
-				classifiedId = Integer.parseInt(sc.nextLine());
+				classifiedId = Integer.parseInt(sc.nextLine().trim());
+				System.out.println("Enter a bid price: ");
+				bidPrice = Double.parseDouble(sc.nextLine().trim());
 			} while (classifiedMap.get(classifiedId) == null);
-			selectedCategoryIds.add(classifiedId);
+			
+			classifiedIdBidPriceMap.put(classifiedId, bidPrice);
 
 			System.out.println("Added to cart: " + classifiedMap.get(classifiedId).getTitle());
 		}
-//		TODO: call cartView
-//		cartView.addToCart(selectedCategoryIds, userModel);
+		Cart cartView = new Cart();
+		try {
+			cartView.addToCart(userModel, classifiedIdBidPriceMap);
+		} catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		goBackToUserMenu(userModel);
 	}
+	
 
 	Map<Integer, ClassifiedModel> displayApprovedClassifieds() {
 		ResultSet rs = ClassifiedDAOImpl.filterClassifiedsByState(ClassifiedStatus.APPROVED);

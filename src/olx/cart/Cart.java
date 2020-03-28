@@ -3,6 +3,7 @@ package olx.cart;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.*;
+import java.util.Map.Entry;
 
 import olx.payments.Payments;
 import olx.user.UserModel;
@@ -63,14 +64,23 @@ public class Cart {
 		}
 	}
 
-	public void addToCart(UserModel user, List<Integer> selectedCategoryIds) throws ClassNotFoundException, SQLException {
-		bidForClassified(user);
+	public void addToCart(UserModel user, Map<Integer, Double> classifiedIdBidPriceMap)
+			throws ClassNotFoundException, SQLException {
+		int count = 0;
+		
+		for (Entry<Integer, Double> entry : classifiedIdBidPriceMap.entrySet()) {
+			Integer classifiedId = entry.getKey();
+			Double bidPrice = entry.getValue();
+			count += bidForClassified(classifiedId.longValue(), bidPrice, user.getId());
+		}
+
+		System.out.println(count + " records added");
 	}
 	
-	private void bidForClassified(UserModel user) throws ClassNotFoundException, SQLException {
-		readCart();
-		int count = cdb.addToCart(c.classifiedId, c.bidPrice, user.getId());
-		System.out.println(count + " records added");
+	private int bidForClassified(Long classifiedId, Double bidPrice, Long userId) throws ClassNotFoundException, SQLException {
+
+		return cdb.addToCart(classifiedId,bidPrice, userId);
+
 	}
 	
 	public CartModel getCart(Long cartID) throws ClassNotFoundException, SQLException {
