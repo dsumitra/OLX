@@ -62,22 +62,11 @@ public class ClassifiedDAOImpl implements IClassifiedDAO {
 
 	}
 
-	public void updateStatusById(List<Integer> classifiedIDs) {
-		if (classifiedIDs.size() == 0)
-			return;
-
+	public void markClassifiedsAsSold(long classifiedID) {
 		String query = "Update " + OlxConstants.TableNames.CLASSIFIEDS + " set " + ClassifiedColumnNames.STATE + " = '"
-				+ ClassifiedsConstants.ClassifiedStatus.SOLD + "' where" + ClassifiedColumnNames.ID + " = 103";
-		String idConditions = "";
-		String prefix = " ";
-		for (int i = 0; i < classifiedIDs.size(); i++) {
-			if (i != 0)
-				prefix = " or ";
-			idConditions += prefix + ClassifiedColumnNames.ID + " = " + classifiedIDs.get(i);
-		}
-		String updateQuery = query + idConditions;
+				+ ClassifiedsConstants.ClassifiedStatus.SOLD + "' where " + ClassifiedColumnNames.ID + " = " + classifiedID;
 		try {
-			DBConnection.executeUpdate(updateQuery);
+			DBConnection.executeUpdate(query);
 		} catch (ClassNotFoundException | SQLException e) {
 			e.printStackTrace();
 		}
@@ -128,7 +117,7 @@ public class ClassifiedDAOImpl implements IClassifiedDAO {
 		return rs;
 	}
 
-	public static ResultSet filterClassifiedsByState(ClassifiedStatus status) {
+	public ResultSet filterClassifiedsByState(ClassifiedStatus status) {
 		String query = "Select * from " + TableNames.CLASSIFIEDS + " where " + ClassifiedColumnNames.STATE + "='"
 				+ status + "'";
 		ResultSet rs = null;
@@ -139,6 +128,18 @@ public class ClassifiedDAOImpl implements IClassifiedDAO {
 		}
 		return rs;
 	}
+	
+	public ResultSet getApprovedClassifiedsOfOthers(long userId) {
+		String query = "Select * from " + TableNames.CLASSIFIEDS + " where " + ClassifiedColumnNames.STATE + "='"
+				+ ClassifiedsConstants.ClassifiedStatus.APPROVED + "' and " + ClassifiedColumnNames.USER_ID + " != " + userId ;
+		ResultSet rs = null;
+		try {
+			rs = DBConnection.executeQuery(query);
+		} catch (ClassNotFoundException | SQLException e) {
+			e.printStackTrace();
+		}
+		return rs;
+	} 
 
 	public ResultSet OrderHistory(UserModel userModel) {
 		String query = "Select " + ClassifiedColumnNames.ID + ", " + ClassifiedColumnNames.TITLE + ", "

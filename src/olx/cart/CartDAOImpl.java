@@ -71,7 +71,6 @@ public class CartDAOImpl implements ICartDAO, ICartConstants {
 
 	public ResultSet getBidsForSeller(Long Seller) throws ClassNotFoundException, SQLException {
 		String s = getClassifiedsCSVForSeller(Seller);
-		System.out.println("Classifieds for Seller : " + s);
 
 //		return DBConnection.executeQueryFormat(
 //				"SELECT CART_ID, CLASSIFIED_ID, BIDPRICE, STATUS, BIDDER_ID " + "FROM CART WHERE CLASSIFIED_ID IN "
@@ -86,7 +85,7 @@ public class CartDAOImpl implements ICartDAO, ICartConstants {
 
 	@Override
 	public int deleteCart(Long cartID) throws ClassNotFoundException, SQLException {
-		return DBConnection.executeUpdateFormat("DELETE FROM CART WHERE CART_ID = %s", cartID.toString());
+		return DBConnection.executeUpdateFormat("DELETE FROM CART WHERE ID = %s", cartID.toString());
 	}
 
 	@Override

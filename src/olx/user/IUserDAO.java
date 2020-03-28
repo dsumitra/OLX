@@ -9,7 +9,6 @@ public interface IUserDAO {
 	
 	public void addUser(UserModel user);
 	
-	public ResultSet selectAllUser(int userID) ;
-		// TODO Auto-generated method stub
+	public ResultSet getAllUsers();
 	}
 

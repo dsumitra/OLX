@@ -2,11 +2,15 @@ package olx.cart;
 
 import java.sql.SQLException;
 
+import olx.user.UserModel;
+
 public class CartTest {
 
 	public static void main(String[] args) throws ClassNotFoundException, SQLException {
 		Cart c = new Cart();
-		c.viewBuyerBids(2L);
+		UserModel m = new UserModel();
+		m.setId(1);
+		c.viewCart(m);
 		
 		System.out.println("Thank you");
 		
