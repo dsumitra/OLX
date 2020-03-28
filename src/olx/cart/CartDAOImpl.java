@@ -4,7 +4,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 
-import java.sql.*;
 import dbConnection.*;
 
 public class CartDAOImpl implements ICartDAO, ICartConstants {
