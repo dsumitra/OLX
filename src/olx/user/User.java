@@ -61,19 +61,24 @@ public class User {
 
 		if (user.isAdmin() == true) {
 			System.out.println("\nAdmin Menu");
-			System.out.println(" 1.Delete Users \n 2.Manage categories \n 3.View Reports \n 4.Settings \n 5.Sign out");
+			System.out.println(" 1.Delete Users \n 2.Manage categories \n 3.Approve Classifieds \n 4.View Reports \n 5.Settings \n 6.Sign out");
+			
 			System.out.println("Please select from the given options: ");
 			int option = Integer.parseInt(sc.nextLine());
 			if (option == 1) {
 				deleteUser(user);
 			} else if (option == 2) {
 				categories.manageCategories(user);
-			} else if (option == 3) {
+			}
+			else if (option == 3) {
+				classifieds.displayPostedClassifieds();
+			}
+			else if (option == 4) {
 				Reports report = new Reports();
 				report.showReportOptions(user);
-			} else if (option == 4) {
-				showUserSettings(user);
 			} else if (option == 5) {
+				showUserSettings(user);
+			} else if (option == 6) {
 				// TODO implement sign out
 //				signOut();
 			} else {
@@ -104,6 +109,7 @@ public class User {
 				displayUserOptions(user);
 			}
 		}
+		displayUserOptions( user);
 	}
 
 	void showUserSettings(UserModel user) {

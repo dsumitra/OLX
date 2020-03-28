@@ -5,6 +5,7 @@ import java.sql.SQLException;
 import java.util.*;
 
 import olx.payments.Payments;
+import olx.user.UserModel;
 
 public class Cart {
 	static CartDAOImpl cdb = new CartDAOImpl();
@@ -37,7 +38,7 @@ public class Cart {
 	void readCart() {
 		readClassifiedId();
 		readBidPrice();
-		readBidderID();
+//		readBidderID();
 	}
 	
 	void writeCartHead() {
@@ -62,13 +63,13 @@ public class Cart {
 		}
 	}
 
-	public void addToCart() throws ClassNotFoundException, SQLException {
-		bidForClassified();
+	public void addToCart(UserModel user, List<Integer> selectedCategoryIds) throws ClassNotFoundException, SQLException {
+		bidForClassified(user);
 	}
 	
-	private void bidForClassified() throws ClassNotFoundException, SQLException {
+	private void bidForClassified(UserModel user) throws ClassNotFoundException, SQLException {
 		readCart();
-		int count = cdb.addToCart(c.classifiedId, c.bidPrice, c.bidderId);
+		int count = cdb.addToCart(c.classifiedId, c.bidPrice, user.getId());
 		System.out.println(count + " records added");
 	}
 	
