@@ -100,9 +100,7 @@ public class Cart {
 	}
 	
 	private int bidForClassified(Long classifiedId, Double bidPrice, Long userId) throws ClassNotFoundException, SQLException {
-
 		return cdb.addToCart(classifiedId,bidPrice, userId);
-
 	}
 	
 	public CartModel getCart(Long cartID) throws ClassNotFoundException, SQLException {
