@@ -41,13 +41,10 @@ public class UserDAOImpl implements IUserDAO {
 			DBConnection.executeQuery(query);
 			System.out.println("Successfully updated the user details: " + userModel.getFirstName());
 		} catch (ClassNotFoundException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		// TODO Auto-generated method stub
 	}
 
 	@Override
