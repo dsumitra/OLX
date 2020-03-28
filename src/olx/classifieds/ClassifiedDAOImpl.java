@@ -6,16 +6,15 @@ import java.text.SimpleDateFormat;
 import java.util.List;
 
 import dbConnection.DBConnection;
-import olx.user.UserModel;
 import olx.category.CategoryConstants.CategoryColumnNames;
 import olx.classifieds.ClassifiedsConstants.ClassifiedColumnNames;
 import olx.classifieds.ClassifiedsConstants.ClassifiedStatus;
 import olx.constants.OlxConstants;
 import olx.constants.OlxConstants.DateFormats;
 import olx.constants.OlxConstants.TableNames;
+import olx.user.UserModel;
 
 public class ClassifiedDAOImpl implements IClassifiedDAO {
-
 	// TODO CHECK FOR INSERTION AFTER UPDATING THE TABLE
 	@Override
 	public void addClassified(ClassifiedModel classified) {
@@ -133,7 +132,6 @@ public class ClassifiedDAOImpl implements IClassifiedDAO {
 		String query = "Select * from " + TableNames.CLASSIFIEDS + " where " + ClassifiedColumnNames.STATE + "='"
 				+ status + "'";
 		ResultSet rs = null;
-		System.out.println(query);
 		try {
 			rs = DBConnection.executeQuery(query);
 		} catch (ClassNotFoundException | SQLException e) {
@@ -158,9 +156,14 @@ public class ClassifiedDAOImpl implements IClassifiedDAO {
 
 	// used for Reports
 	public ResultSet getClassifiedsPerCategory() {
-		String query = "SELECT Count (" + ClassifiedColumnNames.CATEGORY_ID + ") as count,"
-				+ ClassifiedColumnNames.CATEGORY_ID + " FROM " + OlxConstants.TableNames.CLASSIFIEDS + " GROUP BY "
-				+ ClassifiedColumnNames.CATEGORY_ID;
+		String query = "select "+ OlxConstants.TableNames.CATEGORY+"."+CategoryColumnNames.PRIMARY_CATEGORY+", count("+OlxConstants.TableNames.CLASSIFIEDS+"."+ClassifiedColumnNames.ID+") as Classifieds_count from "+ OlxConstants.TableNames.CATEGORY+" right join "+
+				OlxConstants.TableNames.CLASSIFIEDS +" ON ("+ OlxConstants.TableNames.CATEGORY+"."+CategoryColumnNames.ID+
+				" = "+ OlxConstants.TableNames.CLASSIFIEDS+"."+ClassifiedColumnNames.CATEGORY_ID+") GROUP BY "
+				+ OlxConstants.TableNames.CATEGORY+"."+CategoryColumnNames.PRIMARY_CATEGORY ;
+//				
+//		String query = "SELECT Count (" + ClassifiedColumnNames.CATEGORY_ID + ") as count,"
+//				+ ClassifiedColumnNames.CATEGORY_ID + " FROM " + OlxConstants.TableNames.CLASSIFIEDS + " GROUP BY "
+//				+ ClassifiedColumnNames.CATEGORY_ID;
 		ResultSet rs = null;
 
 		try {
