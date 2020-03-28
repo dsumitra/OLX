@@ -38,6 +38,7 @@ public class PaymentMethods {
 		}
 		
 		if(op ==1 || op ==2) {
+			
 			System.out.println("Enter Card Number:");
 			m.cardNumber = s.nextLine().trim();
 			System.out.println("Enter Expiry Month:");			
@@ -47,6 +48,7 @@ public class PaymentMethods {
 			System.out.println("Enter Name on Card:");			
 			m.nameOnCard = s.nextLine().trim();
 		}
+		
 		d.addPaymentMethods(m);
 	}
 
