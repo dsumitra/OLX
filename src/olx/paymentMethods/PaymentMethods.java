@@ -63,6 +63,7 @@ public class PaymentMethods {
 
 	public void viewPaymentMethods(Long userID) throws ClassNotFoundException, SQLException {
 		ResultSet r = d.getPaymentMethods(userID);
+		System.out.println("Payment menhods for user id:" + userID.toString());
 		System.out.printf("%10s %10s %-30s %20s %10s %10s %-30s %n", "Method ID", "User ID",
 				"Payment Method", "Card Number",
 				"Exp Month", "Exp Year", "Name On Card");

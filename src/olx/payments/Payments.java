@@ -37,7 +37,7 @@ public class Payments {
 				p.amount = cm.getBidPrice();
 				pdb.addPayment(p);
 		}
-		else {
+		else if (op == "2"){
 			pm.addPaymentMethod(cm.getBidderID());
 			makePaymentforCart(cartId);
 		}

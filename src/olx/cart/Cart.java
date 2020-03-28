@@ -74,8 +74,10 @@ public class Cart {
 	
 	public CartModel getCart(Long cartID) throws ClassNotFoundException, SQLException {
 		ResultSet r =  cdb.getCart(cartID);
-		r.first();
-		readRecord(r);
+		while(r.next()) {
+			readRecord(r);
+			break;
+		}
 		return c;
 	}
 	
@@ -118,7 +120,7 @@ public class Cart {
 		writeResultSet(r);	
 		System.out.println("Do you want to proceed to payment");
 		String op = s.nextLine().trim();
-		if(op == "Y" || op == "y")
+		if(op.equalsIgnoreCase("Y"))
 		{
 			System.out.println("Enter Cart Id you want to pay for:");
 			Long cartId =  Long.valueOf(s.nextLine().trim());
