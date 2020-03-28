@@ -12,7 +12,7 @@ public interface IClassifiedDAO {
 
 	public void deleteClassified(ClassifiedModel classifiedModel);
 
-	public ResultSet getClassifiedsByUserId(int userID);
+	public ResultSet getClassifiedsByUserId(long userID);
 
 	public void updateClassified(ClassifiedModel classifiedModel);
 	
