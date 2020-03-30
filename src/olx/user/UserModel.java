@@ -35,7 +35,6 @@ public class UserModel {
 	public UserModel() {
 		super();
 	}
-
 	public String getPassword() {
 		return password;
 	}

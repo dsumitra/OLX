@@ -8,7 +8,6 @@ import java.util.Scanner;
 import dbConnection.DBConnection;
 import olx.user.UserConstants.UserColumnNames;
 
-
 /**
  * @author albuquea
  *
@@ -21,14 +20,20 @@ public class UserLogin {
 	String emailId;
 	String z;
 
-	void UserLogin() {			
-			this.user=user;
-		}
+	void UserLogin() {
+		this.user = user;
+	}
 
+	/**
+	 * Takes email Id using Scanner class and verifies if its present in the
+	 * database.
+	 * 
+	 * @return emailId
+	 */
 	String verifyEmail() {
 		try {
 			System.out.println("Enter the email");
-			emailId = s.nextLine();
+			emailId = s.nextLine().trim();
 			int count = 0;
 			String query = "select email from users";
 			ResultSet rs = DBConnection.executeQuery(query);
@@ -47,11 +52,15 @@ public class UserLogin {
 				verifyEmail();
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
+			verifyEmail();
 		}
 		return emailId;
 	}
 
+	/**
+	 * @param email. Takes password using Scanner class and verifies if its present
+	 *               in the database
+	 */
 	void verifyPassword(String email) {
 		try {
 			String z = null;
@@ -75,10 +84,15 @@ public class UserLogin {
 				verifyPassword(email);
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
+			System.out.println("Please re-enter the password");
+			verifyPassword(email);
 		}
 	}
 
+	/**
+	 * @param user Takes email Id using Scanner class and verifies if the email
+	 *             entered is in the correct format.
+	 */
 	void addEmail(UserModel user) {
 		try {
 			int count = 0;
@@ -99,10 +113,14 @@ public class UserLogin {
 				}
 			}
 		} catch (Exception e) {
-			System.out.println("Exception has been caught");
+			System.out.println("Invalid email");
+			addEmail(user);
 		}
 	}
 
+	/**
+	 * @param user Takes first name and last name using Scanner class.
+	 */
 	void addProfileName(UserModel user) {
 		String first_name, last_name;
 		try {
@@ -119,16 +137,23 @@ public class UserLogin {
 		}
 	}
 
+	/**
+	 * @param user Takes password using Scanner class
+	 */
 	void addPassword(UserModel user) {
 		try {
 			System.out.println("Enter the Password: ");
 			String password = s.nextLine().trim();
 			user.setPassword(password);
 		} catch (Exception e) {
-			System.out.println("Exception caught");
+			System.out.println("Invalid Password");
+			addPassword(user);
 		}
 	}
 
+	/**
+	 * @param user Takes Phone-number using Scanner class
+	 */
 	void addPhoneNo(UserModel user) {
 		String phone_number;
 		try {
@@ -153,17 +178,26 @@ public class UserLogin {
 				System.out.println("Is valid");
 				user.setPhone(phone_number);
 			}
-			
+
 		} catch (Exception e) {
 			System.out.println("Invalid Phone number.");
 			addPhoneNo(user);
 		}
 	}
 
+	/**
+	 * Takes parameter as user. Also takes address using Scanner class and sets the
+	 * value of Address
+	 */
 	void addAddress(UserModel user) {
-		String address;
-		System.out.println("Enter the address: ");
-		address = s.nextLine().trim();
-		user.setAddress(address);
+		try {
+			String address;
+			System.out.println("Enter the address: ");
+			address = s.nextLine().trim();
+			user.setAddress(address);
+		} catch (Exception e) {
+			System.out.println("Invalid address");
+			addAddress(user);
+		}
 	}
 }

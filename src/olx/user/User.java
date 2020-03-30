@@ -26,6 +26,9 @@ public class User {
 
 	Scanner sc = new Scanner(System.in);
 
+	/**
+	 * To take input from user to either login or signUp
+	 */
 	void login() {
 		int value;
 		try {
@@ -72,6 +75,10 @@ public class User {
 		displayUserOptions(user);
 	}
 
+	/**
+	 * @param user. Verifies if the person logging in is admin or user and provide
+	 *              the list of menu.
+	 */
 	public void displayUserOptions(UserModel user) {
 
 		if (user.isAdmin() == true) {
@@ -127,6 +134,9 @@ public class User {
 		displayUserOptions(user);
 	}
 
+	/**
+	 * @param user. Provides options and request for an input through scanner class
+	 */
 	void showUserSettings(UserModel user) {
 		try {
 			String email = user.getEmail();
@@ -168,6 +178,7 @@ public class User {
 								count++;
 							} else {
 								System.out.println("No updates made");
+								showUserSettings(user);
 							}
 						} catch (Exception e) {
 							System.out.println("Invalid name provided");
@@ -185,6 +196,7 @@ public class User {
 								count++;
 							} else {
 								System.out.println("No updates made");
+								showUserSettings(user);
 							}
 						} catch (Exception e) {
 							System.out.println("Invalid password provided");
@@ -202,6 +214,7 @@ public class User {
 								count++;
 							} else {
 								System.out.println("No updates made");
+								showUserSettings(user);
 							}
 						} catch (Exception e) {
 							System.out.println("Invalid Phone Number provided");
@@ -219,6 +232,7 @@ public class User {
 								count++;
 							} else {
 								System.out.println("No updates made");
+								showUserSettings(user);
 							}
 						} catch (Exception e) {
 							System.out.println("Invalid emailId provided");
@@ -236,6 +250,7 @@ public class User {
 								count++;
 							} else {
 								System.out.println("No updates made");
+								showUserSettings(user);
 							}
 						} catch (Exception e) {
 							System.out.println("Invalid address provided");
@@ -254,6 +269,9 @@ public class User {
 //		showUserSettings(user);
 	}
 
+	/**
+	 * @param user. Provides a list and takes input through scanner class
+	 */
 	public void deleteUser(UserModel user) {
 		if (user.isAdmin() == true) {
 			int number = 0;
@@ -302,6 +320,10 @@ public class User {
 		login();
 	}
 
+	/**
+	 * @param i
+	 * @return null
+	 */
 	public void exit(int i) {
 		return;
 	}

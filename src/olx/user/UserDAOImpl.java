@@ -29,6 +29,9 @@ public class UserDAOImpl implements IUserDAO {
 		}
 	}
 
+	/**
+	 *Takes parameters and updates the information in the database
+	 */
 	@Override
 	public void updateUser(UserModel userModel) {
 	
@@ -47,6 +50,9 @@ public class UserDAOImpl implements IUserDAO {
 		}
 	}
 
+	/**
+	 *Takes parameters and adds information to the database
+	 */
 	@Override
 	public void addUser(UserModel user) {
 		String query = "insert into users(" + UserColumnNames.EMAIL + "," + UserColumnNames.PASSWORD + ","
@@ -64,7 +70,10 @@ public class UserDAOImpl implements IUserDAO {
 			e.printStackTrace();
 		}
 	}
-
+	
+	/**
+	 * Provides all users present in the database
+	 */
 	@Override
 	public ResultSet getAllUsers() {
 		String query = "select * from " + TableNames.USER + " where " + UserColumnNames.IS_ADMIN + " = 'N'";
@@ -80,6 +89,12 @@ public class UserDAOImpl implements IUserDAO {
 		return rs;
 	}
 
+	
+	/**
+	 * @param email
+	 * @return
+	 * Provides the information of a particular user from the database
+	 */
 	public UserModel getUser(String email) {
 		String query = "Select * from " + TableNames.USER + " where " + UserColumnNames.EMAIL + "='" + email + "'";
 		UserModel user = null;
