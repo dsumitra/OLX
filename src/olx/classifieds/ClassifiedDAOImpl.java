@@ -19,6 +19,11 @@ import olx.user.UserModel;
  *
  */
 public class ClassifiedDAOImpl implements IClassifiedDAO {
+	/**
+	 * Inserts a new row in the classified table in the database
+	 * 
+	 * @param Classfied model
+	 */
 	@Override
 	public void addClassified(ClassifiedModel classified) {
 		SimpleDateFormat formatter = new SimpleDateFormat(DateFormats.DEFAULT);
@@ -48,6 +53,11 @@ public class ClassifiedDAOImpl implements IClassifiedDAO {
 
 	}
 
+	/**
+	 * Updates the classified attributes in the Classified table database
+	 * 
+	 * @param Classified Model
+	 */
 	@Override
 	public void updateClassified(ClassifiedModel classifiedModel) {
 		String query = "Update " + TableNames.CLASSIFIEDS + " set " + ClassifiedColumnNames.TITLE + " ='"
@@ -65,9 +75,15 @@ public class ClassifiedDAOImpl implements IClassifiedDAO {
 
 	}
 
+	/**
+	 * Updates the status to sold from approved
+	 * 
+	 * @param classifiedID
+	 */
 	public void markClassifiedsAsSold(long classifiedID) {
 		String query = "Update " + OlxConstants.TableNames.CLASSIFIEDS + " set " + ClassifiedColumnNames.STATE + " = '"
-				+ ClassifiedsConstants.ClassifiedStatus.SOLD + "' where " + ClassifiedColumnNames.ID + " = " + classifiedID;
+				+ ClassifiedsConstants.ClassifiedStatus.SOLD + "' where " + ClassifiedColumnNames.ID + " = "
+				+ classifiedID;
 		try {
 			DBConnection.executeUpdate(query);
 		} catch (ClassNotFoundException | SQLException e) {
@@ -75,6 +91,11 @@ public class ClassifiedDAOImpl implements IClassifiedDAO {
 		}
 	}
 
+	/**
+	 * Deletes the chosen classified from Classified table in database
+	 * 
+	 * @param Classified Model
+	 */
 	@Override
 	public void deleteClassified(ClassifiedModel classifiedModel) {
 
@@ -89,6 +110,12 @@ public class ClassifiedDAOImpl implements IClassifiedDAO {
 
 	}
 
+	/**
+	 * Deletes all the classifieds of a category, when the category is deleted from
+	 * category table
+	 * 
+	 * @param categoryName
+	 */
 	public void deleteClasssifiedsByCategory(String categoryName) {
 		String categoryIDquery = "select " + CategoryColumnNames.ID + " from " + OlxConstants.TableNames.CATEGORY
 				+ " where " + CategoryColumnNames.PRIMARY_CATEGORY + " = '" + categoryName + "'";
@@ -102,6 +129,11 @@ public class ClassifiedDAOImpl implements IClassifiedDAO {
 		}
 	}
 
+	/**
+	 * Fetches all the classifieds for a user
+	 * 
+	 * @param User ID
+	 */
 	@Override
 	public ResultSet getClassifiedsByUserId(long userID) {
 		String query = "Select * from " + TableNames.CLASSIFIEDS + " where " + ClassifiedColumnNames.USER_ID + "="
@@ -120,6 +152,12 @@ public class ClassifiedDAOImpl implements IClassifiedDAO {
 		return rs;
 	}
 
+	/**
+	 * Fetches the classifieds by filtering Status
+	 * 
+	 * @param status
+	 * @return ResultSet
+	 */
 	public ResultSet filterClassifiedsByState(ClassifiedStatus status) {
 		String query = "Select * from " + TableNames.CLASSIFIEDS + " where " + ClassifiedColumnNames.STATE + "='"
 				+ status + "'";
@@ -131,25 +169,18 @@ public class ClassifiedDAOImpl implements IClassifiedDAO {
 		}
 		return rs;
 	}
-	
+
+	/**
+	 * Returns the classifieds with approved status for other users to buy
+	 * 
+	 * @param userId
+	 * @return ResultSet
+	 */
 	public ResultSet getApprovedClassifiedsOfOthers(long userId) {
 		String query = "Select * from " + TableNames.CLASSIFIEDS + " where " + ClassifiedColumnNames.STATE + "='"
-				+ ClassifiedsConstants.ClassifiedStatus.APPROVED + "' and " + ClassifiedColumnNames.USER_ID + " != " + userId ;
+				+ ClassifiedsConstants.ClassifiedStatus.APPROVED + "' and " + ClassifiedColumnNames.USER_ID + " != "
+				+ userId;
 		ResultSet rs = null;
-		try {
-			rs = DBConnection.executeQuery(query);
-		} catch (ClassNotFoundException | SQLException e) {
-			e.printStackTrace();
-		}
-		return rs;
-	} 
-
-	public ResultSet OrderHistory(UserModel userModel) {
-		String query = "Select " + ClassifiedColumnNames.ID + ", " + ClassifiedColumnNames.TITLE + ", "
-				+ ClassifiedColumnNames.PRICE + "," + ClassifiedColumnNames.DATE_UPDATED + " from "
-				+ TableNames.CLASSIFIEDS + " where " + ClassifiedColumnNames.USER_ID + "= " + userModel.getId();
-		ResultSet rs = null;
-
 		try {
 			rs = DBConnection.executeQuery(query);
 		} catch (ClassNotFoundException | SQLException e) {
@@ -159,11 +190,19 @@ public class ClassifiedDAOImpl implements IClassifiedDAO {
 	}
 
 	// used for Reports
+	/**
+	 * Fetches the Classifieds per category
+	 * 
+	 * @return
+	 */
 	public ResultSet getClassifiedsPerCategory() {
-		String query = "select "+ OlxConstants.TableNames.CATEGORY+"."+CategoryColumnNames.PRIMARY_CATEGORY+", count("+OlxConstants.TableNames.CLASSIFIEDS+"."+ClassifiedColumnNames.ID+") as Classifieds_count from "+ OlxConstants.TableNames.CATEGORY+" right join "+
-				OlxConstants.TableNames.CLASSIFIEDS +" ON ("+ OlxConstants.TableNames.CATEGORY+"."+CategoryColumnNames.ID+
-				" = "+ OlxConstants.TableNames.CLASSIFIEDS+"."+ClassifiedColumnNames.CATEGORY_ID+") GROUP BY "
-				+ OlxConstants.TableNames.CATEGORY+"."+CategoryColumnNames.PRIMARY_CATEGORY ;
+		String query = "select " + OlxConstants.TableNames.CATEGORY + "." + CategoryColumnNames.PRIMARY_CATEGORY
+				+ ", count(" + OlxConstants.TableNames.CLASSIFIEDS + "." + ClassifiedColumnNames.ID
+				+ ") as Classifieds_count from " + OlxConstants.TableNames.CATEGORY + " right join "
+				+ OlxConstants.TableNames.CLASSIFIEDS + " ON (" + OlxConstants.TableNames.CATEGORY + "."
+				+ CategoryColumnNames.ID + " = " + OlxConstants.TableNames.CLASSIFIEDS + "."
+				+ ClassifiedColumnNames.CATEGORY_ID + ") GROUP BY " + OlxConstants.TableNames.CATEGORY + "."
+				+ CategoryColumnNames.PRIMARY_CATEGORY;
 		ResultSet rs = null;
 
 		try {
@@ -174,6 +213,11 @@ public class ClassifiedDAOImpl implements IClassifiedDAO {
 		return rs;
 	}
 
+	/**
+	 * Fetches the classifieds per user
+	 * 
+	 * @return
+	 */
 	public ResultSet getClassifiedsPerUser() {
 		String query = "SELECT Count (" + ClassifiedColumnNames.USER_ID + ") as count," + ClassifiedColumnNames.USER_ID
 				+ " FROM " + OlxConstants.TableNames.CLASSIFIEDS + " GROUP BY " + ClassifiedColumnNames.USER_ID;
@@ -187,6 +231,11 @@ public class ClassifiedDAOImpl implements IClassifiedDAO {
 		return rs;
 	}
 
+	/**
+	 * Fetches the status of all the classifieds available in the classified table
+	 * 
+	 * @return
+	 */
 	public ResultSet getClassifiedStatus() {
 		String query = "SELECT Count (" + ClassifiedColumnNames.STATE + ") as count," + ClassifiedColumnNames.STATE
 				+ " FROM " + OlxConstants.TableNames.CLASSIFIEDS + " GROUP BY " + ClassifiedColumnNames.STATE;

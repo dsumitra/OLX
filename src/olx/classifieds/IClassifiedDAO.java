@@ -18,6 +18,4 @@ public interface IClassifiedDAO {
 
 	public void updateClassified(ClassifiedModel classifiedModel);
 	
-	public  ResultSet OrderHistory(UserModel userModel);
-
 }

@@ -10,6 +10,14 @@ import olx.user.UserModel;
  * @author dsumitra
  *
  */
+/**
+ * @author dsumitra
+ *
+ */
+/**
+ * @author dsumitra
+ *
+ */
 public class Category {
 	CategoryHelper helper;
 	CategoryDAOImpl CategoryDAOImpl;
@@ -20,6 +28,10 @@ public class Category {
 		CategoryDAOImpl = new CategoryDAOImpl();
 	}
 
+	/**
+	 * Generating the default categories using a Hash map. But putting the Primary
+	 * category as a key and Sub categories as values for each.
+	 */
 	void addDefaultCategories() {
 		Map<String, List<String>> categoryMap = new HashMap<>();
 		ArrayList<String> electronicsSubCategory = new ArrayList<String>();
@@ -45,6 +57,11 @@ public class Category {
 		addCategoryMap(categoryMap);
 
 	}
+
+	/**
+	 * Generating the custom categories using a Hash Map . It takes input using the
+	 * Scanner class for primary categories(Key) and sub categories(Values).
+	 */
 
 	void addCustomCategories() {
 		Map<String, List<String>> categoryMap = new HashMap<>();
@@ -73,6 +90,11 @@ public class Category {
 		addCategoryMap(categoryMap);
 	}
 
+	/**
+	 * @param categoryMap Receives a map from custom category and default category
+	 *                    functions to add the categories into the database
+	 * 
+	 */
 	void addCategoryMap(Map<String, List<String>> categoryMap) {
 		for (Map.Entry<String, List<String>> entry : categoryMap.entrySet()) {
 			String category = entry.getKey();
@@ -82,10 +104,15 @@ public class Category {
 					CategoryDAOImpl.addCategory(category, subCategoryList.get(i));
 				}
 			} else {
-				CategoryDAOImpl.addCategory(category, category);// made changes
+				CategoryDAOImpl.addCategory(category, category);
 			}
 		}
 	}
+
+	/**
+	 * After displaying the current categories. Takes the user input through Scanner
+	 * class for choosing the categories to be deleted.
+	 */
 
 	void deleteCategory() {
 		ResultSet primaryCategoryRs = CategoryDAOImpl.getPrimaryCategories();
@@ -103,6 +130,12 @@ public class Category {
 
 	}
 
+	/**
+	 * @param selectedCategory. checks if the Admin wants to delete the sub
+	 *                          categories of the selected Primary Category. Takes
+	 *                          input with Scanner calls to select the
+	 *                          Sub-categories
+	 */
 	void deleteSubCategories(String selectedCategory) {
 		int delSubCategoryID;
 		String delCategory, subCategory;
@@ -134,10 +167,18 @@ public class Category {
 		}
 	}
 
+	/**
+	 * Displays all the categories in the catalog
+	 */
 	void displayCatergoriesTable() {
 		helper.displayCatergoriesTable();
 	}
 
+	/**
+	 * Displays all the primary categories, Takes user input for choosing which
+	 * attribute does the user wants to update. Checks if the user wants to update
+	 * only for the primary category/Sub categories or Both
+	 */
 	void updateCategory() {
 		ResultSet primaryCategoryRs = CategoryDAOImpl.getPrimaryCategories();
 		Map<Integer, String> categories = helper.displayPrimaryCategories(primaryCategoryRs);
@@ -151,7 +192,6 @@ public class Category {
 					System.out.println("Select a category number which you want to update: ");
 					int updateCategoryID = Integer.parseInt(sc.nextLine());
 					selectedCategory = categories.get(updateCategoryID);
-					// subCategoryMap = CategoryDAOImpl.getSubCategories(selectedCategory);
 					System.out.println("Update options:\n" + "1. Update Primary Category only \n"
 							+ "2. Update Sub Category only \n" + "3. Update Primary Category and Sub-Category \n"
 							+ "Select the action do you want to perform: ");
@@ -173,11 +213,22 @@ public class Category {
 		}
 	}
 
+	/**
+	 * @param selectedCategory Updates the selected primary category by taking input
+	 *                         using Scanner Class for the new values
+	 */
+
 	void updatePrimaryCategory(String selectedCategory) {
 		System.out.println("Enter a new name for Primary Category " + selectedCategory + ":\n");
 		String updatePrimaryCategory = sc.nextLine();
 		CategoryDAOImpl.updatePrimaryCategory(selectedCategory, updatePrimaryCategory);
 	}
+
+	/**
+	 * @param selectedCategory Updates the sub categories of the selected primary
+	 *                         category by taking input using Scanner Class for the
+	 *                         new values
+	 */
 
 	void updateSubCategory(String selectedCategory) {
 		ResultSet subCategoryRs = CategoryDAOImpl.getSubCategories(selectedCategory);
@@ -195,6 +246,12 @@ public class Category {
 		}
 	}
 
+	/**
+	 * @param rs Displays the result set of the query run for sub categories by
+	 *           storing the values in a map
+	 * @return map
+	 */
+
 	Map<Integer, String> displaySubCategories(ResultSet rs) {
 		Map<Integer, String> subCategoryMap = new HashMap<Integer, String>();
 		System.out.println("ID \t\t Sub-Category");
@@ -207,14 +264,20 @@ public class Category {
 				System.out.println(subCategoryID + "\t\t" + subCategory);
 			}
 		} catch (SQLException e) {
-			e.printStackTrace();
+			System.out.println("Invalid Input");
+			displaySubCategories(rs);
 		}
 		return subCategoryMap;
 	}
 
+	/**
+	 * @param userModel Gives a view to the Admin for managing the categories. Takes
+	 *                  user input using a Scanner class and calls the functions for
+	 *                  performing the chose option
+	 */
 	public void manageCategories(UserModel userModel) {
 		int option = 0;
-		while(option != 5) {
+		while (option != 5) {
 			System.out.println(
 					"\nCategory Options:\n 1.Add Category \n 2.Delete Category \n 3.Update Category \n 4.View All Catgeories \n 5.Exit Menu");
 			System.out.println("Enter the action you want to perform: ");
@@ -227,10 +290,10 @@ public class Category {
 				updateCategory();
 			} else if (option == 4) {
 				displayCatergoriesTable();
-			} else if(option == 5) {
+			} else if (option == 5) {
 				User user = new User();
 				user.displayUserOptions(userModel);
-			}			
+			}
 		}
 	}
 

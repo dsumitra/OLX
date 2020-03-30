@@ -106,4 +106,10 @@ public class CartDAOImpl implements ICartDAO, ICartConstants {
 				c.bidPrice, c.status, c.bidderId, c.cartId);
 	}
 
+	public int deleteBid(long classifiedId) throws ClassNotFoundException, SQLException {
+		return DBConnection.executeUpdateFormat(
+				"DELETE FROM " + CART + " WHERE " + CLASSIFIED_ID + " = " + classifiedId + " AND " + STATUS + " = 'BID'");
+		
+	}
+
 }

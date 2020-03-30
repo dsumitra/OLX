@@ -13,8 +13,14 @@ public class Cart {
 	static CartDAOImpl cdb = new CartDAOImpl();
 	CartModel c = new CartModel();
 	Scanner s = new Scanner(System.in);
+	UserModel userModel = null;
 
+	/**
+	 * Shows CART options view to user
+	 * @param UserModel
+	 */
 	public void viewCart(UserModel user) {
+		userModel = user;
 		int o = 0;
 		while (o != 3) {
 			System.out.println("\nCart Menu: \n 1.Requested Bids \n 2.Recieved Bids \n 3.Exit Menu ");
@@ -32,10 +38,8 @@ public class Cart {
 				}
 
 			} catch (ClassNotFoundException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			} catch (SQLException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}
@@ -138,43 +142,95 @@ public class Cart {
 		int apCnt = cdb.approveBid(c.cartId);
 		System.out.println(apCnt + " bids approved in Cart.");
 	}
-
+	
+	/**
+	 * Shows all the bids the user has received for his posted classifieds and gives an option to approve them.
+	 * @param sellerId
+	 * @throws ClassNotFoundException
+	 * @throws SQLException
+	 */
 	public void approveBidForSeller(Long seller) throws ClassNotFoundException, SQLException {
 		ResultSet r = cdb.getBidsForSeller(seller);
 		System.out.println("\nBids for your classifieds:");
-		List<Long> cartIds = new ArrayList<Long>();
+		System.out.println("Cart ID \t Bidder Id \t\t Title\t\tBid Price\t\tPosted Price\t\tStatus");
+		long selectedCartId = 0;
+		Map<Long, CartModel> cartData = new HashMap<Long, CartModel>();
 		while (r.next()) {
-			System.out.println("Title: " + r.getString("title"));
-			System.out.println("Expected Price: " + r.getString("expected_price"));
-			System.out.println("Bid Price: " + r.getString("bidprice"));
-			System.out.println("Bidder Id:" + r.getString("bidder_id"));
-			System.out.println("Do you approve this bid? (Y/N)");
-			String approve = s.nextLine().trim();
-			if (approve.equalsIgnoreCase("Y")) {
-				cartIds.add(Long.valueOf(r.getString("id")));
+			long cartId = r.getLong("id");
+			long classifiedId = r.getLong("classified_id");
+			double bidPrice = r.getDouble("bidprice");
+			String status = r.getString("status");
+			long bidder = r.getLong("bidder_id");
+			CartModel cm = new CartModel(cartId, classifiedId, bidPrice, status, bidder);
+			System.out.println(cartId + "\t\t\t" + bidder + "\t\t" + r.getString("title") + "\t\t" + bidPrice + "\t\t"
+					+ r.getString("expected_price") + "\t\t" + status);
+			if (status.equalsIgnoreCase("BID")) {
+				cartData.put(cartId, cm);
 			}
 		}
-		for (int i = 0; i < cartIds.size(); i++) {
-			cdb.approveBid(cartIds.get(i));
+		String approve;
+		do {
+			System.out.println("Do you wish to approve any of the above bids?(Y/N): ");
+			approve = s.nextLine().trim();
+		} while (!(approve.equalsIgnoreCase("Y") || approve.equalsIgnoreCase("N")));
+
+		if (approve.equalsIgnoreCase("Y")) {
+			int approveNum = 0;
+			
+			do {
+				System.out.println("How many bids you wish to approve?: ");
+				approveNum = Integer.parseInt(s.nextLine().trim());
+			} while (approveNum < 0 || approveNum > cartData.size());
+			
+			do {
+				List<Long> removeFromMap = new ArrayList<>();
+				for (int i = 0; i < approveNum; i++) {
+					System.out.println("Enter a valid Cart ID you wish to approve: ");
+					selectedCartId = Long.parseLong(s.nextLine());
+					long classifiedId = cartData.get(selectedCartId).getClassifiedId();
+					//deleting bid from the local map.
+					for (Map.Entry<Long, CartModel> entry : cartData.entrySet()) {
+						if (entry.getKey() != selectedCartId) {
+							CartModel model = entry.getValue();
+							if (classifiedId == model.getClassifiedId()) {
+								removeFromMap.add(model.getCartId());
+							}
+						}
+					}
+					
+					for(int j = 0; j < removeFromMap.size(); j++) {
+						cartData.remove(removeFromMap.get(i));
+					}
+					//approving the selected bid in the database
+					cdb.approveBid(selectedCartId);
+					//deleting bid from the database
+					cdb.deleteBid(classifiedId);
+					System.out.println("Approved bid succesfully!!");
+				}
+
+			} while (cartData.get(selectedCartId) == null);
 		}
-//		int apCnt = cdb.approveBid(c.cartId);
-//		System.out.println(apCnt + " bids approved in CartModel.");
 
 	}
 
 	public void viewSellerCart(Long sellerID) throws ClassNotFoundException, SQLException {
 		approveBidForSeller(sellerID);
 	}
-
+	
+	/**
+	 * Shows all the classifieds added to cart by the user and gives an option to buy them.
+	 * @param buyerId
+	 * @throws ClassNotFoundException
+	 * @throws SQLException
+	 */
 	public void viewBuyerCart(Long buyerId) throws ClassNotFoundException, SQLException {
 		ResultSet r = cdb.getBidsForBidder(buyerId);
 		boolean invalidIp = false;
 		boolean bidApproved = false;
-//		writeResultSet(r);
 		List<Long> approvedCartList = new ArrayList<>();
 		String status;
 		System.out.println(
-				"Cart ID \t Classified ID \t Bid Price \t Status \t Bidder ID \t Title \t Exp Price \t Seller Id");
+				"Cart ID \t Classified ID \t Bid Price \t Status \t Bidder ID \t Title \t\t Exp Price \t Seller Id");
 		while (r.next()) {
 			String id = r.getString("id");
 			String classfId = r.getString("classified_id");
@@ -184,8 +240,8 @@ public class Cart {
 			String title = r.getString("title");
 			String exPrice = r.getString("expected_price");
 			String sellerId = r.getString("seller_id");
-			System.out.println(id + "\t\t" + classfId + "\t\t" + bidprice + "\t\t" + state + "\t\t" + bidId + "\t\t" + title
-					+ "\t\t" + exPrice + "\t\t" + sellerId);
+			System.out.println(id + "\t\t" + classfId + "\t\t" + bidprice + "\t\t" + state + "\t\t" + bidId + "\t\t"
+					+ title + "\t\t" + exPrice + "\t\t" + sellerId);
 			status = r.getString("Status");
 			if (status.equalsIgnoreCase("APPROVE")) {
 				bidApproved = true;

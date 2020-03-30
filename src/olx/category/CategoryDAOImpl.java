@@ -1,4 +1,5 @@
 package olx.category;
+
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
@@ -13,6 +14,11 @@ import olx.constants.OlxConstants;
  */
 public class CategoryDAOImpl implements ICategoryDAO {
 
+	/**
+	 * @param categoryName Fetches sub-catergory data from the database by filtering
+	 *                     the data with primary-category
+	 * @return ResultSet
+	 */
 	public ResultSet getSubCategories(String categoryName) {
 		String query = "Select " + CategoryColumnNames.SUB_CATEGORY + " from " + OlxConstants.TableNames.CATEGORY
 				+ " where " + CategoryColumnNames.PRIMARY_CATEGORY + " = '" + categoryName + "'";
@@ -26,6 +32,11 @@ public class CategoryDAOImpl implements ICategoryDAO {
 		return rs;
 	}
 
+	/**
+	 * Fetches distinct primary category from database
+	 * 
+	 * @return ResultSet
+	 */
 	public ResultSet getPrimaryCategories() {
 
 		String categoryQuery = "select distinct " + CategoryColumnNames.PRIMARY_CATEGORY + " from "
@@ -40,6 +51,12 @@ public class CategoryDAOImpl implements ICategoryDAO {
 		return rs;
 	}
 
+	/**
+	 * Deletes a row in the Category table by a primary category name
+	 * 
+	 * @param primary category name
+	 * 
+	 */
 	public void deleteCategoryByName(String categoryName) {
 		ClassifiedDAOImpl classifiedDAOImpl = new ClassifiedDAOImpl();
 		try {
@@ -54,6 +71,12 @@ public class CategoryDAOImpl implements ICategoryDAO {
 
 	}
 
+	/**
+	 * Deletes a sub category from the category table by primary category name and
+	 * sub category name.
+	 * 
+	 * @param primary category name, sub category name
+	 */
 	public void deleteSubCategory(String categoryName, String subCategory) {
 		String delQuery = "Delete from " + OlxConstants.TableNames.CATEGORY + " where "
 				+ CategoryColumnNames.PRIMARY_CATEGORY + " = '" + categoryName + "' and "
@@ -66,18 +89,29 @@ public class CategoryDAOImpl implements ICategoryDAO {
 		}
 	}
 
+	/**
+	 * Adds a primary category and sub category name into the Category Table in
+	 * database
+	 * 
+	 * @param primary category name, sub-category name
+	 */
 	public void addCategory(String category, String subCategory) {
 		String query = "INSERT INTO " + OlxConstants.TableNames.CATEGORY + "(" + CategoryColumnNames.PRIMARY_CATEGORY
 				+ " , " + CategoryColumnNames.SUB_CATEGORY + ") VALUES ('" + category + "','" + subCategory + "')";
 		try {
 			DBConnection.executeUpdate(query);
 			System.out.println("Successfully created Category: " + category);
-		} catch (SQLException | ClassNotFoundException e) { 
+		} catch (SQLException | ClassNotFoundException e) {
 			e.printStackTrace();
 		}
 
 	}
 
+	/**
+	 * Updates the sub category name in the Category table in database.
+	 * 
+	 * @param sub category name, updated sub category name, primary category name
+	 */
 	public void updateSubcategory(String subCategory, String updateSubCategoryName, String selectedCategory) {
 		String updateSubCategoryQuery = "update " + OlxConstants.TableNames.CATEGORY + " set "
 				+ CategoryColumnNames.SUB_CATEGORY + " ='" + updateSubCategoryName + "' where "
@@ -93,6 +127,11 @@ public class CategoryDAOImpl implements ICategoryDAO {
 		}
 	}
 
+	/**
+	 * Update primary category name in the Category table in database.
+	 * 
+	 * @param primary category name, updated primary category name
+	 */
 	public void updatePrimaryCategory(String selectedCategory, String updatePrimaryCategory) {
 		String updatePrimaryCategoryQuery = "update " + OlxConstants.TableNames.CATEGORY + " set "
 				+ CategoryColumnNames.PRIMARY_CATEGORY + " ='" + updatePrimaryCategory + "' where "
@@ -106,6 +145,11 @@ public class CategoryDAOImpl implements ICategoryDAO {
 		}
 	}
 
+	/**
+	 * Fetches all the data from category table
+	 * 
+	 * @return Resultset all category data
+	 */
 	public ResultSet getAllCategories() {
 
 		ResultSet rs = null;
@@ -119,6 +163,12 @@ public class CategoryDAOImpl implements ICategoryDAO {
 		return rs;
 	}
 
+	/**
+	 * Fetches data from Category table by categoryId.
+	 * 
+	 * @param categoryId
+	 * @return ResultSet
+	 */
 	public ResultSet getCategoryById(int categoryId) {
 		ResultSet rs = null;
 		try {

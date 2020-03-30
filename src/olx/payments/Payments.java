@@ -21,7 +21,7 @@ public class Payments {
 			CartModel cm = c.getCart(cartId);
 //			pm.viewPaymentMethods(cm.getBidderID());
 			pm.addPaymentMethod(cm);
-			makePaymentforCart(cartId);
+//			makePaymentforCart(cartId);
 //			System.out.println("\nPayment Options:");
 //			System.out.println("1. Make Payment");
 //			System.out.println("2. Add new Payment Method");

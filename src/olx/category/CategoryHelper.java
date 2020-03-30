@@ -14,28 +14,34 @@ import olx.category.CategoryConstants.CategoryColumnNames;
  *
  */
 public class CategoryHelper {
-	Connection con;
-	Statement stmt;
-
 	CategoryDAOImpl categoryDAOImpl;
 
 	public CategoryHelper() {
 		categoryDAOImpl = new CategoryDAOImpl();
 	}
 
+	/**
+	 * Displays the category table
+	 * 
+	 * @return a Map with CategoryId as key and CategoryModel as its value
+	 */
 	public Map<Integer, CategoryModel> displayCatergoriesTable() {
 		return getCategoriesWithDisplay(true);
 	}
-	
+
+	/**
+	 * @return a Map with CategoryId as key and CategoryModel as its value
+	 */
 	public Map<Integer, CategoryModel> getAllCategories() {
 		return getCategoriesWithDisplay(false);
 	}
-	
+
 	private Map<Integer, CategoryModel> getCategoriesWithDisplay(boolean display) {
 		Map<Integer, CategoryModel> categoryMap = new HashMap<>();
 
 		ResultSet rs = categoryDAOImpl.getAllCategories();
-		if(display) System.out.println("ID \t\t\t  Primary \t\t\t Sub_Category");
+		if (display)
+			System.out.println("ID \t\t\t  Primary \t\t\t Sub_Category");
 		try {
 			while (rs.next()) {
 				int id = rs.getInt(CategoryColumnNames.ID);
@@ -43,14 +49,20 @@ public class CategoryHelper {
 				String subCategory = rs.getString(CategoryColumnNames.SUB_CATEGORY);
 				CategoryModel categoryModel = new CategoryModel(id, primaryCategory, subCategory);
 				categoryMap.put(id, categoryModel);
-				if(display) System.out.println(id + "\t\t\t" + primaryCategory + "\t\t\t" + subCategory);
+				if (display)
+					System.out.println(id + "\t\t\t" + primaryCategory + "\t\t\t" + subCategory);
 			}
 		} catch (SQLException e) {
-			e.printStackTrace();
+			System.out.println("Invalid Input");
+			getCategoriesWithDisplay(true);
 		}
 		return categoryMap;
 	}
-	
+	/**
+	 * 
+	 * @param Resultset with Distinct Primary categories
+	 * @return a Map of primary category id and name
+	 */
 	public Map<Integer, String> displayPrimaryCategories(ResultSet rs) {
 		Map<Integer, String> categories = new HashMap<Integer, String>();
 		System.out.println("ID\t\t CATEGORY");

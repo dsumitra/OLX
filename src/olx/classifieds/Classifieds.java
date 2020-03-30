@@ -35,6 +35,13 @@ public class Classifieds {
 		categoryDAOImpl = new CategoryDAOImpl();
 	}
 
+	/**
+	 * Takes classifieds attribute values like name,price,description etc. from user
+	 * input and adds them to database
+	 * 
+	 * @param userModel
+	 */
+
 	public void addClassifieds(UserModel userModel) {
 		try {
 			System.out.println("\nEnter the number of Classifieds you want to add: ");
@@ -95,11 +102,25 @@ public class Classifieds {
 		}
 	}
 
+	/**
+	 * Displays a preview of the Classified attributes
+	 * 
+	 * @param classified
+	 * @param categoryModel
+	 */
 	void previewClassified(ClassifiedModel classified, CategoryModel categoryModel) {
 		System.out.println("\n Category:" + categoryModel.getPrimaryCategory() + "\n Sub-category: "
 				+ categoryModel.getSubCategory() + "\n Title:" + classified.getTitle() + "\n Description:"
 				+ classified.getDescription() + "\n Price:" + classified.getPrice());
 	}
+
+	/**
+	 * Display all the classifieds in the ResultSet
+	 * 
+	 * @param rs
+	 * @param showStatusColumn
+	 * @return
+	 */
 
 	Map<Integer, ClassifiedModel> displayAllClassifieds(ResultSet rs, boolean showStatusColumn) {
 		String header = "";
@@ -129,6 +150,13 @@ public class Classifieds {
 		return classifiedMap;
 	}
 
+	/**
+	 * Creates a new Classified Model
+	 * 
+	 * @param rs
+	 * @return Classified Model
+	 * @throws SQLException
+	 */
 	ClassifiedModel createClassifiedModel(ResultSet rs) throws SQLException {
 		int ID = rs.getInt(ClassifiedColumnNames.ID);
 		int userID = rs.getInt(ClassifiedColumnNames.USER_ID);
@@ -146,6 +174,12 @@ public class Classifieds {
 		return classifiedModel;
 	}
 
+	/**
+	 * Display the posted classifieds and takes user input for which classified the
+	 * user wants to update
+	 * 
+	 * @param userModel
+	 */
 	void updateClassified(UserModel userModel) {
 		int updateCount;
 		ClassifiedModel classifiedModel;
@@ -169,6 +203,11 @@ public class Classifieds {
 		}
 	}
 
+	/**
+	 * Takes user input to update the classified attributes
+	 * 
+	 * @param classifiedModel
+	 */
 	void updateClassifiedAttribute(ClassifiedModel classifiedModel) {
 		Map<Integer, String> attrOpts = new HashMap<>();
 		attrOpts.put(1, "Title");
@@ -196,27 +235,26 @@ public class Classifieds {
 
 			if (attribute == "Title") {
 				System.out.println("Enter the new classified Title: ");
-//				String existingValue = classifiedModel.getTitle();
 				String updatedValue = sc.nextLine();
 				classifiedModel.setTitle(updatedValue);
-//				classifiedDAOImpl.updateClassified(attribute, updatedValue, existingValue);
 			} else if (attribute == "Description") {
 				System.out.println("Enter the new classified Description: ");
-//				String existingValue = classifiedModel.getDescription();
 				String updatedValue = sc.nextLine();
 				classifiedModel.setDescription(updatedValue);
-//				classifiedDAOImpl.updateClassified(attribute, updatedValue, existingValue);
 
 			} else if (attribute == "Price") {
 				System.out.println("Enter the new classified Price: ");
-//				String existingValue = Double.toString(classifiedModel.getPrice());
 				String updatedValue = sc.nextLine();
 				classifiedModel.setPrice(Double.parseDouble(updatedValue));
-//				classifiedDAOImpl.updateClassified(attribute, updatedValue, existingValue);
 			}
 		}
 	}
 
+	/**
+	 * Deletes the classifieds choosen by the user
+	 * 
+	 * @param userModel
+	 */
 	void deleteClassifieds(UserModel userModel) {
 		int totalDelNumber = 0;
 		ClassifiedModel classifiedModel;
@@ -235,7 +273,6 @@ public class Classifieds {
 				int classifiedID = Integer.parseInt(sc.nextLine());
 				classifiedModel = classifieds.get(classifiedID);
 				classifiedModel.setState(ClassifiedStatus.REMOVED);
-//				classifiedDAOImpl.deleteClassified(classifiedModel);
 				classifiedDAOImpl.updateClassified(classifiedModel);
 				classifieds.size();
 			} while (classifiedModel == null);
@@ -243,6 +280,12 @@ public class Classifieds {
 
 	}
 
+	/**
+	 * Display a list of classifieds for the user to buy and on selection, adds it
+	 * to the user's cart
+	 * 
+	 * @param userModel
+	 */
 	public void buy(UserModel userModel) {
 		int buyCount, classifiedId = 0;
 		double bidPrice = 0;
@@ -281,6 +324,12 @@ public class Classifieds {
 		goBackToUserMenu(userModel);
 	}
 
+	/**
+	 * Displays only the classifieds in approved status
+	 * 
+	 * @param userModel
+	 * @return
+	 */
 	Map<Integer, ClassifiedModel> displayApprovedClassifieds(UserModel userModel) {
 		ResultSet rs = classifiedDAOImpl.getApprovedClassifiedsOfOthers(userModel.getId());
 		Map<Integer, ClassifiedModel> classifiedMap = displayAllClassifieds(rs, false);
@@ -318,6 +367,11 @@ public class Classifieds {
 		}
 	}
 
+	/**
+	 * Displays user options available to manage the classifieds
+	 * 
+	 * @param userModel
+	 */
 	public void manageClassifieds(UserModel userModel) {
 		int option = 0;
 		while (option != 3) {
@@ -337,17 +391,35 @@ public class Classifieds {
 
 	}
 
+	/**
+	 * Changes the status of the classified from approved to sold after the payment
+	 * is successful
+	 * 
+	 * @param cartModel
+	 */
 	public void markClassifiedsAsSold(CartModel cartModel) {
+		if (cartModel == null)
+			return;
 		classifiedDAOImpl.markClassifiedsAsSold(cartModel.getClassifiedId());
 
 	}
 
+	/**
+	 * Allows user to post classifieds by adding them
+	 * 
+	 * @param userModel
+	 */
 	public void sellClassifieds(UserModel userModel) {
 		System.out.println("Sell Classifieds");
 		addClassifieds(userModel);
 		goBackToUserMenu(userModel);
 	}
 
+	/**
+	 * Takes the user control back to User Menu
+	 * 
+	 * @param userModel
+	 */
 	private void goBackToUserMenu(UserModel userModel) {
 		User user = new User();
 		user.displayUserOptions(userModel);
