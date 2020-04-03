@@ -3,6 +3,7 @@ package olx.user;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Scanner;
 
@@ -55,10 +56,16 @@ public class User {
 
 	void signIn() {
 		UserLogin u = new UserLogin();
-		String email = u.verifyEmail();
-		u.verifyPassword(email);
+		HashMap<String, String> userMap = u.verifyEmail();		
+		int count = Integer.parseInt(userMap.get("count"));
+		String emailId = userMap.get("email");
+		if(count == 0) {
+		System.out.println("Email ID provided is incorrect");
+		u.verifyEmail();
+	}
+		u.verifyPassword(userMap.get("email"));
 		System.out.println("Login Successful");
-		UserModel user = userDaoImpl.getUser(email);
+		UserModel user = userDaoImpl.getUser(userMap.get("email"));
 		displayUserOptions(user);
 	}
 

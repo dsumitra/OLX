@@ -3,7 +3,10 @@ package olx.user;
 import java.sql.ResultSet;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Scanner;
+
+import javax.swing.text.html.HTMLDocument.Iterator;
 
 import dbConnection.DBConnection;
 import olx.user.UserConstants.UserColumnNames;
@@ -14,6 +17,7 @@ import olx.user.UserConstants.UserColumnNames;
  */
 public class UserLogin {
 	UserModel user;
+	User u = new User();
 	UserDAOImpl userDaoImpl = new UserDAOImpl();
 	Scanner s = new Scanner(System.in);
 	int count = 0;
@@ -30,7 +34,9 @@ public class UserLogin {
 	 * 
 	 * @return emailId
 	 */
-	String verifyEmail() {
+	HashMap<String, String> verifyEmail() {
+
+		HashMap<String, String> hm = null;
 		try {
 			System.out.println("Enter the email");
 			emailId = s.nextLine().trim();
@@ -47,14 +53,19 @@ public class UserLogin {
 					count++;
 				}
 			}
-			if (count == 0) {
-				System.out.println("Email ID provided is incorrect");
-				verifyEmail();
-			}
+			hm = new HashMap<String, String>();
+			hm.put("email", emailId);
+			hm.put("count", Integer.toString(count));
+
+//			if(count == 0) {
+//				System.out.println("Email ID provided is incorrect");
+//				verifyEmail();
+//			}
+			
 		} catch (Exception e) {
 			verifyEmail();
 		}
-		return emailId;
+		return hm;
 	}
 
 	/**
@@ -83,6 +94,7 @@ public class UserLogin {
 				System.out.println("Password provided is incorrect");
 				verifyPassword(email);
 			}
+			
 		} catch (Exception e) {
 			System.out.println("Please re-enter the password");
 			verifyPassword(email);
@@ -90,26 +102,32 @@ public class UserLogin {
 	}
 
 	/**
-	 * @param user Takes email Id using Scanner class and verifies if the email
-	 *             entered is in the correct format.
+	 * @param user. Takes email Id using Scanner class and verifies if the email
+	 *              entered is in the correct format.
 	 */
 	void addEmail(UserModel user) {
 		try {
-			int count = 0;
-			System.out.println("Enter the email: ");
-			emailId = s.nextLine().trim();
-			if (emailId.matches("^[\\w-_\\.+]*[\\w-_\\.]\\@([\\w]+\\.)+[\\w]+[\\w]$")) {
-				user.setEmail(emailId);
+			HashMap<String, String> hm = verifyEmail();
+			int count = Integer.parseInt(hm.get("count"));
+			String emailId = hm.get("email");
 
+			if (count == 1) {
+				System.out.println("Email ID provided is already existing, please proceed with Sign-In");
+				u.signIn();
 			} else {
-				System.out.println("Invalid email address provided is invalid format");
-				if (count < 3) {
-					System.out.println("Please re-enter the email");
-					count++;
-					addEmail(user);
+				if (emailId.matches("^[\\w-_\\.+]*[\\w-_\\.]\\@([\\w]+\\.)+[\\w]+[\\w]$")) {
+					user.setEmail(emailId);
+
 				} else {
-					System.out.println("More than 3 failed attempts. Your account has been locked");
-					System.exit(0);
+					System.out.println("Invalid email address provided is invalid format");
+					if (count < 3) {
+						System.out.println("Please re-enter the email");
+						count++;
+						addEmail(user);
+					} else {
+						System.out.println("More than 3 failed attempts. Your account has been locked");
+						System.exit(0);
+					}
 				}
 			}
 		} catch (Exception e) {
