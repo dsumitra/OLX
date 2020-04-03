@@ -21,8 +21,8 @@ public class PaymentMethods {
 	 * @throws ClassNotFoundException
 	 * @throws SQLException
 	 */
-	public void addPaymentMethod(CartModel cm) throws ClassNotFoundException, SQLException {
-
+	public void addPaymentMethod(CartModel cm)  {
+try {
 		m.userID = cm.getBidderID();
 		System.out.println("\nAvailable payment options:");
 		System.out.println("\n1. CASH ON DELIVERY\r\n" + "2. CREDIT CARD\r\n" + "3. DEBIT CARD\r\n" + "4. NET BANKING");
@@ -51,26 +51,29 @@ public class PaymentMethods {
 			break;
 		}
 
-//		if (op == 3 || op == 2) {
-//
-//			System.out.println("Enter Card Number:");
-//			m.cardNumber = s.nextLine().trim();
-//			System.out.println("Enter Expiry Month:");
-//			m.expMonth = Long.valueOf(s.nextLine().trim());
-//			System.out.println("Enter Expiry Year:");
-//			m.expYear = Long.valueOf(s.nextLine().trim());
-//			System.out.println("Enter Name on Card:");
-//			m.nameOnCard = s.nextLine().trim();
-//		}
-//		d.addPaymentMethods(m);
+		if (op == 3 || op == 2) {
+
+			System.out.println("Enter Card Number:");
+			m.cardNumber = s.nextLine().trim();
+			System.out.println("Enter Expiry Month:");
+			m.expMonth = Long.valueOf(s.nextLine().trim());
+			System.out.println("Enter Expiry Year:");
+			m.expYear = Long.valueOf(s.nextLine().trim());
+			System.out.println("Enter Name on Card:");
+			m.nameOnCard = s.nextLine().trim();
+		}
+		d.addPaymentMethods(m);
 		System.out.println("Payment successfull!!");
 		Classifieds classified = new Classifieds();
 		classified.markClassifiedsAsSold(cm);
 		CartDAOImpl cdb = new CartDAOImpl();
 		cdb.deleteCart(cm.getCartId());
 
+	} catch(ClassNotFoundException | SQLException e) {
+		System.out.println("Invalid input.\n Please try again");
+		addPaymentMethod(cm);
+		}
 	}
-
 	public void deletePaymentMethod(Long userId) throws ClassNotFoundException, SQLException {
 		viewPaymentMethods(userId);
 		System.out.println("Enter payment method id to delete");
@@ -84,7 +87,7 @@ public class PaymentMethods {
 
 	public void viewPaymentMethods(Long userID) throws ClassNotFoundException, SQLException {
 		ResultSet r = d.getPaymentMethods(userID);
-		System.out.println("Payment menhods for user id:" + userID.toString());
+		System.out.println("Payment methods for user id:" + userID.toString());
 		System.out.printf("%10s %-30s %20s %10s %10s %-30s %n", "Method ID", "Payment Method", "Card Number",
 				"Exp Month", "Exp Year", "Name On Card");
 		while (r.next()) {

@@ -29,7 +29,7 @@ public class User {
 	/**
 	 * To take input from user to either login or signUp
 	 */
-	void login() {
+	public void login() {
 		int value;
 		try {
 			do {
@@ -326,11 +326,6 @@ public class User {
 	 */
 	public void exit(int i) {
 		return;
-	}
-
-	public static void main(String[] args) {
-		User u = new User();
-		u.login();
 	}
 
 }

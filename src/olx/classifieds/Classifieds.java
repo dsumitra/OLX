@@ -299,7 +299,7 @@ public class Classifieds {
 		do {
 			System.out.println("Enter the number of classifieds you want to buy: ");
 			buyCount = Integer.parseInt(sc.nextLine().trim());
-		} while (buyCount > classifiedMap.size());
+		} while (buyCount > classifiedMap.size() && buyCount>0);
 
 		for (int i = 0; i < buyCount; i++) {
 			do {

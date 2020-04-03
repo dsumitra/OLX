@@ -17,6 +17,7 @@ public class Cart {
 
 	/**
 	 * Shows CART options view to user
+	 * 
 	 * @param UserModel
 	 */
 	public void viewCart(UserModel user) {
@@ -38,9 +39,11 @@ public class Cart {
 				}
 
 			} catch (ClassNotFoundException e) {
-				e.printStackTrace();
+				System.out.println("invalid Input");
+				viewCart(user);
 			} catch (SQLException e) {
-				e.printStackTrace();
+				System.out.println("invalid Input");
+				viewCart(user);
 			}
 		}
 
@@ -142,9 +145,11 @@ public class Cart {
 		int apCnt = cdb.approveBid(c.cartId);
 		System.out.println(apCnt + " bids approved in Cart.");
 	}
-	
+
 	/**
-	 * Shows all the bids the user has received for his posted classifieds and gives an option to approve them.
+	 * Shows all the bids the user has received for his posted classifieds and gives
+	 * an option to approve them.
+	 * 
 	 * @param sellerId
 	 * @throws ClassNotFoundException
 	 * @throws SQLException
@@ -176,19 +181,19 @@ public class Cart {
 
 		if (approve.equalsIgnoreCase("Y")) {
 			int approveNum = 0;
-			
+
 			do {
 				System.out.println("How many bids you wish to approve?: ");
 				approveNum = Integer.parseInt(s.nextLine().trim());
 			} while (approveNum < 0 || approveNum > cartData.size());
-			
+
 			do {
 				List<Long> removeFromMap = new ArrayList<>();
 				for (int i = 0; i < approveNum; i++) {
 					System.out.println("Enter a valid Cart ID you wish to approve: ");
 					selectedCartId = Long.parseLong(s.nextLine());
 					long classifiedId = cartData.get(selectedCartId).getClassifiedId();
-					//deleting bid from the local map.
+					// deleting bid from the local map.
 					for (Map.Entry<Long, CartModel> entry : cartData.entrySet()) {
 						if (entry.getKey() != selectedCartId) {
 							CartModel model = entry.getValue();
@@ -197,13 +202,13 @@ public class Cart {
 							}
 						}
 					}
-					
-					for(int j = 0; j < removeFromMap.size(); j++) {
+
+					for (int j = 0; j < removeFromMap.size(); j++) {
 						cartData.remove(removeFromMap.get(i));
 					}
-					//approving the selected bid in the database
+					// approving the selected bid in the database
 					cdb.approveBid(selectedCartId);
-					//deleting bid from the database
+					// deleting bid from the database
 					cdb.deleteBid(classifiedId);
 					System.out.println("Approved bid succesfully!!");
 				}
@@ -216,9 +221,11 @@ public class Cart {
 	public void viewSellerCart(Long sellerID) throws ClassNotFoundException, SQLException {
 		approveBidForSeller(sellerID);
 	}
-	
+
 	/**
-	 * Shows all the classifieds added to cart by the user and gives an option to buy them.
+	 * Shows all the classifieds added to cart by the user and gives an option to
+	 * buy them.
+	 * 
 	 * @param buyerId
 	 * @throws ClassNotFoundException
 	 * @throws SQLException

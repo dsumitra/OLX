@@ -44,9 +44,9 @@ public class Payments {
 //				makePaymentforCart(cartId);
 //			}
 		} catch (ClassNotFoundException | SQLException e) {
-			e.printStackTrace();
+//			e.printStackTrace();
 			System.out.println("Payment failed. \nPlease try again.");
-//			makePaymentforCart(cartId);
+			makePaymentforCart(cartId);
 		}
 
 	}
